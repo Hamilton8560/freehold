@@ -125,7 +125,7 @@ export default function DocsPage() {
     <div className="min-h-screen bg-background-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-sm border-b border-[rgba(184,164,142,0.15)]">
-        <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -146,7 +146,7 @@ export default function DocsPage() {
         </div>
       </header>
 
-      <div className="max-w-[1400px] mx-auto px-6 py-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex gap-8">
           {/* Sidebar */}
           <aside className="hidden lg:block w-72 shrink-0">
@@ -270,7 +270,7 @@ export default function DocsPage() {
 
       {/* Footer */}
       <footer className="border-t border-[rgba(184,164,142,0.15)] mt-16">
-        <div className="max-w-[1400px] mx-auto px-6 py-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
           <p className="text-sm text-text-tertiary text-center">
             @freehold/ui &middot; Built with React, TypeScript, and Tailwind CSS
           </p>
@@ -290,19 +290,19 @@ function WelcomeView() {
           padding="md"
           className="mb-8 bg-gradient-to-r from-sand-50 to-background-primary border-sand-200 hover:shadow-warm-md transition-shadow cursor-pointer"
         >
-          <CardContent className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-lg bg-sand-100 flex items-center justify-center">
+          <CardContent className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 rounded-lg bg-sand-100 flex items-center justify-center shrink-0">
                 <Icon name="deploy" size="md" />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="font-medium text-text-primary">New to @freehold/ui?</h3>
-                <p className="text-sm text-text-secondary">
+                <p className="text-sm text-text-secondary truncate sm:overflow-visible sm:whitespace-normal">
                   Check out the Getting Started guide for installation and setup.
                 </p>
               </div>
             </div>
-            <Icon name="chevron-right" size="md" color="secondary" />
+            <Icon name="chevron-right" size="md" color="secondary" className="shrink-0" />
           </CardContent>
         </Card>
       </Link>
@@ -437,7 +437,8 @@ function ComponentDetail({ component }: { component: ComponentDoc }) {
       {/* Props Table */}
       <section className="mb-10">
         <h2 className="font-heading text-xl text-text-primary mb-4">Props</h2>
-        <Card variant="default" padding="none" className="overflow-hidden">
+        {/* Desktop table */}
+        <Card variant="default" padding="none" className="overflow-hidden hidden sm:block">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-background-secondary border-b border-[rgba(184,164,142,0.15)]">
@@ -473,6 +474,27 @@ function ComponentDetail({ component }: { component: ComponentDoc }) {
             </table>
           </div>
         </Card>
+        {/* Mobile stacked cards */}
+        <div className="sm:hidden space-y-3">
+          {component.props.map((prop) => (
+            <Card key={prop.name} variant="default" padding="sm" className="overflow-hidden">
+              <CardContent>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <code className="text-sm font-mono text-sand-600">{prop.name}</code>
+                  <code className="text-xs font-mono text-text-secondary bg-background-secondary px-1.5 py-0.5 rounded shrink-0">
+                    {prop.type}
+                  </code>
+                </div>
+                <p className="text-sm text-text-secondary">{prop.description}</p>
+                {prop.default && (
+                  <p className="text-xs text-text-tertiary mt-1">
+                    Default: <code className="font-mono">{prop.default}</code>
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </section>
 
       {/* Examples */}

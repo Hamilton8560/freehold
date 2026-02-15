@@ -20,14 +20,15 @@ const dialogContentVariants = cva(
     'data-[state=open]:animate-dialog-content-in',
     'data-[state=closed]:animate-dialog-content-out',
     'focus:outline-none',
+    'max-h-[calc(100vh-2rem)] overflow-y-auto',
   ],
   {
     variants: {
       size: {
-        sm: 'w-full max-w-sm',
-        md: 'w-full max-w-md',
-        lg: 'w-full max-w-lg',
-        xl: 'w-full max-w-xl',
+        sm: 'w-[calc(100%-2rem)] sm:w-full max-w-sm',
+        md: 'w-[calc(100%-2rem)] sm:w-full max-w-md',
+        lg: 'w-[calc(100%-2rem)] sm:w-full max-w-lg',
+        xl: 'w-[calc(100%-2rem)] sm:w-full max-w-xl',
         full: 'w-[calc(100%-2rem)] max-w-4xl max-h-[calc(100%-2rem)]',
       },
     },
@@ -120,7 +121,7 @@ export const DialogHeader = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5 p-6 pb-0', className)}
+    className={cn('flex flex-col space-y-1.5 p-4 pb-0 sm:p-6 sm:pb-0', className)}
     {...props}
   />
 ))
@@ -154,7 +155,7 @@ export const DialogBody = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6', className)} {...props} />
+  <div ref={ref} className={cn('p-4 sm:p-6', className)} {...props} />
 ))
 DialogBody.displayName = 'DialogBody'
 
@@ -164,7 +165,7 @@ export const DialogFooter = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center justify-end gap-3 p-6 pt-0', className)}
+    className={cn('flex items-center justify-end gap-3 p-4 pt-0 sm:p-6 sm:pt-0', className)}
     {...props}
   />
 ))

@@ -15,8 +15,23 @@ body {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'DM Serif Display', Georgia, serif;
+}
+
+/* Mobile-responsive utilities */
+@layer utilities {
+  .-webkit-overflow-scrolling-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prevent horizontal overflow on mobile */
+@media (max-width: 639px) {
+  pre, code {
+    max-width: 100%;
+  }
 }

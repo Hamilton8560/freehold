@@ -70,7 +70,7 @@ export function DataTable<T>({
 
   return (
     <div className={cn('w-full overflow-hidden rounded-[14px] border border-[rgba(184,164,142,0.15)]', className)}>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[rgba(184,164,142,0.15)] bg-[#F9F7F4]">
@@ -78,7 +78,7 @@ export function DataTable<T>({
                 <th
                   key={column.key}
                   className={cn(
-                    'px-4 py-3 text-xs font-semibold uppercase tracking-wider text-[#5C574F]',
+                    'px-3 py-2.5 sm:px-4 sm:py-3 text-xs font-semibold uppercase tracking-wider text-[#5C574F] whitespace-nowrap',
                     getAlignment(column.align)
                   )}
                   style={{ width: column.width }}
@@ -112,7 +112,7 @@ export function DataTable<T>({
                     <td
                       key={column.key}
                       className={cn(
-                        'px-4 py-3 text-sm text-[#2C2824]',
+                        'px-3 py-2.5 sm:px-4 sm:py-3 text-sm text-[#2C2824]',
                         getAlignment(column.align)
                       )}
                     >

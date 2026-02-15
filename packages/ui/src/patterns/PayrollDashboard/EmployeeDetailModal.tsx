@@ -42,13 +42,13 @@ export function EmployeeDetailModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent size="md">
         <DialogHeader>
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F5F3EF] text-lg font-medium text-[#5C574F]">
+          <div className="flex items-center gap-3 sm:gap-4 pr-8">
+            <div className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-full bg-[#F5F3EF] text-base sm:text-lg font-medium text-[#5C574F]">
               {employee.avatar || employee.name.split(' ').map((n) => n[0]).join('')}
             </div>
-            <div>
-              <DialogTitle>{employee.name}</DialogTitle>
-              <DialogDescription>{employee.position}</DialogDescription>
+            <div className="min-w-0">
+              <DialogTitle className="truncate">{employee.name}</DialogTitle>
+              <DialogDescription className="truncate">{employee.position}</DialogDescription>
             </div>
           </div>
         </DialogHeader>

@@ -51,7 +51,7 @@ export function ChatContainer({
   return (
     <div
       className={cn(
-        'flex flex-col overflow-hidden rounded-[14px] border border-[rgba(184,164,142,0.15)] bg-white shadow-[0_1px_3px_rgba(26,26,26,0.04),0_4px_12px_rgba(26,26,26,0.03)]',
+        'flex flex-col overflow-hidden rounded-xl sm:rounded-[14px] border border-[rgba(184,164,142,0.15)] bg-white shadow-[0_1px_3px_rgba(26,26,26,0.04),0_4px_12px_rgba(26,26,26,0.03)]',
         className
       )}
       style={{ maxHeight }}

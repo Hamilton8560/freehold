@@ -154,27 +154,28 @@ export default function ShowcasePage() {
     <div className="min-h-screen bg-background-primary">
       {/* Header */}
       <header className="border-b border-[rgba(184,164,142,0.15)] bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="font-heading text-xl text-text-primary">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 gap-4">
+          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+            <Link href="/" className="font-heading text-xl text-text-primary shrink-0">
               Freehold
             </Link>
-            <span className="text-text-tertiary">/</span>
-            <span className="text-text-secondary">Component Showcase</span>
+            <span className="text-text-tertiary hidden sm:inline">/</span>
+            <span className="text-text-secondary hidden sm:inline truncate">Component Showcase</span>
           </div>
-          <Link href="/">
+          <Link href="/" className="shrink-0">
             <Button variant="ghost" size="sm">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Home
+              <span className="hidden sm:inline">Back to Home</span>
+              <span className="sm:hidden">Back</span>
             </Button>
           </Link>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6 sm:py-8">
         <PayrollDashboard
           employees={employees}
           onApprove={handleApprove}

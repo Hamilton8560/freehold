@@ -168,8 +168,8 @@ export function EmployeeTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex-1 min-w-[240px]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+        <div className="w-full sm:flex-1 sm:min-w-[240px]">
           <SearchInput
             placeholder="Search employees..."
             value={search}
@@ -177,18 +177,20 @@ export function EmployeeTable({
             onClear={() => setSearch('')}
           />
         </div>
-        <FilterSelect
-          options={STATUS_OPTIONS}
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          placeholder="Status"
-        />
-        <FilterSelect
-          options={DEPARTMENT_OPTIONS}
-          value={departmentFilter}
-          onChange={(e) => setDepartmentFilter(e.target.value)}
-          placeholder="Department"
-        />
+        <div className="flex gap-3 sm:gap-4">
+          <FilterSelect
+            options={STATUS_OPTIONS}
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            placeholder="Status"
+          />
+          <FilterSelect
+            options={DEPARTMENT_OPTIONS}
+            value={departmentFilter}
+            onChange={(e) => setDepartmentFilter(e.target.value)}
+            placeholder="Department"
+          />
+        </div>
       </div>
       <DataTable
         data={filteredEmployees}

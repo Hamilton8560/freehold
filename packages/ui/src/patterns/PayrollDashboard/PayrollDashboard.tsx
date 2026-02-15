@@ -78,10 +78,10 @@ export function PayrollDashboard({
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="font-heading text-3xl font-medium text-[#2C2824]">
+            <h1 className="font-heading text-2xl sm:text-3xl font-medium text-[#2C2824]">
               Payroll Dashboard
             </h1>
-            <p className="mt-1 text-[#5C574F]">
+            <p className="mt-1 text-sm sm:text-base text-[#5C574F]">
               Manage employee payroll, approve payments, and track disbursements.
             </p>
           </div>
@@ -96,7 +96,7 @@ export function PayrollDashboard({
 
         {/* Employee Table Card */}
         <Card variant="default" padding="none">
-          <CardHeader className="border-b border-[rgba(184,164,142,0.15)] px-6 py-4">
+          <CardHeader className="border-b border-[rgba(184,164,142,0.15)] px-4 sm:px-6 py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <CardTitle>Employee Payroll</CardTitle>
               <PayrollActions
@@ -107,7 +107,7 @@ export function PayrollDashboard({
               />
             </div>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-4 sm:p-6">
             <EmployeeTable
               employees={employees}
               onApprove={onApprove}
