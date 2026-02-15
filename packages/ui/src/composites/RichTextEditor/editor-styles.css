@@ -1,0 +1,134 @@
+.freehold-rte-content {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #2C2824;
+  outline: none;
+}
+
+.freehold-rte-content h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 24px 0 8px;
+  color: #2C2824;
+  font-weight: 400;
+}
+
+.freehold-rte-content h2 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 20px 0 8px;
+  color: #2C2824;
+  font-weight: 400;
+}
+
+.freehold-rte-content h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 16px 0 8px;
+  color: #2C2824;
+  font-weight: 400;
+}
+
+.freehold-rte-content p {
+  margin: 0 0 8px;
+}
+
+.freehold-rte-content ul,
+.freehold-rte-content ol {
+  padding-left: 24px;
+  margin: 0 0 8px;
+}
+
+.freehold-rte-content ul {
+  list-style-type: disc;
+}
+
+.freehold-rte-content ol {
+  list-style-type: decimal;
+}
+
+.freehold-rte-content ul li::marker,
+.freehold-rte-content ol li::marker {
+  color: #B8A48E;
+}
+
+.freehold-rte-content li {
+  margin-bottom: 4px;
+}
+
+.freehold-rte-content blockquote {
+  border-left: 3px solid #B8A48E;
+  padding-left: 16px;
+  margin: 8px 0;
+  font-style: italic;
+  color: #5C574F;
+}
+
+.freehold-rte-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: rgba(184, 164, 142, 0.1);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.freehold-rte-content pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: #F9F7F4;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+  overflow-x: auto;
+}
+
+.freehold-rte-content pre code {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.freehold-rte-content a {
+  color: #2C2824;
+  text-decoration: underline;
+  text-decoration-color: #B8A48E;
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s;
+}
+
+.freehold-rte-content a:hover {
+  text-decoration-color: #2C2824;
+}
+
+.freehold-rte-content *:first-child {
+  margin-top: 0;
+}
+
+.freehold-rte-content *:last-child {
+  margin-bottom: 0;
+}
+
+/* Tiptap Placeholder */
+.freehold-rte-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #8A847A;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Editor fill: make the Tiptap element expand to fill minHeight */
+.freehold-rte-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.freehold-rte-wrapper > .tiptap {
+  flex: 1 1 auto;
+}

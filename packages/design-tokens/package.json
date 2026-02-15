@@ -1,0 +1,36 @@
+{
+  "name": "@freehold/design-tokens",
+  "version": "0.0.1",
+  "description": "Design tokens for Freehold UI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hamilton8560/freehold.git",
+    "directory": "packages/design-tokens"
+  },
+  "keywords": ["design-tokens", "css-variables", "tailwindcss", "theme"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./css": "./dist/tokens.css"
+  },
+  "files": ["dist", "LICENSE", "README.md"],
+  "scripts": {
+    "build": "tsup && node scripts/generate-css.mjs",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

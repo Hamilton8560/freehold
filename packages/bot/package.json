@@ -1,0 +1,105 @@
+{
+  "name": "@freehold/bot",
+  "version": "0.0.1",
+  "description": "Freehold bot framework — platform adapters for AI chatbots",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hamilton8560/freehold.git",
+    "directory": "packages/bot"
+  },
+  "keywords": ["chatbot", "telegram", "discord", "slack", "ai", "bot-framework"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./telegram": {
+      "types": "./dist/telegram.d.ts",
+      "import": "./dist/telegram.mjs",
+      "require": "./dist/telegram.js"
+    },
+    "./discord": {
+      "types": "./dist/discord.d.ts",
+      "import": "./dist/discord.mjs",
+      "require": "./dist/discord.js"
+    },
+    "./slack": {
+      "types": "./dist/slack.d.ts",
+      "import": "./dist/slack.mjs",
+      "require": "./dist/slack.js"
+    },
+    "./whatsapp": {
+      "types": "./dist/whatsapp.d.ts",
+      "import": "./dist/whatsapp.mjs",
+      "require": "./dist/whatsapp.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@freehold/ai": "workspace:*",
+    "ai": "^4.0.0",
+    "zod": "^3.22.0"
+  },
+  "peerDependencies": {
+    "@ai-sdk/anthropic": ">=1.0.0",
+    "@ai-sdk/deepseek": ">=0.1.0",
+    "@ai-sdk/google": ">=1.0.0",
+    "@ai-sdk/openai": ">=1.0.0",
+    "discord.js": "^14.0.0",
+    "@slack/bolt": "^4.0.0",
+    "grammy": "^1.0.0",
+    "ollama-ai-provider": ">=0.16.0"
+  },
+  "peerDependenciesMeta": {
+    "discord.js": {
+      "optional": true
+    },
+    "@slack/bolt": {
+      "optional": true
+    },
+    "grammy": {
+      "optional": true
+    },
+    "@ai-sdk/openai": {
+      "optional": true
+    },
+    "@ai-sdk/anthropic": {
+      "optional": true
+    },
+    "@ai-sdk/google": {
+      "optional": true
+    },
+    "@ai-sdk/deepseek": {
+      "optional": true
+    },
+    "ollama-ai-provider": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@ai-sdk/openai": "^1.0.0",
+    "@slack/bolt": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "discord.js": "^14.0.0",
+    "grammy": "^1.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

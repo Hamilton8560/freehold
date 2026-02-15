@@ -1,0 +1,2217 @@
+export interface PropDoc {
+  name: string
+  type: string
+  default?: string
+  description: string
+}
+
+export interface VariantOption {
+  value: string
+  label: string
+}
+
+export interface VariantDoc {
+  name: string
+  options: VariantOption[]
+}
+
+export interface ExampleDoc {
+  title: string
+  code: string
+}
+
+export interface ComponentDoc {
+  slug: string
+  name: string
+  description: string
+  category: 'primitives' | 'composites' | 'patterns'
+  importStatement: string
+  props: PropDoc[]
+  variants?: VariantDoc[]
+  examples: ExampleDoc[]
+}
+
+export const componentDocs: ComponentDoc[] = [
+  {
+    slug: 'button',
+    name: 'Button',
+    description: 'Interactive button component with multiple visual variants, sizes, and loading state support.',
+    category: 'primitives',
+    importStatement: "import { Button } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'primary' | 'secondary' | 'ghost' | 'accent' | 'danger'",
+        default: "'primary'",
+        description: 'Visual style variant',
+      },
+      {
+        name: 'size',
+        type: "'sm' | 'md' | 'lg' | 'icon'",
+        default: "'md'",
+        description: 'Button size',
+      },
+      {
+        name: 'isLoading',
+        type: 'boolean',
+        default: 'false',
+        description: 'Shows a loading spinner and disables the button',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the button',
+      },
+      {
+        name: 'children',
+        type: 'React.ReactNode',
+        description: 'Button content',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'primary', label: 'Primary' },
+          { value: 'secondary', label: 'Secondary' },
+          { value: 'ghost', label: 'Ghost' },
+          { value: 'accent', label: 'Accent' },
+          { value: 'danger', label: 'Danger' },
+        ],
+      },
+      {
+        name: 'size',
+        options: [
+          { value: 'sm', label: 'Small' },
+          { value: 'md', label: 'Medium' },
+          { value: 'lg', label: 'Large' },
+          { value: 'icon', label: 'Icon' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Button variant="primary">Click me</Button>`,
+      },
+      {
+        title: 'With Loading State',
+        code: `<Button variant="primary" isLoading>
+  Processing...
+</Button>`,
+      },
+      {
+        title: 'All Variants',
+        code: `<div className="flex gap-4">
+  <Button variant="primary">Primary</Button>
+  <Button variant="secondary">Secondary</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="accent">Accent</Button>
+  <Button variant="danger">Danger</Button>
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'card',
+    name: 'Card',
+    description: 'Container component with multiple visual variants and padding options. Includes subcomponents for structured content.',
+    category: 'primitives',
+    importStatement: "import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'default' | 'elevated' | 'outlined' | 'stat'",
+        default: "'default'",
+        description: 'Visual style variant',
+      },
+      {
+        name: 'padding',
+        type: "'none' | 'sm' | 'md' | 'lg'",
+        default: "'md'",
+        description: 'Internal padding',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'elevated', label: 'Elevated' },
+          { value: 'outlined', label: 'Outlined' },
+          { value: 'stat', label: 'Stat' },
+        ],
+      },
+      {
+        name: 'padding',
+        options: [
+          { value: 'none', label: 'None' },
+          { value: 'sm', label: 'Small' },
+          { value: 'md', label: 'Medium' },
+          { value: 'lg', label: 'Large' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Card',
+        code: `<Card variant="default" padding="md">
+  <CardContent>
+    <p>Card content goes here.</p>
+  </CardContent>
+</Card>`,
+      },
+      {
+        title: 'Card with Header',
+        code: `<Card variant="elevated" padding="lg">
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description text.</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Main content area.</p>
+  </CardContent>
+  <CardFooter>
+    <Button variant="primary" size="sm">Action</Button>
+  </CardFooter>
+</Card>`,
+      },
+    ],
+  },
+  {
+    slug: 'badge',
+    name: 'Badge',
+    description: 'Status indicator badges with semantic color variants for different states.',
+    category: 'primitives',
+    importStatement: "import { Badge } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'default' | 'pending' | 'approved' | 'paid' | 'error' | 'accent'",
+        default: "'default'",
+        description: 'Status variant with semantic colors',
+      },
+      {
+        name: 'size',
+        type: "'sm' | 'md' | 'lg'",
+        default: "'md'",
+        description: 'Badge size',
+      },
+      {
+        name: 'children',
+        type: 'React.ReactNode',
+        description: 'Badge content',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'pending', label: 'Pending' },
+          { value: 'approved', label: 'Approved' },
+          { value: 'paid', label: 'Paid' },
+          { value: 'error', label: 'Error' },
+          { value: 'accent', label: 'Accent' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Status Badges',
+        code: `<div className="flex gap-3">
+  <Badge variant="pending">Pending Review</Badge>
+  <Badge variant="approved">Approved</Badge>
+  <Badge variant="paid">Paid</Badge>
+  <Badge variant="error">Error</Badge>
+</div>`,
+      },
+      {
+        title: 'Size Variants',
+        code: `<div className="flex items-center gap-3">
+  <Badge variant="approved" size="sm">Small</Badge>
+  <Badge variant="approved" size="md">Medium</Badge>
+  <Badge variant="approved" size="lg">Large</Badge>
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'input',
+    name: 'Input',
+    description: 'Text input component with optional label, hint text, and error state support.',
+    category: 'primitives',
+    importStatement: "import { Input } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed above the input',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text displayed below the input',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message (replaces hint when present)',
+      },
+      {
+        name: 'type',
+        type: 'string',
+        default: "'text'",
+        description: 'HTML input type',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        description: 'Placeholder text',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the input',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Input',
+        code: `<Input
+  label="Email Address"
+  placeholder="you@example.com"
+  type="email"
+/>`,
+      },
+      {
+        title: 'With Hint',
+        code: `<Input
+  label="Password"
+  type="password"
+  placeholder="Enter password"
+  hint="Must be at least 8 characters"
+/>`,
+      },
+      {
+        title: 'With Error',
+        code: `<Input
+  label="Email Address"
+  type="email"
+  defaultValue="invalid-email"
+  error="Please enter a valid email address"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'icon',
+    name: 'Icon',
+    description: 'SVG icon component with 23+ icons, multiple sizes, and color variants.',
+    category: 'primitives',
+    importStatement: "import { Icon } from '@freehold/ui'",
+    props: [
+      {
+        name: 'name',
+        type: 'IconName',
+        description: 'Icon identifier (dashboard, clients, search, check, etc.)',
+      },
+      {
+        name: 'size',
+        type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+        default: "'md'",
+        description: 'Icon size (12px to 32px)',
+      },
+      {
+        name: 'color',
+        type: "'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error' | 'inherit'",
+        default: "'default'",
+        description: 'Icon color',
+      },
+    ],
+    variants: [
+      {
+        name: 'size',
+        options: [
+          { value: 'xs', label: 'XS (12px)' },
+          { value: 'sm', label: 'SM (16px)' },
+          { value: 'md', label: 'MD (20px)' },
+          { value: 'lg', label: 'LG (24px)' },
+          { value: 'xl', label: 'XL (32px)' },
+        ],
+      },
+      {
+        name: 'color',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'primary', label: 'Primary' },
+          { value: 'secondary', label: 'Secondary' },
+          { value: 'muted', label: 'Muted' },
+          { value: 'success', label: 'Success' },
+          { value: 'warning', label: 'Warning' },
+          { value: 'error', label: 'Error' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Icon name="dashboard" size="md" color="primary" />`,
+      },
+      {
+        title: 'Multiple Icons',
+        code: `<div className="flex gap-4">
+  <Icon name="home" size="lg" color="primary" />
+  <Icon name="settings" size="lg" color="secondary" />
+  <Icon name="check" size="lg" color="success" />
+  <Icon name="warning" size="lg" color="warning" />
+  <Icon name="close" size="lg" color="error" />
+</div>`,
+      },
+      {
+        title: 'Available Icons',
+        code: `// Navigation: dashboard, home, clients, pipeline, billing, reports, settings
+// Actions: search, plus, minus, close, check, arrow
+// Status: warning, shield, growth, deploy, automation, ai
+// Chevrons: chevron-up, chevron-down, chevron-left, chevron-right`,
+      },
+    ],
+  },
+  {
+    slug: 'dialog',
+    name: 'Dialog',
+    description: 'Accessible modal dialog component with compound components for flexible layouts. Built on Radix UI with focus trap, ESC to close, and ARIA support.',
+    category: 'primitives',
+    importStatement: "import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogBody, DialogFooter, DialogClose } from '@freehold/ui'",
+    props: [
+      {
+        name: 'open',
+        type: 'boolean',
+        description: 'Controlled open state',
+      },
+      {
+        name: 'onOpenChange',
+        type: '(open: boolean) => void',
+        description: 'Callback when open state changes',
+      },
+      {
+        name: 'size',
+        type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+        default: "'md'",
+        description: 'Dialog width size (on DialogContent)',
+      },
+      {
+        name: 'showCloseButton',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show close button in top right (on DialogContent)',
+      },
+    ],
+    variants: [
+      {
+        name: 'size',
+        options: [
+          { value: 'sm', label: 'Small' },
+          { value: 'md', label: 'Medium' },
+          { value: 'lg', label: 'Large' },
+          { value: 'xl', label: 'Extra Large' },
+          { value: 'full', label: 'Full Width' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Dialog',
+        code: `<Dialog open={open} onOpenChange={setOpen}>
+  <DialogContent size="md">
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>Make changes to your profile.</DialogDescription>
+    </DialogHeader>
+    <DialogBody>
+      <Input label="Name" defaultValue="John Doe" />
+    </DialogBody>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="secondary">Cancel</Button>
+      </DialogClose>
+      <Button variant="primary">Save</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`,
+      },
+    ],
+  },
+  {
+    slug: 'confirm-dialog',
+    name: 'ConfirmDialog',
+    description: 'Pre-composed confirmation dialog with title, description, icon, and confirm/cancel actions. Supports loading state and danger variant.',
+    category: 'composites',
+    importStatement: "import { ConfirmDialog } from '@freehold/ui'",
+    props: [
+      {
+        name: 'open',
+        type: 'boolean',
+        description: 'Controlled open state',
+      },
+      {
+        name: 'onOpenChange',
+        type: '(open: boolean) => void',
+        description: 'Callback when open state changes',
+      },
+      {
+        name: 'title',
+        type: 'string',
+        description: 'Dialog title',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        description: 'Description text below title',
+      },
+      {
+        name: 'onConfirm',
+        type: '() => void | Promise<void>',
+        description: 'Callback when confirm button is clicked',
+      },
+      {
+        name: 'variant',
+        type: "'default' | 'danger'",
+        default: "'default'",
+        description: 'Visual variant (affects confirm button)',
+      },
+      {
+        name: 'isConfirming',
+        type: 'boolean',
+        default: 'false',
+        description: 'Shows loading spinner on confirm button',
+      },
+      {
+        name: 'icon',
+        type: 'ReactNode',
+        description: 'Optional icon displayed next to title',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'danger', label: 'Danger' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Confirmation Dialog',
+        code: `<ConfirmDialog
+  open={showConfirm}
+  onOpenChange={setShowConfirm}
+  title="Delete Item"
+  description="Are you sure? This cannot be undone."
+  confirmLabel="Delete"
+  variant="danger"
+  onConfirm={handleDelete}
+  isConfirming={isDeleting}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'pie-chart',
+    name: 'PieChart',
+    description: 'Pie or donut chart for distribution visualization. Requires recharts as optional peer dependency.',
+    category: 'composites',
+    importStatement: "import { PieChart } from '@freehold/ui'",
+    props: [
+      {
+        name: 'data',
+        type: 'DistributionDataPoint[]',
+        description: 'Array of { name, value, color? } objects',
+      },
+      {
+        name: 'variant',
+        type: "'pie' | 'donut'",
+        default: "'pie'",
+        description: 'Chart type',
+      },
+      {
+        name: 'height',
+        type: 'number',
+        default: '300',
+        description: 'Chart height in pixels',
+      },
+      {
+        name: 'centerLabel',
+        type: 'string',
+        description: 'Label in center (donut only)',
+      },
+      {
+        name: 'centerValue',
+        type: 'string | number',
+        description: 'Value in center (donut only)',
+      },
+      {
+        name: 'showLegend',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show legend below chart',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'pie', label: 'Pie' },
+          { value: 'donut', label: 'Donut' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Status Distribution',
+        code: `<PieChart
+  data={[
+    { name: 'Pending', value: 5, color: '#D4B86A' },
+    { name: 'Approved', value: 12, color: '#8DB580' },
+    { name: 'Paid', value: 8, color: '#60A5FA' },
+  ]}
+  variant="donut"
+  centerLabel="Total"
+  centerValue={25}
+  height={250}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'bar-chart',
+    name: 'BarChart',
+    description: 'Bar chart for comparison visualization. Supports multiple series, stacked layout, and currency formatting. Requires recharts.',
+    category: 'composites',
+    importStatement: "import { BarChart } from '@freehold/ui'",
+    props: [
+      {
+        name: 'data',
+        type: 'TimeSeriesDataPoint[]',
+        description: 'Array of data points with keys matching xAxisKey and series dataKeys',
+      },
+      {
+        name: 'xAxisKey',
+        type: 'string',
+        description: 'Key in data for x-axis labels',
+      },
+      {
+        name: 'series',
+        type: 'ChartSeries[]',
+        description: 'Array of { name, dataKey, color? } for each bar series',
+      },
+      {
+        name: 'yAxisFormat',
+        type: "'number' | 'currency' | 'percentage'",
+        default: "'number'",
+        description: 'Y-axis value formatting',
+      },
+      {
+        name: 'stacked',
+        type: 'boolean',
+        default: 'false',
+        description: 'Stack bars on top of each other',
+      },
+      {
+        name: 'height',
+        type: 'number',
+        default: '300',
+        description: 'Chart height in pixels',
+      },
+    ],
+    examples: [
+      {
+        title: 'Department Comparison',
+        code: `<BarChart
+  data={[
+    { department: 'Engineering', grossPay: 50000, netPay: 40000 },
+    { department: 'Design', grossPay: 35000, netPay: 28000 },
+    { department: 'Marketing', grossPay: 30000, netPay: 24000 },
+  ]}
+  xAxisKey="department"
+  series={[
+    { name: 'Gross Pay', dataKey: 'grossPay', color: '#B8A48E' },
+    { name: 'Net Pay', dataKey: 'netPay', color: '#8DB580' },
+  ]}
+  yAxisFormat="currency"
+  height={300}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'line-chart',
+    name: 'LineChart',
+    description: 'Line or area chart for trend visualization. Supports multiple series, area fill, and various curve types. Requires recharts.',
+    category: 'composites',
+    importStatement: "import { LineChart } from '@freehold/ui'",
+    props: [
+      {
+        name: 'data',
+        type: 'TimeSeriesDataPoint[]',
+        description: 'Array of data points with keys matching xAxisKey and series dataKeys',
+      },
+      {
+        name: 'xAxisKey',
+        type: 'string',
+        description: 'Key in data for x-axis labels',
+      },
+      {
+        name: 'series',
+        type: 'ChartSeries[]',
+        description: 'Array of { name, dataKey, color? } for each line',
+      },
+      {
+        name: 'yAxisFormat',
+        type: "'number' | 'currency' | 'percentage'",
+        default: "'number'",
+        description: 'Y-axis value formatting',
+      },
+      {
+        name: 'showArea',
+        type: 'boolean',
+        default: 'false',
+        description: 'Fill area under the line',
+      },
+      {
+        name: 'curveType',
+        type: "'linear' | 'monotone' | 'step'",
+        default: "'monotone'",
+        description: 'Line curve interpolation',
+      },
+      {
+        name: 'height',
+        type: 'number',
+        default: '300',
+        description: 'Chart height in pixels',
+      },
+    ],
+    examples: [
+      {
+        title: 'Revenue Trend',
+        code: `<LineChart
+  data={[
+    { month: 'Jan', revenue: 10000 },
+    { month: 'Feb', revenue: 12000 },
+    { month: 'Mar', revenue: 15000 },
+    { month: 'Apr', revenue: 14000 },
+  ]}
+  xAxisKey="month"
+  series={[{ name: 'Revenue', dataKey: 'revenue', color: '#8DB580' }]}
+  yAxisFormat="currency"
+  showArea
+  height={300}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'code-canvas',
+    name: 'CodeCanvas',
+    description: 'Branded code block component with syntax highlighting, line numbers, and copy functionality. Perfect for displaying code examples.',
+    category: 'primitives',
+    importStatement: "import { CodeCanvas } from '@freehold/ui'",
+    props: [
+      {
+        name: 'code',
+        type: 'string',
+        description: 'The code to display',
+      },
+      {
+        name: 'language',
+        type: 'string',
+        description: "Language for syntax highlighting ('tsx', 'ts', 'jsx', 'js')",
+      },
+      {
+        name: 'title',
+        type: 'string',
+        description: 'Optional header text (filename, description)',
+      },
+      {
+        name: 'showLineNumbers',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show line numbers',
+      },
+      {
+        name: 'showCopy',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show copy button',
+      },
+      {
+        name: 'maxHeight',
+        type: 'string',
+        description: "Max height with scroll (e.g., '300px')",
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<CodeCanvas
+  code={\`const greeting = "Hello, world!"\`}
+  language="tsx"
+/>`,
+      },
+      {
+        title: 'With Title',
+        code: `<CodeCanvas
+  code={\`import { Button } from '@freehold/ui'
+
+export function Example() {
+  return <Button>Click me</Button>
+}\`}
+  title="example.tsx"
+  language="tsx"
+/>`,
+      },
+      {
+        title: 'Terminal Style (No Line Numbers)',
+        code: `<CodeCanvas
+  code="npm install @freehold/ui"
+  title="Terminal"
+  showLineNumbers={false}
+/>`,
+      },
+      {
+        title: 'With Max Height',
+        code: `<CodeCanvas
+  code={longCodeExample}
+  language="tsx"
+  maxHeight="200px"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'copy-block',
+    name: 'CopyBlock',
+    description: 'Inline copyable text block. Click to copy the value to clipboard with visual feedback.',
+    category: 'primitives',
+    importStatement: "import { CopyBlock } from '@freehold/ui'",
+    props: [
+      {
+        name: 'value',
+        type: 'string',
+        description: 'The value to copy to clipboard',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Display text (defaults to value if not provided)',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<CopyBlock value="npm install @freehold/ui" />`,
+      },
+      {
+        title: 'With Custom Label',
+        code: `<CopyBlock value="border-radius: 14px" label="radius: 14px" />`,
+      },
+    ],
+  },
+  {
+    slug: 'pill',
+    name: 'Pill',
+    description: 'Rounded pill component for tags and status indicators. Fully rounded with semantic color variants.',
+    category: 'primitives',
+    importStatement: "import { Pill } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'default' | 'success' | 'warning' | 'error' | 'accent'",
+        default: "'default'",
+        description: 'Color variant',
+      },
+      {
+        name: 'children',
+        type: 'React.ReactNode',
+        description: 'Pill content',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'success', label: 'Success' },
+          { value: 'warning', label: 'Warning' },
+          { value: 'error', label: 'Error' },
+          { value: 'accent', label: 'Accent' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'All Variants',
+        code: `<div className="flex gap-3">
+  <Pill variant="default">Active</Pill>
+  <Pill variant="success">Success</Pill>
+  <Pill variant="warning">Warning</Pill>
+  <Pill variant="error">Error</Pill>
+  <Pill variant="accent">Accent</Pill>
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'textarea',
+    name: 'Textarea',
+    description: 'Multi-line text input with label, hint, and error states. Auto-grows with content.',
+    category: 'primitives',
+    importStatement: "import { Textarea } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed above the textarea',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text displayed below the textarea',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message (replaces hint when present)',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        description: 'Placeholder text',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the textarea',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Textarea
+  label="Message"
+  placeholder="Write your message..."
+/>`,
+      },
+      {
+        title: 'With Hint',
+        code: `<Textarea
+  label="Description"
+  placeholder="Tell us more..."
+  hint="Max 500 characters"
+/>`,
+      },
+      {
+        title: 'With Error',
+        code: `<Textarea
+  label="Required Field"
+  placeholder="This field is required"
+  error="Please enter a value"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'checkbox',
+    name: 'Checkbox',
+    description: 'Checkbox input with label, hint text, and error state support.',
+    category: 'primitives',
+    importStatement: "import { Checkbox } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed next to checkbox',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text below the label',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message',
+      },
+      {
+        name: 'checked',
+        type: 'boolean',
+        description: 'Controlled checked state',
+      },
+      {
+        name: 'defaultChecked',
+        type: 'boolean',
+        description: 'Initial checked state (uncontrolled)',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the checkbox',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Checkbox label="Accept terms and conditions" />`,
+      },
+      {
+        title: 'With Hint',
+        code: `<Checkbox
+  label="Subscribe to newsletter"
+  hint="We'll only send important updates"
+/>`,
+      },
+      {
+        title: 'With Error',
+        code: `<Checkbox
+  label="Accept terms"
+  error="You must accept the terms"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'toggle',
+    name: 'Toggle',
+    description: 'Toggle switch component with label, hint, and error states. Supports two sizes.',
+    category: 'primitives',
+    importStatement: "import { Toggle } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed next to toggle',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text below the label',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message',
+      },
+      {
+        name: 'size',
+        type: "'sm' | 'md'",
+        default: "'md'",
+        description: 'Toggle size',
+      },
+      {
+        name: 'checked',
+        type: 'boolean',
+        description: 'Controlled checked state',
+      },
+      {
+        name: 'onChange',
+        type: '(checked: boolean) => void',
+        description: 'Callback when state changes',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the toggle',
+      },
+    ],
+    variants: [
+      {
+        name: 'size',
+        options: [
+          { value: 'sm', label: 'Small' },
+          { value: 'md', label: 'Medium' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Toggle
+  label="Notifications"
+  checked={enabled}
+  onChange={setEnabled}
+/>`,
+      },
+      {
+        title: 'With Hint',
+        code: `<Toggle
+  label="Dark mode"
+  hint="Enable dark mode for the interface"
+  checked={darkMode}
+  onChange={setDarkMode}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'select',
+    name: 'Select',
+    description: 'Dropdown select component with label, hint, and error states.',
+    category: 'primitives',
+    importStatement: "import { Select } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed above the select',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text displayed below the select',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message (replaces hint when present)',
+      },
+      {
+        name: 'options',
+        type: '{ value: string; label: string }[]',
+        description: 'Array of select options',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        description: 'Placeholder text when no option selected',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables the select',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Select
+  label="Country"
+  placeholder="Select a country"
+  options={[
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'uk', label: 'United Kingdom' },
+  ]}
+/>`,
+      },
+      {
+        title: 'With Error',
+        code: `<Select
+  label="Department"
+  error="Please select a department"
+  options={departments}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'stat-card',
+    name: 'StatCard',
+    description: 'Card component for displaying statistics with label, value, and optional change indicator.',
+    category: 'primitives',
+    importStatement: "import { StatCard } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Stat label (e.g., "Active Clients")',
+      },
+      {
+        name: 'value',
+        type: 'string | number',
+        description: 'Main stat value',
+      },
+      {
+        name: 'change',
+        type: 'string',
+        description: 'Change indicator (e.g., "+12%")',
+      },
+      {
+        name: 'changeType',
+        type: "'positive' | 'negative' | 'neutral'",
+        default: "'neutral'",
+        description: 'Color of the change indicator',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<StatCard
+  label="Active Clients"
+  value="247"
+  change="+12%"
+  changeType="positive"
+/>`,
+      },
+      {
+        title: 'Multiple Stats',
+        code: `<div className="grid grid-cols-3 gap-4">
+  <StatCard label="Revenue" value="$84,200" change="+8.3%" changeType="positive" />
+  <StatCard label="Expenses" value="$32,100" change="+2.1%" changeType="negative" />
+  <StatCard label="Retention" value="94.7%" change="0%" changeType="neutral" />
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'search-input',
+    name: 'SearchInput',
+    description: 'Search input with icon and clear button. Extends Input with search-specific styling.',
+    category: 'composites',
+    importStatement: "import { SearchInput } from '@freehold/ui'",
+    props: [
+      {
+        name: 'value',
+        type: 'string',
+        description: 'Controlled input value',
+      },
+      {
+        name: 'onChange',
+        type: '(e: ChangeEvent<HTMLInputElement>) => void',
+        description: 'Change handler',
+      },
+      {
+        name: 'onClear',
+        type: '() => void',
+        description: 'Callback when clear button is clicked',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        default: "'Search...'",
+        description: 'Placeholder text',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<SearchInput
+  placeholder="Search components..."
+  value={query}
+  onChange={(e) => setQuery(e.target.value)}
+  onClear={() => setQuery('')}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'data-table',
+    name: 'DataTable',
+    description: 'Data table with sorting, row selection, and customizable columns. Supports click handlers and loading states.',
+    category: 'composites',
+    importStatement: "import { DataTable } from '@freehold/ui'",
+    props: [
+      {
+        name: 'columns',
+        type: 'Column[]',
+        description: 'Array of column definitions with key, header, render, sortable, and width',
+      },
+      {
+        name: 'data',
+        type: 'T[]',
+        description: 'Array of data rows',
+      },
+      {
+        name: 'onRowClick',
+        type: '(row: T) => void',
+        description: 'Click handler for rows',
+      },
+      {
+        name: 'selectable',
+        type: 'boolean',
+        default: 'false',
+        description: 'Enable row selection with checkboxes',
+      },
+      {
+        name: 'selectedRows',
+        type: 'T[]',
+        description: 'Currently selected rows (controlled)',
+      },
+      {
+        name: 'onSelectionChange',
+        type: '(rows: T[]) => void',
+        description: 'Selection change handler',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Table',
+        code: `<DataTable
+  columns={[
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'email', header: 'Email' },
+    { key: 'status', header: 'Status', render: (row) => <Badge>{row.status}</Badge> },
+  ]}
+  data={users}
+  onRowClick={(user) => navigate(\`/users/\${user.id}\`)}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'feature-row',
+    name: 'FeatureRow',
+    description: 'Feature row component for platform/feature sections. Displays tag, title, and description in a horizontal layout.',
+    category: 'composites',
+    importStatement: "import { FeatureRow } from '@freehold/ui'",
+    props: [
+      {
+        name: 'tag',
+        type: 'string',
+        description: 'Category tag (e.g., "CRM + Pipeline")',
+      },
+      {
+        name: 'title',
+        type: 'string',
+        description: 'Feature title',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        description: 'Feature description text',
+      },
+      {
+        name: 'showTopBorder',
+        type: 'boolean',
+        default: 'false',
+        description: 'Show border on top (for first item)',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<FeatureRow
+  tag="CRM + Pipeline"
+  title="Client management that runs itself."
+  description="Enterprise-grade CRM with automated follow-ups, pipeline tracking, and revenue forecasting."
+  showTopBorder
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'rich-text-editor',
+    name: 'RichTextEditor',
+    description: 'Rich text editor with formatting toolbar. Built on Tiptap with support for headings, lists, blockquotes, code blocks, and links.',
+    category: 'composites',
+    importStatement: "import { RichTextEditor } from '@freehold/ui'",
+    props: [
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed above the editor',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        description: 'Placeholder text when editor is empty',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Helper text displayed below the editor',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Error message (replaces hint when present)',
+      },
+      {
+        name: 'content',
+        type: 'string',
+        description: 'Controlled HTML content',
+      },
+      {
+        name: 'defaultContent',
+        type: 'string',
+        default: "''",
+        description: 'Initial HTML content (uncontrolled)',
+      },
+      {
+        name: 'onChange',
+        type: '(html: string) => void',
+        description: 'Called with HTML string on content change',
+      },
+      {
+        name: 'onEditor',
+        type: '(editor: Editor) => void',
+        description: 'Access the Tiptap editor instance',
+      },
+      {
+        name: 'minHeight',
+        type: 'number',
+        default: '200',
+        description: 'Minimum height in pixels',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disable editing',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<RichTextEditor
+  label="Description"
+  placeholder="Start typing..."
+  onChange={(html) => setContent(html)}
+/>`,
+      },
+      {
+        title: 'With Validation',
+        code: `<RichTextEditor
+  label="Message"
+  placeholder="Write your message..."
+  hint="Supports bold, italic, headings, lists, and links."
+  error={errors.message}
+/>`,
+      },
+      {
+        title: 'Controlled Content',
+        code: `<RichTextEditor
+  label="Notes"
+  content={notes}
+  onChange={setNotes}
+  minHeight={300}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'rich-text-display',
+    name: 'RichTextDisplay',
+    description: 'Renders saved HTML content with consistent typography. Lightweight display component without Tiptap dependency.',
+    category: 'composites',
+    importStatement: "import { RichTextDisplay } from '@freehold/ui'",
+    props: [
+      {
+        name: 'content',
+        type: 'string',
+        description: 'HTML string to render. Consumers are responsible for sanitization.',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<RichTextDisplay
+  content="<p>Hello <strong>world</strong>!</p>"
+/>`,
+      },
+      {
+        title: 'With Saved Content',
+        code: `<RichTextDisplay
+  content={post.body}
+  className="prose-sm"
+/>`,
+      },
+      {
+        title: 'In a Card',
+        code: `<Card variant="outlined" padding="md">
+  <CardContent>
+    <RichTextDisplay content={note.content} />
+  </CardContent>
+</Card>`,
+      },
+    ],
+  },
+  {
+    slug: 'filter-select',
+    name: 'FilterSelect',
+    description: 'Compact dropdown select for filtering. Supports optional icon and placeholder.',
+    category: 'composites',
+    importStatement: "import { FilterSelect } from '@freehold/ui'",
+    props: [
+      {
+        name: 'options',
+        type: '{ value: string; label: string }[]',
+        description: 'Array of filter options',
+      },
+      {
+        name: 'placeholder',
+        type: 'string',
+        description: 'Placeholder text when no selection',
+      },
+      {
+        name: 'icon',
+        type: 'React.ReactNode',
+        description: 'Optional icon displayed on the left',
+      },
+      {
+        name: 'value',
+        type: 'string',
+        description: 'Controlled selected value',
+      },
+      {
+        name: 'onChange',
+        type: 'ChangeEventHandler<HTMLSelectElement>',
+        description: 'Change handler',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disable the select',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<FilterSelect
+  placeholder="Filter by status"
+  options={[
+    { value: 'pending', label: 'Pending' },
+    { value: 'approved', label: 'Approved' },
+    { value: 'paid', label: 'Paid' },
+  ]}
+  value={statusFilter}
+  onChange={(e) => setStatusFilter(e.target.value)}
+/>`,
+      },
+      {
+        title: 'With Icon',
+        code: `<FilterSelect
+  icon={<Icon name="clients" size="sm" />}
+  placeholder="Select department"
+  options={departments}
+  onChange={handleDepartmentChange}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'toast',
+    name: 'Toast',
+    description: 'Toast notification system with semantic variants, actions, and auto-dismiss. Built on Radix UI for accessibility.',
+    category: 'primitives',
+    importStatement: "import { ToastProvider, useToast, Toast, ToastViewport } from '@freehold/ui'",
+    props: [
+      {
+        name: 'title',
+        type: 'string',
+        description: 'Toast title text',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        description: 'Optional description text',
+      },
+      {
+        name: 'variant',
+        type: "'success' | 'error' | 'warning' | 'info'",
+        default: "'info'",
+        description: 'Semantic color variant',
+      },
+      {
+        name: 'duration',
+        type: 'number',
+        default: '5000',
+        description: 'Auto-dismiss duration in milliseconds',
+      },
+      {
+        name: 'action',
+        type: '{ label: string; onClick: () => void }',
+        description: 'Optional action button',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'success', label: 'Success' },
+          { value: 'error', label: 'Error' },
+          { value: 'warning', label: 'Warning' },
+          { value: 'info', label: 'Info' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Setup Provider',
+        code: `// Wrap your app with ToastProvider
+<ToastProvider position="bottom-right">
+  <App />
+</ToastProvider>`,
+      },
+      {
+        title: 'Using useToast Hook',
+        code: `function PaymentButton() {
+  const { toast } = useToast()
+
+  const handlePayment = async () => {
+    try {
+      await processPayment()
+      toast({
+        title: 'Payment Successful',
+        description: 'Your payment has been processed.',
+        variant: 'success',
+      })
+    } catch (error) {
+      toast({
+        title: 'Payment Failed',
+        description: 'Please try again.',
+        variant: 'error',
+        action: { label: 'Retry', onClick: handlePayment },
+      })
+    }
+  }
+
+  return <Button onClick={handlePayment}>Pay Now</Button>
+}`,
+      },
+      {
+        title: 'All Variants',
+        code: `toast({ title: 'Saved', variant: 'success' })
+toast({ title: 'Error occurred', variant: 'error' })
+toast({ title: 'Warning', variant: 'warning' })
+toast({ title: 'Info', variant: 'info' })`,
+      },
+    ],
+  },
+  {
+    slug: 'skeleton',
+    name: 'Skeleton',
+    description: 'Loading placeholder component with animated pulse effect. Use to indicate content is loading.',
+    category: 'primitives',
+    importStatement: "import { Skeleton, SkeletonText } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'line' | 'circle' | 'rectangle'",
+        default: "'rectangle'",
+        description: 'Shape variant',
+      },
+      {
+        name: 'width',
+        type: 'string | number',
+        description: 'Width (e.g., "100%", 200)',
+      },
+      {
+        name: 'height',
+        type: 'string | number',
+        description: 'Height (e.g., "100%", 40)',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'line', label: 'Line' },
+          { value: 'circle', label: 'Circle' },
+          { value: 'rectangle', label: 'Rectangle' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Shapes',
+        code: `<div className="space-y-4">
+  <Skeleton variant="line" width="60%" height={16} />
+  <Skeleton variant="circle" width={40} height={40} />
+  <Skeleton variant="rectangle" width="100%" height={100} />
+</div>`,
+      },
+      {
+        title: 'Card Skeleton',
+        code: `<Card padding="md">
+  <div className="flex items-center gap-4">
+    <Skeleton variant="circle" width={48} height={48} />
+    <div className="flex-1 space-y-2">
+      <Skeleton variant="line" width="70%" height={16} />
+      <Skeleton variant="line" width="40%" height={14} />
+    </div>
+  </div>
+</Card>`,
+      },
+      {
+        title: 'SkeletonText for Paragraphs',
+        code: `<SkeletonText lines={3} spacing="md" lastLineWidth="60%" />`,
+      },
+    ],
+  },
+  {
+    slug: 'stat-card-skeleton',
+    name: 'StatCardSkeleton',
+    description: 'Pre-composed loading skeleton that matches StatCard dimensions and layout.',
+    category: 'composites',
+    importStatement: "import { StatCardSkeleton } from '@freehold/ui'",
+    props: [
+      {
+        name: 'showTrend',
+        type: 'boolean',
+        default: 'false',
+        description: 'Show skeleton for trend indicator',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<StatCardSkeleton />`,
+      },
+      {
+        title: 'Multiple Cards Loading',
+        code: `<div className="grid grid-cols-4 gap-4">
+  {Array.from({ length: 4 }).map((_, i) => (
+    <StatCardSkeleton key={i} showTrend />
+  ))}
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'data-table-skeleton',
+    name: 'DataTableSkeleton',
+    description: 'Pre-composed loading skeleton that matches DataTable structure with rows and columns.',
+    category: 'composites',
+    importStatement: "import { DataTableSkeleton } from '@freehold/ui'",
+    props: [
+      {
+        name: 'rows',
+        type: 'number',
+        default: '5',
+        description: 'Number of skeleton rows',
+      },
+      {
+        name: 'columns',
+        type: 'number',
+        default: '6',
+        description: 'Number of skeleton columns',
+      },
+      {
+        name: 'showHeader',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show table header row',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<DataTableSkeleton rows={5} columns={6} />`,
+      },
+      {
+        title: 'Custom Dimensions',
+        code: `<DataTableSkeleton rows={10} columns={4} showHeader />`,
+      },
+    ],
+  },
+  {
+    slug: 'chart-skeleton',
+    name: 'ChartSkeleton',
+    description: 'Pre-composed loading skeleton for chart components with pie, bar, and line variants.',
+    category: 'composites',
+    importStatement: "import { ChartSkeleton } from '@freehold/ui'",
+    props: [
+      {
+        name: 'variant',
+        type: "'pie' | 'bar' | 'line'",
+        default: "'bar'",
+        description: 'Chart type to match skeleton shape',
+      },
+      {
+        name: 'height',
+        type: 'number',
+        default: '250',
+        description: 'Chart height in pixels',
+      },
+      {
+        name: 'showLegend',
+        type: 'boolean',
+        default: 'true',
+        description: 'Show legend skeleton below chart',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes',
+      },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'pie', label: 'Pie' },
+          { value: 'bar', label: 'Bar' },
+          { value: 'line', label: 'Line' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Pie Chart Skeleton',
+        code: `<ChartSkeleton variant="pie" height={250} />`,
+      },
+      {
+        title: 'Bar Chart Skeleton',
+        code: `<ChartSkeleton variant="bar" height={300} showLegend />`,
+      },
+    ],
+  },
+
+  {
+    slug: 'card-flip-loader',
+    name: 'CardFlipLoader',
+    description: 'Full-screen card flip loading overlay with shimmer background, 3D perspective flip animation, and pulse effect. Self-contained — no Tailwind config needed.',
+    category: 'composites',
+    importStatement: "import { CardFlipLoader } from '@freehold/ui'",
+    props: [
+      {
+        name: 'frontImage',
+        type: 'string',
+        default: 'Built-in Jack of Spades',
+        description: 'URL of the front card image (revealed after flip). Defaults to a built-in Jack of Spades image.',
+      },
+      {
+        name: 'backImage',
+        type: 'string',
+        default: 'Built-in compass card back',
+        description: 'URL of the back card image (shown first). Defaults to a built-in compass card back image.',
+      },
+      {
+        name: 'frontAlt',
+        type: 'string',
+        default: "'Front'",
+        description: 'Alt text for the front image',
+      },
+      {
+        name: 'backAlt',
+        type: 'string',
+        default: "'Back'",
+        description: 'Alt text for the back image',
+      },
+      {
+        name: 'height',
+        type: 'string',
+        default: "'70vh'",
+        description: 'Height of the card (aspect ratio is 2.5:3.5)',
+      },
+      {
+        name: 'maxDuration',
+        type: 'number',
+        default: '1500',
+        description: 'Hard cap in ms — overlay is removed after this time regardless of image loading',
+      },
+      {
+        name: 'onComplete',
+        type: '() => void',
+        description: 'Called when the overlay unmounts',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage (zero-config)',
+        code: `<CardFlipLoader />`,
+      },
+      {
+        title: 'With Callback',
+        code: `<CardFlipLoader
+  onComplete={() => setReady(true)}
+/>`,
+      },
+      {
+        title: 'Custom Images and Height',
+        code: `<CardFlipLoader
+  frontImage="/custom-front.png"
+  backImage="/custom-back.png"
+  height="50vh"
+  maxDuration={1500}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: Chat ──────────────────────────────────────
+  {
+    slug: 'chat-container',
+    name: 'ChatContainer',
+    description: 'Full chat interface orchestrator with header, message list, error bar, and input. Accepts messages, input state, and callbacks — wire it to useFreeholdChat for a complete AI chat experience.',
+    category: 'patterns',
+    importStatement: "import { ChatContainer } from '@freehold/ui'",
+    props: [
+      { name: 'messages', type: 'ChatMessageData[]', description: 'Array of chat messages to display' },
+      { name: 'input', type: 'string', description: 'Current input field value' },
+      { name: 'onInputChange', type: '(value: string) => void', description: 'Called when input value changes' },
+      { name: 'onSubmit', type: '(e?: FormEvent) => void', description: 'Called when user submits a message' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows typing indicator when true' },
+      { name: 'error', type: 'string', default: 'undefined', description: 'Error message to display' },
+      { name: 'onRetry', type: '() => void', default: 'undefined', description: 'Retry callback shown next to error' },
+      { name: 'title', type: 'string', default: "'Chat'", description: 'Header title' },
+      { name: 'subtitle', type: 'string', default: 'undefined', description: 'Header subtitle' },
+      { name: 'assistant', type: 'ChatUser', default: 'undefined', description: 'Assistant name and avatar' },
+      { name: 'emptyStateMessage', type: 'string', default: "'How can I help you today?'", description: 'Message shown when no messages exist' },
+      { name: 'suggestions', type: 'string[]', default: 'undefined', description: 'Suggestion pills in empty state' },
+      { name: 'maxHeight', type: 'string', default: "'600px'", description: 'Maximum container height' },
+    ],
+    examples: [
+      {
+        title: 'Basic Chat',
+        code: `<ChatContainer
+  messages={messages}
+  input={input}
+  onInputChange={setInput}
+  onSubmit={handleSubmit}
+  isLoading={isLoading}
+  title="Assistant"
+  maxHeight="500px"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'chat-message',
+    name: 'ChatMessage',
+    description: 'Single message bubble with CVA variants for user (dark, right-aligned), assistant (light card, left-aligned), and system (centered, muted) roles. Renders tool calls and streaming cursor.',
+    category: 'patterns',
+    importStatement: "import { ChatMessage } from '@freehold/ui'",
+    props: [
+      { name: 'message', type: 'ChatMessageData', description: 'Message data including role, content, toolCalls, isStreaming' },
+      { name: 'user', type: 'ChatUser', default: 'undefined', description: 'User display info (name, avatar)' },
+      { name: 'assistant', type: 'ChatUser', default: 'undefined', description: 'Assistant display info (name, avatar)' },
+    ],
+    variants: [
+      {
+        name: 'role',
+        options: [
+          { value: 'user', label: 'User' },
+          { value: 'assistant', label: 'Assistant' },
+          { value: 'system', label: 'System' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Message Roles',
+        code: `<ChatMessage message={{ id: '1', role: 'user', content: 'Hello!' }} />
+<ChatMessage message={{ id: '2', role: 'assistant', content: 'Hi there!' }} />
+<ChatMessage message={{ id: '3', role: 'system', content: 'Chat started' }} />`,
+      },
+    ],
+  },
+  {
+    slug: 'chat-input',
+    name: 'ChatInput',
+    description: 'Auto-growing textarea with send button. Supports Enter to submit and Shift+Enter for newlines.',
+    category: 'patterns',
+    importStatement: "import { ChatInput } from '@freehold/ui'",
+    props: [
+      { name: 'value', type: 'string', description: 'Current input value' },
+      { name: 'onChange', type: '(value: string) => void', description: 'Called when value changes' },
+      { name: 'onSubmit', type: '(e?: FormEvent) => void', description: 'Called on Enter or button click' },
+      { name: 'placeholder', type: 'string', default: "'Type a message…'", description: 'Placeholder text' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables input and button' },
+    ],
+    examples: [
+      {
+        title: 'Basic Input',
+        code: `<ChatInput value={input} onChange={setInput} onSubmit={handleSubmit} />`,
+      },
+    ],
+  },
+  {
+    slug: 'typing-indicator',
+    name: 'TypingIndicator',
+    description: 'Three animated bouncing dots displayed while the assistant is generating a response.',
+    category: 'patterns',
+    importStatement: "import { TypingIndicator } from '@freehold/ui'",
+    props: [
+      { name: 'className', type: 'string', default: 'undefined', description: 'Additional CSS classes' },
+    ],
+    examples: [
+      {
+        title: 'Default',
+        code: `<TypingIndicator />`,
+      },
+    ],
+  },
+  {
+    slug: 'tool-call-card',
+    name: 'ToolCallCard',
+    description: 'Displays an AI tool invocation with tool name, status badge, and optional result or error.',
+    category: 'patterns',
+    importStatement: "import { ToolCallCard } from '@freehold/ui'",
+    props: [
+      { name: 'toolCall', type: 'ToolCallDisplay', description: 'Tool call data (id, toolName, args, result, status, error)' },
+    ],
+    examples: [
+      {
+        title: 'Completed Tool Call',
+        code: `<ToolCallCard toolCall={{
+  id: '1',
+  toolName: 'getWeather',
+  args: { city: 'New York' },
+  result: { temp: 72 },
+  status: 'completed',
+}} />`,
+      },
+    ],
+  },
+  {
+    slug: 'empty-state',
+    name: 'EmptyState',
+    description: 'Centered placeholder shown when the chat has no messages. Displays an icon, message, and optional suggestion pills.',
+    category: 'patterns',
+    importStatement: "import { EmptyState } from '@freehold/ui'",
+    props: [
+      { name: 'message', type: 'string', default: "'How can I help you today?'", description: 'Main message text' },
+      { name: 'suggestions', type: 'string[]', default: 'undefined', description: 'Clickable suggestion pills' },
+      { name: 'onSuggestionClick', type: '(suggestion: string) => void', default: 'undefined', description: 'Called when a suggestion is clicked' },
+    ],
+    examples: [
+      {
+        title: 'With Suggestions',
+        code: `<EmptyState
+  message="Ask me anything!"
+  suggestions={['What can you do?', 'Tell me a joke']}
+  onSuggestionClick={(s) => console.log(s)}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: Payroll Dashboard ──────────────────────────────────
+  {
+    slug: 'payroll-dashboard',
+    name: 'PayrollDashboard',
+    description: 'Complete payroll management dashboard with stats grid, charts, employee table, and action buttons. Composes all payroll subcomponents into a full-featured interface.',
+    category: 'patterns',
+    importStatement: "import { PayrollDashboard, type Employee, type PayPeriod, type PayrollStats } from '@freehold/ui'",
+    props: [
+      { name: 'employees', type: 'Employee[]', description: 'Array of employee payroll data' },
+      { name: 'initialPeriod', type: 'PayPeriod', default: 'undefined', description: 'Initial pay period selection' },
+      { name: 'onPeriodChange', type: '(period: PayPeriod) => void', default: 'undefined', description: 'Called when pay period changes' },
+      { name: 'onApprove', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when approving individual employee' },
+      { name: 'onMarkPaid', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when marking employee as paid' },
+      { name: 'onApproveAll', type: '() => void', default: 'undefined', description: 'Called when approving all pending' },
+      { name: 'onGenerateAll', type: '() => void', default: 'undefined', description: 'Called when generating all payslips' },
+      { name: 'onExport', type: '() => void', default: 'undefined', description: 'Called when exporting payroll data' },
+      { name: 'onViewDetails', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when viewing employee details' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows loading skeletons' },
+      { name: 'showCharts', type: 'boolean', default: 'true', description: 'Show status and department charts' },
+      { name: 'className', type: 'string', default: 'undefined', description: 'Additional CSS classes' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<PayrollDashboard
+  employees={employees}
+  onApprove={handleApprove}
+  onMarkPaid={handleMarkPaid}
+  onApproveAll={handleApproveAll}
+  onGenerateAll={handleGenerateAll}
+  onExport={handleExport}
+/>`,
+      },
+      {
+        title: 'With Custom Period',
+        code: `<PayrollDashboard
+  employees={employees}
+  initialPeriod={{ month: 1, year: 2026, payDate: '15' }}
+  onPeriodChange={(period) => fetchPayrollData(period)}
+  showCharts
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'pay-period-selector',
+    name: 'PayPeriodSelector',
+    description: 'Month, year, and pay date selector for payroll periods. Uses three Select dropdowns in a horizontal layout.',
+    category: 'patterns',
+    importStatement: "import { PayPeriodSelector, type PayPeriod } from '@freehold/ui'",
+    props: [
+      { name: 'value', type: 'PayPeriod', description: 'Current period value { month: number, year: number, payDate: string }' },
+      { name: 'onChange', type: '(period: PayPeriod) => void', description: 'Called when any period value changes' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `const [period, setPeriod] = useState<PayPeriod>({
+  month: 1,
+  year: 2026,
+  payDate: '15',
+})
+
+<PayPeriodSelector value={period} onChange={setPeriod} />`,
+      },
+    ],
+  },
+  {
+    slug: 'payroll-stats-grid',
+    name: 'PayrollStatsGrid',
+    description: 'Grid of 7 stat cards showing payroll totals: employee count, pending/approved/paid counts, gross pay, deductions, and net pay.',
+    category: 'patterns',
+    importStatement: "import { PayrollStatsGrid, type PayrollStats } from '@freehold/ui'",
+    props: [
+      { name: 'stats', type: 'PayrollStats', description: 'Object with totalEmployees, pendingCount, approvedCount, paidCount, totalGrossPay, totalDeductions, totalNetPay' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows skeleton loaders when true' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<PayrollStatsGrid
+  stats={{
+    totalEmployees: 25,
+    pendingCount: 5,
+    approvedCount: 12,
+    paidCount: 8,
+    totalGrossPay: 185000,
+    totalDeductions: 28000,
+    totalNetPay: 157000,
+  }}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'payroll-charts',
+    name: 'PayrollCharts',
+    description: 'Two-chart grid showing payroll status distribution (donut) and department breakdown (bar chart). Includes loading skeleton support.',
+    category: 'patterns',
+    importStatement: "import { PayrollCharts, type PayrollStats, type Employee } from '@freehold/ui'",
+    props: [
+      { name: 'stats', type: 'PayrollStats', description: 'Payroll statistics for the donut chart' },
+      { name: 'employees', type: 'Employee[]', description: 'Employee data for department aggregation' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows chart skeletons when true' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<PayrollCharts
+  stats={payrollStats}
+  employees={employees}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'employee-table',
+    name: 'EmployeeTable',
+    description: 'Filterable employee payroll table with search, status filter, department filter, and action buttons. Shows name, department, gross/net pay, status, and approve/paid actions.',
+    category: 'patterns',
+    importStatement: "import { EmployeeTable, type Employee } from '@freehold/ui'",
+    props: [
+      { name: 'employees', type: 'Employee[]', description: 'Array of employee payroll data' },
+      { name: 'onApprove', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when approving pending employee' },
+      { name: 'onMarkPaid', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when marking approved employee as paid' },
+      { name: 'onViewDetails', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when clicking view details or row' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows loading state' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<EmployeeTable
+  employees={employees}
+  onApprove={(emp) => approvePayroll(emp.id)}
+  onMarkPaid={(emp) => markPaid(emp.id)}
+  onViewDetails={(emp) => openModal(emp)}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'payroll-actions',
+    name: 'PayrollActions',
+    description: 'Action button group with Generate All Payslips, Approve All (with count), and Export buttons. Includes confirmation dialog for bulk approve.',
+    category: 'patterns',
+    importStatement: "import { PayrollActions } from '@freehold/ui'",
+    props: [
+      { name: 'onGenerateAll', type: '() => void', default: 'undefined', description: 'Called when clicking Generate All' },
+      { name: 'onApproveAll', type: '() => void', default: 'undefined', description: 'Called after confirming Approve All' },
+      { name: 'onExport', type: '() => void', default: 'undefined', description: 'Called when clicking Export' },
+      { name: 'pendingCount', type: 'number', default: '0', description: 'Number of pending payslips (shown in button)' },
+      { name: 'isGenerating', type: 'boolean', default: 'false', description: 'Shows loading on Generate button' },
+      { name: 'isApproving', type: 'boolean', default: 'false', description: 'Shows loading on Approve button' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<PayrollActions
+  onGenerateAll={handleGenerateAll}
+  onApproveAll={handleApproveAll}
+  onExport={handleExport}
+  pendingCount={5}
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'employee-detail-modal',
+    name: 'EmployeeDetailModal',
+    description: 'Modal dialog showing employee payroll details with avatar, name, position, department, status badge, and payment breakdown (gross, deductions, net). Includes approve/mark paid actions.',
+    category: 'patterns',
+    importStatement: "import { EmployeeDetailModal, type Employee } from '@freehold/ui'",
+    props: [
+      { name: 'employee', type: 'Employee | null', description: 'Employee to display, null hides modal content' },
+      { name: 'open', type: 'boolean', description: 'Controlled open state' },
+      { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Called when open state changes' },
+      { name: 'onApprove', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when approving (shown if pending)' },
+      { name: 'onMarkPaid', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when marking paid (shown if approved)' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<EmployeeDetailModal
+  employee={selectedEmployee}
+  open={showModal}
+  onOpenChange={setShowModal}
+  onApprove={handleApprove}
+  onMarkPaid={handleMarkPaid}
+/>`,
+      },
+    ],
+  },
+]
+
+export function getComponentBySlug(slug: string): ComponentDoc | undefined {
+  return componentDocs.find((c) => c.slug === slug)
+}
+
+export function getComponentsByCategory(category: ComponentDoc['category']): ComponentDoc[] {
+  return componentDocs.filter((c) => c.category === category)
+}
+
+export function searchComponents(query: string): ComponentDoc[] {
+  const lowerQuery = query.toLowerCase()
+  return componentDocs.filter(
+    (c) =>
+      c.name.toLowerCase().includes(lowerQuery) ||
+      c.description.toLowerCase().includes(lowerQuery)
+  )
+}
