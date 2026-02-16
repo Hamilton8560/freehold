@@ -360,14 +360,20 @@ function Platform() {
 const industries = [
   {
     name: 'Fitness & Gyms',
+    icon: 'growth' as const,
+    tagline: 'Retain more members, automate billing.',
     detail: 'Member management, class scheduling, retention systems, and automated billing for single or multi-location operations.',
   },
   {
     name: 'Logistics & Field Ops',
+    icon: 'pipeline' as const,
+    tagline: 'Real-time visibility, fewer calls.',
     detail: 'Route management, fleet tracking, dispatch coordination, and real-time operational dashboards.',
   },
   {
     name: 'Service Businesses',
+    icon: 'clients' as const,
+    tagline: 'Onboard faster, invoice automatically.',
     detail: 'Client onboarding, project pipelines, automated invoicing, and performance reporting.',
   },
 ]
@@ -396,12 +402,15 @@ function Industries() {
                 className="h-full bg-white hover:border-sand-500 hover:shadow-warm-md transition-all duration-300"
               >
                 <CardContent>
-                  <div className="text-sm text-text-tertiary mb-2">
-                    0{i + 1}
+                  <div className="w-10 h-10 rounded-full bg-[rgba(184,164,142,0.12)] flex items-center justify-center mb-4">
+                    <Icon name={ind.icon} size="lg" color="default" />
                   </div>
-                  <h3 className="font-heading text-xl text-text-primary mb-3.5 tracking-tight">
+                  <h3 className="font-heading text-xl text-text-primary mb-1.5 tracking-tight">
                     {ind.name}
                   </h3>
+                  <p className="text-sm text-sand-500 italic mb-3.5">
+                    {ind.tagline}
+                  </p>
                   <p className="text-sm text-text-secondary leading-relaxed">
                     {ind.detail}
                   </p>
