@@ -19,7 +19,7 @@ export default function ChatPage() {
     <div className="min-h-screen bg-[#FAF9F6]">
       {/* Header */}
       <header className="border-b border-[rgba(184,164,142,0.15)] bg-white">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="font-heading text-xl text-[#2C2824]">
             Freehold
           </Link>
@@ -36,7 +36,7 @@ export default function ChatPage() {
       </header>
 
       {/* Chat */}
-      <main className="mx-auto max-w-2xl px-6 py-12">
+      <main className="mx-auto max-w-2xl px-4 sm:px-6 py-6 sm:py-12">
         <div className="mb-8 text-center">
           <h1 className="font-heading text-3xl text-[#2C2824]">AI Chat Demo</h1>
           <p className="mt-2 text-sm text-[#5C574F]">

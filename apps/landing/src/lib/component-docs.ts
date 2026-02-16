@@ -2197,6 +2197,284 @@ toast({ title: 'Info', variant: 'info' })`,
       },
     ],
   },
+
+  // ── Form ──────────────────────────────────────────────
+  {
+    slug: 'form',
+    name: 'Form',
+    description: 'Full-featured form system with validation, layout modes (vertical/horizontal), required/optional indicators, character counting, and mobile-responsive grid support.',
+    category: 'composites',
+    importStatement: "import { Form, FormField, FormSection, FormActions, FormGrid } from '@freehold/ui'",
+    props: [
+      {
+        name: 'onSubmit',
+        type: '(data: FormData, e: FormEvent) => void | Promise<void>',
+        description: 'Called with FormData when all validation passes',
+      },
+      {
+        name: 'layout',
+        type: "'vertical' | 'horizontal'",
+        default: "'vertical'",
+        description: 'Label positioning — vertical (above field) or horizontal (beside field, stacks on mobile)',
+      },
+      {
+        name: 'disabled',
+        type: 'boolean',
+        default: 'false',
+        description: 'Disables all fields in the form',
+      },
+      {
+        name: 'children',
+        type: 'ReactNode',
+        description: 'FormField, FormSection, FormGrid, and FormActions components',
+      },
+    ],
+    variants: [
+      {
+        name: 'layout',
+        options: [
+          { value: 'vertical', label: 'Vertical' },
+          { value: 'horizontal', label: 'Horizontal' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic contact form',
+        code: `<Form onSubmit={(data) => console.log(Object.fromEntries(data))}>
+  <FormField name="name" label="Full Name" required>
+    <Input placeholder="Jane Doe" />
+  </FormField>
+  <FormField name="email" label="Email" required rules={{ pattern: { value: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, message: 'Enter a valid email' } }}>
+    <Input type="email" placeholder="jane@example.com" />
+  </FormField>
+  <FormField name="message" label="Message" optional maxLength={500}>
+    <Textarea placeholder="How can we help?" />
+  </FormField>
+  <FormActions>
+    <Button variant="secondary">Cancel</Button>
+    <Button type="submit">Send</Button>
+  </FormActions>
+</Form>`,
+      },
+      {
+        title: 'Multi-column grid layout',
+        code: `<Form onSubmit={(data) => console.log(Object.fromEntries(data))}>
+  <FormSection title="Personal Information" description="Basic contact details">
+    <FormGrid columns={2}>
+      <FormField name="firstName" label="First Name" required>
+        <Input placeholder="Jane" />
+      </FormField>
+      <FormField name="lastName" label="Last Name" required>
+        <Input placeholder="Doe" />
+      </FormField>
+    </FormGrid>
+    <FormField name="email" label="Email" required>
+      <Input type="email" placeholder="jane@example.com" />
+    </FormField>
+  </FormSection>
+  <FormActions>
+    <Button type="submit">Save</Button>
+  </FormActions>
+</Form>`,
+      },
+      {
+        title: 'Horizontal layout',
+        code: `<Form layout="horizontal" onSubmit={(data) => console.log(Object.fromEntries(data))}>
+  <FormField name="company" label="Company" required>
+    <Input placeholder="Acme Inc." />
+  </FormField>
+  <FormField name="role" label="Role">
+    <Select options={[{ value: 'admin', label: 'Admin' }, { value: 'member', label: 'Member' }]} />
+  </FormField>
+  <FormActions>
+    <Button type="submit">Update</Button>
+  </FormActions>
+</Form>`,
+      },
+    ],
+  },
+  {
+    slug: 'form-field',
+    name: 'FormField',
+    description: 'Wraps any form primitive with consistent label, required/optional indicators, validation errors, hints, and character counting.',
+    category: 'composites',
+    importStatement: "import { FormField } from '@freehold/ui'",
+    props: [
+      {
+        name: 'name',
+        type: 'string',
+        description: 'Field name — must match the input name attribute. Used for validation and FormData.',
+      },
+      {
+        name: 'label',
+        type: 'string',
+        description: 'Label text displayed above or beside the field',
+      },
+      {
+        name: 'hint',
+        type: 'string',
+        description: 'Static hint text shown below the field',
+      },
+      {
+        name: 'error',
+        type: 'string',
+        description: 'Override error message (takes priority over validation)',
+      },
+      {
+        name: 'required',
+        type: 'boolean | string',
+        default: 'false',
+        description: 'Shows asterisk on label and validates as required. Pass a string for a custom message.',
+      },
+      {
+        name: 'optional',
+        type: 'boolean',
+        default: 'false',
+        description: 'Shows "Optional" badge next to label',
+      },
+      {
+        name: 'maxLength',
+        type: 'number',
+        description: 'Shows a character count indicator (e.g. 45/200) and validates max length',
+      },
+      {
+        name: 'rules',
+        type: 'ValidationRule',
+        description: 'Validation rules: required, minLength, maxLength, pattern, validate(value)',
+      },
+      {
+        name: 'children',
+        type: 'ReactNode',
+        description: 'A single form primitive (Input, Select, Textarea, Checkbox, Toggle)',
+      },
+    ],
+    examples: [
+      {
+        title: 'Required field with hint',
+        code: `<FormField name="email" label="Email" required hint="We'll never share your email.">
+  <Input type="email" placeholder="you@example.com" />
+</FormField>`,
+      },
+      {
+        title: 'Optional field with character count',
+        code: `<FormField name="bio" label="Bio" optional maxLength={200} hint="Tell us about yourself.">
+  <Textarea placeholder="A few words about you..." />
+</FormField>`,
+      },
+    ],
+  },
+  {
+    slug: 'form-section',
+    name: 'FormSection',
+    description: 'Groups related form fields under a heading and description, with a bottom border separator.',
+    category: 'composites',
+    importStatement: "import { FormSection } from '@freehold/ui'",
+    props: [
+      {
+        name: 'title',
+        type: 'string',
+        description: 'Section heading text',
+      },
+      {
+        name: 'description',
+        type: 'string',
+        description: 'Section description text',
+      },
+      {
+        name: 'children',
+        type: 'ReactNode',
+        description: 'FormField components within this section',
+      },
+    ],
+    examples: [
+      {
+        title: 'Section with title and description',
+        code: `<FormSection title="Payment Details" description="Enter your billing information">
+  <FormField name="cardNumber" label="Card Number" required>
+    <Input placeholder="4242 4242 4242 4242" />
+  </FormField>
+  <FormGrid columns={2}>
+    <FormField name="expiry" label="Expiry" required>
+      <Input placeholder="MM/YY" />
+    </FormField>
+    <FormField name="cvc" label="CVC" required>
+      <Input placeholder="123" />
+    </FormField>
+  </FormGrid>
+</FormSection>`,
+      },
+    ],
+  },
+  {
+    slug: 'form-grid',
+    name: 'FormGrid',
+    description: 'Responsive multi-column grid for placing form fields side by side. Stacks to single column on mobile.',
+    category: 'composites',
+    importStatement: "import { FormGrid } from '@freehold/ui'",
+    props: [
+      {
+        name: 'columns',
+        type: '2 | 3 | 4',
+        default: '2',
+        description: 'Number of columns on desktop. Always stacks to 1 column on mobile.',
+      },
+      {
+        name: 'children',
+        type: 'ReactNode',
+        description: 'FormField components to arrange in the grid',
+      },
+    ],
+    examples: [
+      {
+        title: 'Two-column grid',
+        code: `<FormGrid columns={2}>
+  <FormField name="firstName" label="First Name" required>
+    <Input placeholder="Jane" />
+  </FormField>
+  <FormField name="lastName" label="Last Name" required>
+    <Input placeholder="Doe" />
+  </FormField>
+</FormGrid>`,
+      },
+    ],
+  },
+  {
+    slug: 'form-actions',
+    name: 'FormActions',
+    description: 'Footer container for form submit/cancel buttons with responsive layout and alignment options.',
+    category: 'composites',
+    importStatement: "import { FormActions } from '@freehold/ui'",
+    props: [
+      {
+        name: 'align',
+        type: "'left' | 'center' | 'right' | 'between'",
+        default: "'right'",
+        description: 'Horizontal alignment of buttons on desktop',
+      },
+      {
+        name: 'children',
+        type: 'ReactNode',
+        description: 'Button components',
+      },
+    ],
+    examples: [
+      {
+        title: 'Right-aligned actions',
+        code: `<FormActions>
+  <Button variant="secondary">Cancel</Button>
+  <Button type="submit">Save Changes</Button>
+</FormActions>`,
+      },
+      {
+        title: 'Space-between alignment',
+        code: `<FormActions align="between">
+  <Button variant="ghost" type="button">Reset</Button>
+  <Button type="submit">Continue</Button>
+</FormActions>`,
+      },
+    ],
+  },
 ]
 
 export function getComponentBySlug(slug: string): ComponentDoc | undefined {

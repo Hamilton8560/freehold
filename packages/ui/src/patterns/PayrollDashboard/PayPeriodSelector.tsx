@@ -36,8 +36,8 @@ const PAY_DATES = [
 
 export function PayPeriodSelector({ value, onChange }: PayPeriodSelectorProps) {
   return (
-    <div className="flex flex-wrap items-end gap-4">
-      <div className="min-w-[140px]">
+    <div className="flex flex-wrap items-end gap-3 sm:gap-4">
+      <div className="min-w-[120px] sm:min-w-[140px]">
         <Select
           label="Month"
           options={MONTHS}

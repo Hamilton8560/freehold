@@ -8,7 +8,7 @@ export default function GettingStartedPage() {
     <div className="min-h-screen bg-background-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-sm border-b border-[rgba(184,164,142,0.15)]">
-        <div className="max-w-[1080px] mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/docs"
@@ -23,7 +23,7 @@ export default function GettingStartedPage() {
         </div>
       </header>
 
-      <main className="max-w-[1080px] mx-auto px-6 py-8">
+      <main className="max-w-[1080px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Page Header */}
         <div className="mb-10">
           <Badge variant="accent" className="mb-3">Installation Guide</Badge>
@@ -337,7 +337,7 @@ export default function MyPage() {
 
       {/* Footer */}
       <footer className="border-t border-[rgba(184,164,142,0.15)] mt-16">
-        <div className="max-w-[1080px] mx-auto px-6 py-8">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 py-8">
           <p className="text-sm text-text-tertiary text-center">
             @freehold/ui &middot; Built with React, TypeScript, and Tailwind CSS
           </p>

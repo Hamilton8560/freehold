@@ -91,7 +91,7 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 px-6 lg:px-10 h-[72px] flex items-center justify-between transition-all duration-400 ${
+      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 h-[72px] flex items-center justify-between transition-all duration-400 ${
         scrolled
           ? 'bg-[rgba(250,249,246,0.92)] backdrop-blur-md border-b border-[rgba(184,164,142,0.15)]'
           : 'bg-transparent border-b border-transparent'
@@ -161,7 +161,7 @@ function Nav() {
 
       {/* Mobile dropdown menu */}
       {isMenuOpen && (
-        <div className="absolute top-[72px] left-0 right-0 md:hidden bg-white/95 backdrop-blur-md border-b border-[rgba(184,164,142,0.15)] px-6 py-4 flex flex-col gap-4">
+        <div className="absolute top-[72px] left-0 right-0 md:hidden bg-white/95 backdrop-blur-md border-b border-[rgba(184,164,142,0.15)] px-4 sm:px-6 py-4 flex flex-col gap-4">
           {['Platform', 'Solutions', 'About'].map((item) => (
             <a
               key={item}
@@ -214,7 +214,7 @@ function Nav() {
 // Hero Section
 function Hero() {
   return (
-    <section className="relative flex flex-col items-center px-6 pt-36 pb-24 bg-background-primary overflow-hidden">
+    <section className="relative flex flex-col items-center px-4 sm:px-6 pt-28 sm:pt-36 pb-16 sm:pb-24 bg-background-primary overflow-hidden">
       <TopoBg />
 
       {/* Warm radial glow */}
@@ -362,7 +362,7 @@ const credentialData = [
 
 function Credentials() {
   return (
-    <section id="about" className="px-6 py-28 bg-background-primary">
+    <section id="about" className="px-4 sm:px-6 py-16 sm:py-28 bg-background-primary">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <p className="text-xs text-sand-500 uppercase tracking-[0.1em] mb-4">
@@ -433,7 +433,7 @@ const platformFeatures = [
 
 function Platform() {
   return (
-    <section id="platform" className="px-6 py-28 bg-background-secondary">
+    <section id="platform" className="px-4 sm:px-6 py-16 sm:py-28 bg-background-secondary">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <p className="text-xs text-sand-500 uppercase tracking-[0.1em] mb-4">
@@ -492,7 +492,7 @@ const industries = [
 
 function Industries() {
   return (
-    <section id="solutions" className="px-6 py-28 bg-background-primary">
+    <section id="solutions" className="px-4 sm:px-6 py-16 sm:py-28 bg-background-primary">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <p className="text-xs text-sand-500 uppercase tracking-[0.1em] mb-4">
@@ -543,7 +543,7 @@ const processSteps = [
 
 function Process() {
   return (
-    <section className="px-6 py-28 bg-background-secondary">
+    <section className="px-4 sm:px-6 py-16 sm:py-28 bg-background-secondary">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <p className="text-xs text-sand-500 uppercase tracking-[0.1em] mb-4">
@@ -595,7 +595,7 @@ function Process() {
 // CTA Section
 function CTA() {
   return (
-    <section className="relative px-6 py-36 bg-background-primary text-center overflow-hidden">
+    <section className="relative px-4 sm:px-6 py-20 sm:py-36 bg-background-primary text-center overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
         style={{ background: 'radial-gradient(ellipse, rgba(184,164,142,0.07) 0%, transparent 65%)' }}
@@ -628,7 +628,7 @@ function CTA() {
 // Component Showcase Banner
 function ShowcaseBanner() {
   return (
-    <section className="px-6 py-20 bg-background-tertiary border-t border-[rgba(184,164,142,0.15)]">
+    <section className="px-4 sm:px-6 py-12 sm:py-20 bg-background-tertiary border-t border-[rgba(184,164,142,0.15)]">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
@@ -705,7 +705,7 @@ function VibeCoderSection() {
   }
 
   return (
-    <section className="px-6 py-28 bg-background-primary">
+    <section className="px-4 sm:px-6 py-16 sm:py-28 bg-background-primary">
       <div className="max-w-[1080px] mx-auto">
         <FadeIn>
           <Badge variant="accent" className="mb-4">For Vibe Coders</Badge>
@@ -722,14 +722,14 @@ function VibeCoderSection() {
 
         <FadeIn delay={0.1}>
           <Card variant="elevated" padding="none" className="overflow-hidden">
-            <div className="bg-[#2C2824] p-5 flex items-center justify-between">
+            <div className="bg-[#2C2824] p-3 sm:p-5 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="flex gap-1.5">
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#4A4540]" />
                   ))}
                 </div>
-                <span className="text-xs text-[#8A847A] font-mono">freehold-ui-instructions</span>
+                <span className="text-xs text-[#8A847A] font-mono hidden sm:inline">freehold-ui-instructions</span>
               </div>
               <Button
                 variant="secondary"
@@ -752,7 +752,7 @@ function VibeCoderSection() {
                 )}
               </Button>
             </div>
-            <pre className="p-5 text-xs font-mono text-[#D4C8B8] bg-[#1A1816] overflow-x-auto max-h-[320px] overflow-y-auto leading-relaxed">
+            <pre className="p-3 sm:p-5 text-[11px] sm:text-xs font-mono text-[#D4C8B8] bg-[#1A1816] overflow-x-auto max-h-[320px] overflow-y-auto leading-relaxed whitespace-pre-wrap break-words sm:whitespace-pre sm:break-normal">
               {AI_INSTRUCTIONS}
             </pre>
           </Card>
@@ -779,7 +779,7 @@ function VibeCoderSection() {
 // Footer
 function Footer() {
   return (
-    <footer className="px-6 py-12 border-t border-[rgba(184,164,142,0.1)] bg-background-primary">
+    <footer className="px-4 sm:px-6 py-12 border-t border-[rgba(184,164,142,0.1)] bg-background-primary">
       <div className="max-w-[1080px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-[7px] bg-gradient-to-br from-sand-500 to-sand-300 flex items-center justify-center">

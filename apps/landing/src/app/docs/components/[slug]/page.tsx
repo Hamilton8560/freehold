@@ -58,6 +58,11 @@ import {
   EmployeeTable,
   PayrollActions,
   EmployeeDetailModal,
+  Form,
+  FormField,
+  FormSection,
+  FormActions,
+  FormGrid,
   type ChatMessageData,
   type Employee,
   type PayPeriod,
@@ -81,7 +86,7 @@ export default function ComponentDetailPage({
     <div className="min-h-screen bg-background-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background-primary/95 backdrop-blur-sm border-b border-[rgba(184,164,142,0.15)]">
-        <div className="max-w-[1080px] mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
               href="/docs"
@@ -96,7 +101,7 @@ export default function ComponentDetailPage({
         </div>
       </header>
 
-      <main className="max-w-[1080px] mx-auto px-6 py-8">
+      <main className="max-w-[1080px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Component Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -127,7 +132,8 @@ export default function ComponentDetailPage({
         {/* Props Table */}
         <section className="mb-10">
           <h2 className="font-heading text-xl text-text-primary mb-4">Props</h2>
-          <Card variant="default" padding="none" className="overflow-hidden">
+          {/* Desktop table */}
+          <Card variant="default" padding="none" className="overflow-hidden hidden sm:block">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-background-secondary border-b border-[rgba(184,164,142,0.15)]">
@@ -163,6 +169,25 @@ export default function ComponentDetailPage({
               </table>
             </div>
           </Card>
+          {/* Mobile stacked cards */}
+          <div className="sm:hidden space-y-3">
+            {component.props.map((prop) => (
+              <div key={prop.name} className="rounded-[14px] border border-[rgba(184,164,142,0.15)] bg-white p-3">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <code className="text-sm font-mono text-sand-600">{prop.name}</code>
+                  <code className="text-xs font-mono text-text-secondary bg-background-secondary px-1.5 py-0.5 rounded shrink-0">
+                    {prop.type}
+                  </code>
+                </div>
+                <p className="text-sm text-text-secondary">{prop.description}</p>
+                {prop.default && (
+                  <p className="text-xs text-text-tertiary mt-1">
+                    Default: <code className="font-mono">{prop.default}</code>
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Examples */}
@@ -183,7 +208,7 @@ export default function ComponentDetailPage({
 
       {/* Footer */}
       <footer className="border-t border-[rgba(184,164,142,0.15)] mt-16">
-        <div className="max-w-[1080px] mx-auto px-6 py-8">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 py-8">
           <p className="text-sm text-text-tertiary text-center">
             @freehold/ui &middot; Built with React, TypeScript, and Tailwind CSS
           </p>
@@ -225,7 +250,7 @@ function ComponentPreview({ component }: { component: ComponentDoc }) {
       )}
 
       {/* Live Preview */}
-      <div className="flex items-center justify-center min-h-[120px] p-6 bg-background-secondary rounded-lg">
+      <div className="flex items-center justify-center min-h-[120px] p-4 sm:p-6 bg-background-secondary rounded-lg overflow-x-auto">
         <LiveComponent component={component} variants={selectedVariants} />
       </div>
     </div>
@@ -780,6 +805,21 @@ function LiveComponent({
     case 'card-flip-loader':
       return <CardFlipLoaderPreview />
 
+    case 'form':
+      return <FormPreview layout={variants.layout || 'vertical'} />
+
+    case 'form-field':
+      return <FormFieldPreview />
+
+    case 'form-section':
+      return <FormSectionPreview />
+
+    case 'form-grid':
+      return <FormGridPreview />
+
+    case 'form-actions':
+      return <FormActionsPreview />
+
     default:
       return (
         <p className="text-text-tertiary">
@@ -934,5 +974,127 @@ function EmployeeDetailModalPreview() {
         onOpenChange={setOpen}
       />
     </>
+  )
+}
+
+// ── Form preview helpers ──────────────────────────────────
+
+function FormPreview({ layout }: { layout: string }) {
+  const [submitted, setSubmitted] = useState<string | null>(null)
+  return (
+    <div className="w-full max-w-lg">
+      {submitted && (
+        <div className="mb-4 rounded-lg bg-[#D1FAE5] px-4 py-2 text-sm text-[#065F46]">
+          Submitted: {submitted}
+        </div>
+      )}
+      <Form
+        layout={layout as 'vertical' | 'horizontal'}
+        onSubmit={(data) => {
+          setSubmitted(JSON.stringify(Object.fromEntries(data), null, 2))
+          setTimeout(() => setSubmitted(null), 3000)
+        }}
+      >
+        <FormField name="name" label="Full Name" required hint="As it appears on your ID">
+          <Input placeholder="Jane Doe" />
+        </FormField>
+        <FormField
+          name="email"
+          label="Email"
+          required
+          rules={{
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'Please enter a valid email address',
+            },
+          }}
+        >
+          <Input type="email" placeholder="jane@example.com" />
+        </FormField>
+        <FormField name="bio" label="Bio" optional maxLength={200}>
+          <Textarea placeholder="Tell us about yourself..." />
+        </FormField>
+        <FormActions>
+          <Button variant="secondary" type="button">Cancel</Button>
+          <Button type="submit">Submit</Button>
+        </FormActions>
+      </Form>
+    </div>
+  )
+}
+
+function FormFieldPreview() {
+  return (
+    <div className="w-full max-w-sm space-y-6">
+      <Form>
+        <FormField name="email" label="Email" required hint="We'll never share your email.">
+          <Input type="email" placeholder="you@example.com" />
+        </FormField>
+        <FormField name="notes" label="Notes" optional maxLength={150}>
+          <Textarea placeholder="Optional notes..." />
+        </FormField>
+      </Form>
+    </div>
+  )
+}
+
+function FormSectionPreview() {
+  return (
+    <div className="w-full max-w-md">
+      <Form>
+        <FormSection title="Personal Information" description="Basic contact details for your profile.">
+          <FormField name="name" label="Name" required>
+            <Input placeholder="Jane Doe" />
+          </FormField>
+          <FormField name="phone" label="Phone" optional>
+            <Input type="tel" placeholder="(555) 123-4567" />
+          </FormField>
+        </FormSection>
+        <FormSection title="Preferences">
+          <FormField name="newsletter" label="">
+            <Checkbox label="Subscribe to newsletter" />
+          </FormField>
+        </FormSection>
+      </Form>
+    </div>
+  )
+}
+
+function FormGridPreview() {
+  return (
+    <div className="w-full max-w-lg">
+      <Form>
+        <FormGrid columns={2}>
+          <FormField name="firstName" label="First Name" required>
+            <Input placeholder="Jane" />
+          </FormField>
+          <FormField name="lastName" label="Last Name" required>
+            <Input placeholder="Doe" />
+          </FormField>
+        </FormGrid>
+        <FormGrid columns={3}>
+          <FormField name="city" label="City">
+            <Input placeholder="Austin" />
+          </FormField>
+          <FormField name="state" label="State">
+            <Input placeholder="TX" />
+          </FormField>
+          <FormField name="zip" label="ZIP">
+            <Input placeholder="78701" />
+          </FormField>
+        </FormGrid>
+      </Form>
+    </div>
+  )
+}
+
+function FormActionsPreview() {
+  return (
+    <div className="w-full max-w-sm">
+      <FormActions>
+        <Button variant="secondary">Cancel</Button>
+        <Button type="submit">Save Changes</Button>
+      </FormActions>
+    </div>
   )
 }

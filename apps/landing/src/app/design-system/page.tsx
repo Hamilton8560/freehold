@@ -108,18 +108,18 @@ export default function DesignSystemPage() {
     <div className="min-h-screen bg-background-primary">
       {/* Header */}
       <header className="border-b border-[rgba(184,164,142,0.15)] bg-white sticky top-0 z-50">
-        <div className="max-w-[1080px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2.5">
+        <div className="max-w-[1080px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+            <Link href="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sand-500 to-sand-300 flex items-center justify-center">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M2 14V6L8 2L14 6V14H10V9H6V14H2Z" fill="#FAF9F6" />
                 </svg>
               </div>
-              <span className="font-heading text-xl text-text-primary">Freehold</span>
+              <span className="font-heading text-xl text-text-primary hidden sm:inline">Freehold</span>
             </Link>
             <span className="text-text-tertiary">/</span>
-            <span className="text-text-secondary">Design System</span>
+            <span className="text-text-secondary truncate">Design System</span>
           </div>
           <Link href="/">
             <Button variant="ghost" size="sm">
@@ -129,7 +129,7 @@ export default function DesignSystemPage() {
         </div>
       </header>
 
-      <main className="max-w-[1080px] mx-auto px-6 py-10">
+      <main className="max-w-[1080px] mx-auto px-4 sm:px-6 py-6 sm:py-10">
         {/* Title */}
         <div className="mb-12">
           <h1 className="font-heading text-4xl text-text-primary tracking-tight mb-3">
@@ -141,12 +141,12 @@ export default function DesignSystemPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-1 mb-12 p-1 bg-background-secondary rounded-[10px] border border-[rgba(184,164,142,0.1)] flex-wrap">
+        <div className="flex gap-1 mb-12 p-1 bg-background-secondary rounded-[10px] border border-[rgba(184,164,142,0.1)] overflow-x-auto sm:flex-wrap">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 rounded-lg text-sm transition-all ${
+              className={`px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg text-sm transition-all whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-white text-text-primary font-medium shadow-warm-sm'
                   : 'text-text-tertiary hover:text-text-secondary'
@@ -231,16 +231,17 @@ export default function DesignSystemPage() {
                   { label: 'Stat', size: '24px', sample: '$84,200', serif: true },
                   { label: 'Micro', size: '11px', sample: 'MONTHLY REVENUE', upper: true, color: BRAND.textMuted, weight: 500 },
                 ].map((t) => (
-                  <div key={t.label} className="grid grid-cols-[100px_1fr] gap-6 items-baseline">
+                  <div key={t.label} className="grid grid-cols-1 sm:grid-cols-[100px_1fr] gap-2 sm:gap-6 sm:items-baseline">
                     <div className="text-xs text-text-tertiary uppercase tracking-wider">
                       {t.label}
                       <br />
                       <span className="text-sand-500">{t.size}</span>
                     </div>
                     <div
+                      className="overflow-hidden text-ellipsis"
                       style={{
                         fontFamily: t.serif ? "'DM Serif Display', Georgia, serif" : "'DM Sans', sans-serif",
-                        fontSize: t.size,
+                        fontSize: `clamp(${Math.max(parseInt(t.size) * 0.6, 14)}px, ${parseInt(t.size) <= 17 ? t.size : `4vw`}, ${t.size})`,
                         fontWeight: t.weight || 400,
                         color: t.color || BRAND.text,
                         textTransform: t.upper ? 'uppercase' : 'none',
@@ -537,7 +538,7 @@ export default function DesignSystemPage() {
                 Every icon uses consistent 1.5px stroke weight, rounded caps and joins, 20×20 viewbox.
                 Default stroke color is the brand accent (#B8A48E).
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 sm:gap-4">
                 {ICON_NAMES.map((name) => (
                   <div
                     key={name}
@@ -553,7 +554,7 @@ export default function DesignSystemPage() {
             </Section>
 
             <Section title="Icon Sizes">
-              <div className="flex gap-8 items-end">
+              <div className="flex gap-5 sm:gap-8 items-end flex-wrap">
                 {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
                   <div key={size} className="flex flex-col items-center gap-2">
                     <Icon name="dashboard" size={size} />
