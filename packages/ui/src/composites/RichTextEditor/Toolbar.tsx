@@ -19,12 +19,14 @@ interface ToolbarProps {
 
 function ToolbarButton({
   onClick,
+  onMouseDown,
   active = false,
   disabled = false,
   title,
   children,
 }: {
   onClick: () => void
+  onMouseDown?: () => void
   active?: boolean
   disabled?: boolean
   title: string
@@ -33,6 +35,10 @@ function ToolbarButton({
   return (
     <button
       type="button"
+      onMouseDown={(e) => {
+        e.preventDefault()
+        onMouseDown?.()
+      }}
       onClick={onClick}
       disabled={disabled}
       title={title}
@@ -56,8 +62,26 @@ function Divider() {
 export function Toolbar({ editor }: ToolbarProps) {
   const [linkDialogOpen, setLinkDialogOpen] = useState(false)
   const [linkUrl, setLinkUrl] = useState('')
+  const [savedSelection, setSavedSelection] = useState<{ from: number; to: number } | null>(null)
 
   if (!editor) return null
+
+  // Save selection when any toolbar interaction starts
+  const saveSelection = () => {
+    const { from, to } = editor.state.selection
+    setSavedSelection({ from, to })
+  }
+
+  // Execute command with selection restoration for block-level operations
+  const executeBlockCommand = (command: () => void) => {
+    if (savedSelection) {
+      editor.chain().focus().setTextSelection(savedSelection).run()
+    } else {
+      editor.chain().focus().run()
+    }
+    command()
+    setSavedSelection(null)
+  }
 
   const handleLink = () => {
     if (editor.isActive('link')) {
@@ -75,7 +99,20 @@ export function Toolbar({ editor }: ToolbarProps) {
       if (/^(javascript|data):/i.test(trimmedUrl)) {
         return // Silently reject dangerous protocols
       }
-      editor.chain().focus().setLink({ href: trimmedUrl }).run()
+
+      // Check if there's selected text
+      const { from, to } = editor.state.selection
+      if (from === to) {
+        // No selection - insert URL as link text
+        editor
+          .chain()
+          .focus()
+          .insertContent(`<a href="${trimmedUrl}">${trimmedUrl}</a>`)
+          .run()
+      } else {
+        // Has selection - wrap selected text with link
+        editor.chain().focus().setLink({ href: trimmedUrl }).run()
+      }
     }
     setLinkDialogOpen(false)
   }
@@ -109,7 +146,8 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Headings */}
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 1 }).run())}
         active={editor.isActive('heading', { level: 1 })}
         title="Heading 1"
       >
@@ -120,7 +158,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 2 }).run())}
         active={editor.isActive('heading', { level: 2 })}
         title="Heading 2"
       >
@@ -130,7 +169,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 3 }).run())}
         active={editor.isActive('heading', { level: 3 })}
         title="Heading 3"
       >
@@ -144,7 +184,8 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Lists */}
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleBulletList().run())}
         active={editor.isActive('bulletList')}
         title="Bullet List"
       >
@@ -158,7 +199,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleOrderedList().run())}
         active={editor.isActive('orderedList')}
         title="Ordered List"
       >
@@ -176,7 +218,8 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Blockquote / Code Block */}
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleBlockquote().run())}
         active={editor.isActive('blockquote')}
         title="Blockquote"
       >
@@ -188,7 +231,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        onMouseDown={saveSelection}
+        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleCodeBlock().run())}
         active={editor.isActive('codeBlock')}
         title="Code Block"
       >

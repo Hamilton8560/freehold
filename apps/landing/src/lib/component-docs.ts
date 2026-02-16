@@ -2475,6 +2475,53 @@ toast({ title: 'Info', variant: 'info' })`,
       },
     ],
   },
+  {
+    slug: 'navbar',
+    name: 'Navbar',
+    description: 'Freehold-branded navigation bar with scroll-aware styling, responsive mobile menu, and configurable nav items.',
+    category: 'composites',
+    importStatement: "import { Navbar } from '@freehold/ui'",
+    props: [
+      {
+        name: 'items',
+        type: 'NavItem[]',
+        description: 'Navigation links. Each item has label (string) and href (string).',
+      },
+      {
+        name: 'cta',
+        type: '{ label: string; href: string }',
+        description: 'Optional call-to-action button rendered at the end of the nav.',
+      },
+      {
+        name: 'className',
+        type: 'string',
+        description: 'Additional CSS classes for the nav element.',
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Navbar
+  items={[
+    { label: 'Platform', href: '#platform' },
+    { label: 'Solutions', href: '#solutions' },
+    { label: 'About', href: '#about' },
+  ]}
+  cta={{ label: 'Get Started', href: '/signup' }}
+/>`,
+      },
+      {
+        title: 'Without CTA',
+        code: `<Navbar
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Docs', href: '/docs' },
+    { label: 'Blog', href: '/blog' },
+  ]}
+/>`,
+      },
+    ],
+  },
 ]
 
 export function getComponentBySlug(slug: string): ComponentDoc | undefined {

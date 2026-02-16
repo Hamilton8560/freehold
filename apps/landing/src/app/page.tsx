@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button, Card, CardContent, Badge, Icon } from '@freehold/ui'
+import { Button, Card, CardContent, Badge, Icon, StatCard, BarChart, Navbar } from '@freehold/ui'
 
 // Fade-in animation hook
 function useFadeIn(threshold = 0.15) {
@@ -78,139 +78,6 @@ function TopoBg() {
   )
 }
 
-// Navigation
-function Nav() {
-  const [scrolled, setScrolled] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-10 h-[72px] flex items-center justify-between transition-all duration-400 ${
-        scrolled
-          ? 'bg-[rgba(250,249,246,0.92)] backdrop-blur-md border-b border-[rgba(184,164,142,0.15)]'
-          : 'bg-transparent border-b border-transparent'
-      }`}
-    >
-      <div className="flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sand-500 to-sand-300 flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M2 14V6L8 2L14 6V14H10V9H6V14H2Z" fill="#FAF9F6" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <span className="font-heading text-xl text-text-primary tracking-tight">
-          Freehold
-        </span>
-      </div>
-
-      {/* Desktop nav */}
-      <div className="hidden md:flex items-center gap-9">
-        {['Platform', 'Solutions', 'About'].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            {item}
-          </a>
-        ))}
-        <Link
-          href="/design-system"
-          className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-        >
-          Design System
-        </Link>
-        <Link
-          href="/docs"
-          className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-        >
-          Docs
-        </Link>
-        <Link
-          href="/chat"
-          className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-        >
-          Chat Demo
-        </Link>
-        <Link
-          href="/workshop"
-          className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-        >
-          Workshop
-        </Link>
-        <Link href="/showcase">
-          <Button variant="secondary" size="sm">
-            View Components
-          </Button>
-        </Link>
-      </div>
-
-      {/* Mobile hamburger button */}
-      <button
-        className="md:hidden p-2"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-      >
-        <Icon name={isMenuOpen ? 'close' : 'dashboard'} size="sm" />
-      </button>
-
-      {/* Mobile dropdown menu */}
-      {isMenuOpen && (
-        <div className="absolute top-[72px] left-0 right-0 md:hidden bg-white/95 backdrop-blur-md border-b border-[rgba(184,164,142,0.15)] px-4 sm:px-6 py-4 flex flex-col gap-4">
-          {['Platform', 'Solutions', 'About'].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setIsMenuOpen(false)}
-              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-            >
-              {item}
-            </a>
-          ))}
-          <Link
-            href="/design-system"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            Design System
-          </Link>
-          <Link
-            href="/docs"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            Docs
-          </Link>
-          <Link
-            href="/chat"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            Chat Demo
-          </Link>
-          <Link
-            href="/workshop"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            Workshop
-          </Link>
-          <Link href="/showcase" onClick={() => setIsMenuOpen(false)}>
-            <Button variant="secondary" size="sm">
-              View Components
-            </Button>
-          </Link>
-        </div>
-      )}
-    </nav>
-  )
-}
-
 // Hero Section
 function Hero() {
   return (
@@ -277,21 +144,22 @@ function Hero() {
                 {/* Sidebar */}
                 <div className="hidden md:flex flex-col gap-1 bg-white rounded-lg p-3 border border-[rgba(184,164,142,0.15)]">
                   {[
-                    { label: 'Dashboard', active: true },
-                    { label: 'Clients', active: false },
-                    { label: 'Pipeline', active: false },
-                    { label: 'Billing', active: false },
-                    { label: 'Reports', active: false },
-                    { label: 'AI Assistant', active: false },
+                    { label: 'Dashboard', icon: 'dashboard' as const, active: true },
+                    { label: 'Clients', icon: 'clients' as const, active: false },
+                    { label: 'Pipeline', icon: 'pipeline' as const, active: false },
+                    { label: 'Billing', icon: 'billing' as const, active: false },
+                    { label: 'Reports', icon: 'reports' as const, active: false },
+                    { label: 'AI Assistant', icon: 'ai' as const, active: false },
                   ].map((item) => (
                     <div
                       key={item.label}
-                      className={`px-3 py-2 rounded-md text-sm text-left ${
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-left ${
                         item.active
                           ? 'bg-background-secondary font-medium text-text-primary'
                           : 'text-text-secondary'
                       }`}
                     >
+                      <Icon name={item.icon} size="sm" color={item.active ? 'primary' : 'muted'} />
                       {item.label}
                     </div>
                   ))}
@@ -301,39 +169,32 @@ function Hero() {
                 <div className="flex flex-col gap-4">
                   {/* Stat cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {[
-                      { label: 'Active Clients', value: '247', change: '+12%' },
-                      { label: 'Monthly Revenue', value: '$84,200', change: '+8.3%' },
-                      { label: 'Retention Rate', value: '94.7%', change: '+2.1%' },
-                    ].map((stat) => (
-                      <div
-                        key={stat.label}
-                        className="bg-white rounded-lg border border-[rgba(184,164,142,0.15)] p-4 text-left"
-                      >
-                        <p className="text-xs text-text-secondary mb-1">{stat.label}</p>
-                        <p className="font-heading text-xl text-text-primary">{stat.value}</p>
-                        <p className="text-xs text-sand-500 mt-1">{stat.change}</p>
-                      </div>
-                    ))}
+                    <StatCard label="Active Clients" value={247} format="number" trend={{ value: 12, direction: 'up' }} />
+                    <StatCard label="Monthly Revenue" value={84200} format="currency" trend={{ value: 8, direction: 'up' }} />
+                    <StatCard label="Retention Rate" value={94.7} format="percentage" trend={{ value: 2, direction: 'up' }} />
                   </div>
 
-                  {/* Bar chart placeholder */}
-                  <div className="bg-white rounded-lg border border-[rgba(184,164,142,0.15)] p-4">
-                    <p className="text-xs text-text-secondary mb-3 text-left">Revenue — Last 6 Months</p>
-                    <div className="flex items-end gap-2 h-[100px]">
-                      {[40, 55, 45, 65, 75, 90].map((h, i) => (
-                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                          <div
-                            className="w-full rounded-t bg-gradient-to-t from-sand-500 to-sand-300"
-                            style={{ height: `${h}%` }}
-                          />
-                          <span className="text-[10px] text-text-tertiary">
-                            {['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'][i]}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Bar chart */}
+                  <Card variant="default" padding="md">
+                    <p className="text-xs text-[#5C574F] mb-2">Revenue — Last 6 Months</p>
+                    <BarChart
+                      data={[
+                        { month: 'Sep', revenue: 58000 },
+                        { month: 'Oct', revenue: 72000 },
+                        { month: 'Nov', revenue: 65000 },
+                        { month: 'Dec', revenue: 78000 },
+                        { month: 'Jan', revenue: 84200 },
+                        { month: 'Feb', revenue: 91000 },
+                      ]}
+                      xAxisKey="month"
+                      series={[{ name: 'Revenue', dataKey: 'revenue', color: '#B8A48E' }]}
+                      yAxisFormat="currency"
+                      height={160}
+                      showGrid={false}
+                      showLegend={false}
+                      showTooltip={false}
+                    />
+                  </Card>
                 </div>
               </div>
             </div>
@@ -347,14 +208,20 @@ function Hero() {
 // Credentials Section
 const credentialData = [
   {
+    number: '01',
+    tag: 'Foundation',
     quote: 'Built on a CS degree and graduate work in IT management — not stitched together from tutorials.',
     attribution: 'Computer Science Foundation',
   },
   {
+    number: '02',
+    tag: 'Experience',
     quote: 'Oil field services, international logistics, and gym operations — systems tested under real pressure.',
     attribution: '3 Industries. Real Operations.',
   },
   {
+    number: '03',
+    tag: 'Craftsmanship',
     quote: 'Every system we deliver was designed, developed, and customer-tested by our team — not outsourced.',
     attribution: 'Built From Scratch',
   },
@@ -362,8 +229,14 @@ const credentialData = [
 
 function Credentials() {
   return (
-    <section id="about" className="px-4 sm:px-6 py-16 sm:py-28 bg-background-primary">
-      <div className="max-w-[1080px] mx-auto">
+    <section id="about" className="relative px-4 sm:px-6 py-16 sm:py-28 bg-background-primary overflow-hidden">
+      <TopoBg />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse, rgba(184,164,142,0.06) 0%, transparent 65%)' }}
+      />
+
+      <div className="relative max-w-[1080px] mx-auto">
         <FadeIn>
           <p className="text-xs text-sand-500 uppercase tracking-[0.1em] mb-4">
             Why Freehold
@@ -375,17 +248,25 @@ function Credentials() {
           </h2>
         </FadeIn>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-6">
           {credentialData.map((item, i) => (
             <FadeIn key={i} delay={i * 0.12}>
-              <div className="border-t border-[rgba(184,164,142,0.25)] pt-10 pb-10">
-                <p className="font-heading text-2xl sm:text-3xl italic text-text-primary leading-snug">
-                  &ldquo;{item.quote}&rdquo;
-                </p>
-                <p className="text-sm text-sand-500 uppercase tracking-wider mt-4">
-                  — {item.attribution}
-                </p>
-              </div>
+              <Card variant="elevated" padding="lg">
+                <div className="flex items-start gap-6">
+                  <span className="font-heading text-5xl text-sand-300 leading-none select-none shrink-0">
+                    {item.number}
+                  </span>
+                  <div className="flex-1">
+                    <Badge variant="accent" size="sm" className="mb-4">{item.tag}</Badge>
+                    <p className="font-heading text-xl sm:text-2xl italic text-text-primary leading-snug">
+                      &ldquo;{item.quote}&rdquo;
+                    </p>
+                    <p className="text-sm text-sand-500 uppercase tracking-wider mt-4">
+                      — {item.attribution}
+                    </p>
+                  </div>
+                </div>
+              </Card>
             </FadeIn>
           ))}
         </div>
@@ -804,7 +685,18 @@ function Footer() {
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Nav />
+      <Navbar
+        items={[
+          { label: 'Platform', href: '#platform' },
+          { label: 'Solutions', href: '#solutions' },
+          { label: 'About', href: '#about' },
+          { label: 'Design System', href: '/design-system' },
+          { label: 'Docs', href: '/docs' },
+          { label: 'Chat Demo', href: '/chat' },
+          { label: 'Workshop', href: '/workshop' },
+        ]}
+        cta={{ label: 'View Components', href: '/showcase' }}
+      />
       <Hero />
       <Credentials />
       <Platform />

@@ -54,6 +54,7 @@ import {
   EmployeeTable,
   PayrollActions,
   EmployeeDetailModal,
+  Navbar,
   type ChatMessageData,
   type Employee,
   type PayPeriod,
@@ -1071,6 +1072,21 @@ function LiveComponent({
 
     case 'card-flip-loader':
       return <CardFlipLoaderPreview />
+
+    case 'navbar':
+      return (
+        <div className="w-full h-[72px] relative overflow-hidden rounded-lg border border-[rgba(184,164,142,0.15)]">
+          <Navbar
+            items={[
+              { label: 'Platform', href: '#' },
+              { label: 'Solutions', href: '#' },
+              { label: 'About', href: '#' },
+            ]}
+            cta={{ label: 'Get Started', href: '#' }}
+            className="!relative"
+          />
+        </div>
+      )
 
     default:
       return (
