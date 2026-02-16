@@ -396,9 +396,6 @@ function Industries() {
                 className="h-full bg-white hover:border-sand-500 hover:shadow-warm-md transition-all duration-300"
               >
                 <CardContent>
-                  <div className="text-sm text-text-tertiary mb-2">
-                    0{i + 1}
-                  </div>
                   <h3 className="font-heading text-xl text-text-primary mb-3.5 tracking-tight">
                     {ind.name}
                   </h3>
