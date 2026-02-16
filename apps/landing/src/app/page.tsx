@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button, Card, CardContent, Badge, Icon, StatCard, Navbar } from '@freehold/ui'
+import { Button, Card, CardContent, Badge, Icon, StatCard, Navbar, TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@freehold/ui'
 import { BarChart } from '@freehold/ui/charts'
 
 // Fade-in animation hook
@@ -448,11 +448,11 @@ function Process() {
         <FadeIn delay={0.1} className="mb-16 flex justify-center">
           <div className="text-center">
             <Image
-              src="/images/oil-jack.png"
-              alt="Automated workflow systems"
+              src="/images/teacupwaterwheeltransparent.png"
+              alt="Teacup and waterwheel illustration"
               width={320}
               height={240}
-              className="object-contain mx-auto"
+              className="object-contain mx-auto opacity-[0.35]"
               priority={false}
             />
             <p className="text-sm text-text-tertiary mt-6 italic">
@@ -487,10 +487,16 @@ function Process() {
 function CTA() {
   return (
     <section className="relative px-4 sm:px-6 py-20 sm:py-36 bg-background-primary text-center overflow-hidden">
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, rgba(184,164,142,0.07) 0%, transparent 65%)' }}
-      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <Image
+          src="/images/pipetobaccoAndClock.png"
+          alt=""
+          width={500}
+          height={340}
+          className="object-contain opacity-[0.35]"
+          priority={false}
+        />
+      </div>
 
       <FadeIn>
         <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl text-text-primary leading-[1.12] tracking-tight max-w-[600px] mx-auto mb-6">
@@ -508,9 +514,18 @@ function CTA() {
       </FadeIn>
 
       <FadeIn delay={0.2}>
-        <Button size="lg">
-          Book a Discovery Call
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <a href="https://calendly.com/davidhamilton473/el-salvador-consultation" target="_blank" rel="noopener noreferrer">
+                <Button size="lg">
+                  Book a Discovery Call
+                </Button>
+              </a>
+            </TooltipTrigger>
+            <TooltipContent>Opens Calendly</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </FadeIn>
     </section>
   )
@@ -584,6 +599,24 @@ DON'T: Use arbitrary Tailwind colors, skip CVA, forget exports, ignore 8px grid.
 
 function VibeCoderSection() {
   const [copied, setCopied] = useState(false)
+  const preRef = useRef<HTMLPreElement>(null)
+  const scrollInterval = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const startScroll = () => {
+    if (scrollInterval.current) return
+    scrollInterval.current = setInterval(() => {
+      if (preRef.current) {
+        preRef.current.scrollTop += 1
+      }
+    }, 30)
+  }
+
+  const stopScroll = () => {
+    if (scrollInterval.current) {
+      clearInterval(scrollInterval.current)
+      scrollInterval.current = null
+    }
+  }
 
   const handleCopy = async () => {
     try {
@@ -643,7 +676,7 @@ function VibeCoderSection() {
                 )}
               </Button>
             </div>
-            <pre className="p-3 sm:p-5 text-[11px] sm:text-xs font-mono text-[#D4C8B8] bg-[#1A1816] overflow-x-auto max-h-[320px] overflow-y-auto leading-relaxed whitespace-pre-wrap break-words sm:whitespace-pre sm:break-normal">
+            <pre ref={preRef} onMouseEnter={startScroll} onMouseLeave={stopScroll} className="p-3 sm:p-5 text-[11px] sm:text-xs font-mono text-[#D4C8B8] bg-[#1A1816] overflow-x-auto max-h-[320px] overflow-y-auto leading-relaxed whitespace-pre-wrap break-words sm:whitespace-pre sm:break-normal">
               {AI_INSTRUCTIONS}
             </pre>
           </Card>
@@ -700,9 +733,10 @@ export default function Home() {
           { label: 'Platform', href: '#platform' },
           { label: 'Solutions', href: '#solutions' },
           { label: 'About', href: '#about' },
+          { label: 'The Builder', href: '/builder' },
           { label: 'Design System', href: '/design-system' },
           { label: 'Docs', href: '/docs' },
-          { label: 'Chat Demo', href: '/chat' },
+          { label: 'Talk to Us', href: '/chat' },
           { label: 'Workshop', href: '/workshop' },
         ]}
         cta={{ label: 'View Components', href: '/showcase' }}

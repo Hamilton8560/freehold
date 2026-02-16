@@ -100,7 +100,7 @@ const categories = [
 export default function DocsPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set(['primitives', 'composites', 'patterns'])
+    new Set()
   )
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null)
 
@@ -329,6 +329,30 @@ function WelcomeView() {
           </CardContent>
         </Card>
       </Link>
+
+      {/* Starter Kit Banner */}
+      <a href="https://github.com/Hamilton8560/freehold-starter" target="_blank" rel="noopener noreferrer">
+        <Card
+          variant="elevated"
+          padding="md"
+          className="mb-8 bg-gradient-to-r from-sand-50 to-background-primary border-sand-200 hover:shadow-warm-md transition-shadow cursor-pointer"
+        >
+          <CardContent className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 rounded-lg bg-sand-100 flex items-center justify-center shrink-0">
+                <Icon name="growth" size="md" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-medium text-text-primary">Building with Freehold Starter?</h3>
+                <p className="text-sm text-text-secondary truncate sm:overflow-visible sm:whitespace-normal">
+                  Check out the Starter Kit documentation for tutorials, authorization guides, and CLI reference.
+                </p>
+              </div>
+            </div>
+            <Icon name="chevron-right" size="md" color="secondary" className="shrink-0" />
+          </CardContent>
+        </Card>
+      </a>
 
       {/* Instructions */}
       <div className="mb-8">

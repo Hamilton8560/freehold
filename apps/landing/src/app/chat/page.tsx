@@ -25,12 +25,11 @@ export default function ChatPage() {
           </Link>
           <nav className="flex items-center gap-4">
             <Link
-              href="/design-system"
+              href="/"
               className="text-sm text-[#5C574F] hover:text-[#2C2824]"
             >
-              Design System
+              Home
             </Link>
-            <span className="text-sm font-medium text-[#B8A48E]">Chat Demo</span>
           </nav>
         </div>
       </header>
@@ -38,9 +37,9 @@ export default function ChatPage() {
       {/* Chat */}
       <main className="mx-auto max-w-2xl px-4 sm:px-6 py-6 sm:py-12">
         <div className="mb-8 text-center">
-          <h1 className="font-heading text-3xl text-[#2C2824]">AI Chat Demo</h1>
+          <h1 className="font-heading text-3xl text-[#2C2824]">Talk to Freehold</h1>
           <p className="mt-2 text-sm text-[#5C574F]">
-            Try the Freehold chat components powered by the Vercel AI SDK.
+            Ask about our platform, see what we can build for your business, or book a discovery call.
           </p>
         </div>
 
@@ -53,14 +52,15 @@ export default function ChatPage() {
           onSubmit={handleSubmit}
           isLoading={isLoading}
           error={error?.message}
-          title="Freehold Assistant"
-          subtitle="AI-powered help"
+          title="Freehold AI"
+          subtitle="Sales & info assistant"
           assistant={{ name: 'Freehold AI' }}
-          emptyStateMessage="Ask me anything about Freehold!"
+          emptyStateMessage="Hi! I'm the Freehold AI assistant. Ask me about our platform, pricing, or how we can help your business."
           suggestions={[
-            'What is Freehold?',
-            'Calculate payroll for $85k salary',
-            'What features do you offer?',
+            'What does Freehold do?',
+            'What industries do you serve?',
+            'How does pricing work?',
+            "I'd like to schedule a demo",
           ]}
           onSuggestionClick={(suggestion) => {
             setInput(suggestion)

@@ -52,7 +52,7 @@ export function Navbar({ items, cta, className }: NavbarProps) {
       </a>
 
       {/* Desktop nav */}
-      <div className="hidden md:flex items-center gap-8">
+      <div className="hidden xl:flex items-center gap-8">
         {items.map((item) => (
           <a
             key={item.label}
@@ -73,7 +73,7 @@ export function Navbar({ items, cta, className }: NavbarProps) {
 
       {/* Mobile hamburger */}
       <button
-        className="md:hidden p-2 text-[#5C574F] hover:text-[#2C2824] transition-colors duration-200"
+        className="xl:hidden p-2 text-[#5C574F] hover:text-[#2C2824] transition-colors duration-200"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
       >
@@ -83,7 +83,7 @@ export function Navbar({ items, cta, className }: NavbarProps) {
       {/* Mobile menu */}
       <div
         className={cn(
-          'absolute top-[72px] left-0 right-0 md:hidden bg-white/95 backdrop-blur-md border-b border-[rgba(184,164,142,0.15)] px-8 py-5 flex flex-col gap-4 transition-all duration-250 origin-top',
+          'absolute top-[72px] left-0 right-0 xl:hidden bg-white/95 backdrop-blur-md border-b border-[rgba(184,164,142,0.15)] px-8 py-5 flex flex-col gap-4 transition-all duration-250 origin-top',
           menuOpen
             ? 'opacity-100 scale-y-100 translate-y-0'
             : 'opacity-0 scale-y-95 -translate-y-2 pointer-events-none'
