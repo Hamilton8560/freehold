@@ -4,7 +4,13 @@ const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
+    {
+      name: '@storybook/addon-essentials',
+      options: {
+        highlight: false,
+        outline: false,
+      },
+    },
     '@storybook/addon-interactions',
   ],
   framework: {

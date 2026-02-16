@@ -1,5 +1,6 @@
 import { forwardRef, type InputHTMLAttributes } from 'react'
 import { cn } from '../../utils/cn'
+import { FormControl } from '../FormControl'
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string
@@ -9,12 +10,9 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, label, error, hint, id, ...props }, ref) => {
-    const checkboxId = id || label?.toLowerCase().replace(/\s+/g, '-')
-    const descriptionId = (error || hint) ? `${checkboxId}-description` : undefined
-
     return (
-      <div className="w-full">
-        <div className="flex items-center gap-2">
+      <FormControl label={label} error={error} hint={hint} id={id} inline>
+        {({ id: checkboxId, descriptionId }) => (
           <div className="relative flex items-center">
             <input
               ref={ref}
@@ -47,27 +45,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               <path d="M4.5 9.5L7.5 12.5L13.5 6.5" />
             </svg>
           </div>
-          {label && (
-            <label
-              htmlFor={checkboxId}
-              className="text-sm font-medium text-[#2C2824] cursor-pointer"
-            >
-              {label}
-            </label>
-          )}
-        </div>
-        {(error || hint) && (
-          <p
-            id={descriptionId}
-            className={cn(
-              'mt-1.5 text-sm',
-              error ? 'text-[#991B1B]' : 'text-[#5C574F]'
-            )}
-          >
-            {error || hint}
-          </p>
         )}
-      </div>
+      </FormControl>
     )
   }
 )

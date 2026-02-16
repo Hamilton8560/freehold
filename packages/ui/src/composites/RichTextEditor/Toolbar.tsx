@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import type { Editor } from '@tiptap/react'
 import { cn } from '../../utils/cn'
 import {
   Dialog,
@@ -14,19 +13,21 @@ import { Input } from '../../primitives/Input/Input'
 import { Button } from '../../primitives/Button/Button'
 
 interface ToolbarProps {
-  editor: Editor | null
+  execCommand: (command: string, value?: string) => void
+  isFormatActive: (command: string, value?: string) => boolean
+  insertCodeBlock: () => void
+  insertLink: (url: string) => void
+  disabled?: boolean
 }
 
 function ToolbarButton({
   onClick,
-  onMouseDown,
   active = false,
   disabled = false,
   title,
   children,
 }: {
   onClick: () => void
-  onMouseDown?: () => void
   active?: boolean
   disabled?: boolean
   title: string
@@ -35,10 +36,7 @@ function ToolbarButton({
   return (
     <button
       type="button"
-      onMouseDown={(e) => {
-        e.preventDefault()
-        onMouseDown?.()
-      }}
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       disabled={disabled}
       title={title}
@@ -59,35 +57,17 @@ function Divider() {
   return <div className="w-px h-5 bg-[rgba(184,164,142,0.25)] mx-0.5" />
 }
 
-export function Toolbar({ editor }: ToolbarProps) {
+export function Toolbar({
+  execCommand,
+  isFormatActive,
+  insertCodeBlock,
+  insertLink,
+  disabled = false,
+}: ToolbarProps) {
   const [linkDialogOpen, setLinkDialogOpen] = useState(false)
   const [linkUrl, setLinkUrl] = useState('')
-  const [savedSelection, setSavedSelection] = useState<{ from: number; to: number } | null>(null)
 
-  if (!editor) return null
-
-  // Save selection when any toolbar interaction starts
-  const saveSelection = () => {
-    const { from, to } = editor.state.selection
-    setSavedSelection({ from, to })
-  }
-
-  // Execute command with selection restoration for block-level operations
-  const executeBlockCommand = (command: () => void) => {
-    if (savedSelection) {
-      editor.chain().focus().setTextSelection(savedSelection).run()
-    } else {
-      editor.chain().focus().run()
-    }
-    command()
-    setSavedSelection(null)
-  }
-
-  const handleLink = () => {
-    if (editor.isActive('link')) {
-      editor.chain().focus().unsetLink().run()
-      return
-    }
+  const handleLinkClick = () => {
     setLinkUrl('')
     setLinkDialogOpen(true)
   }
@@ -99,20 +79,7 @@ export function Toolbar({ editor }: ToolbarProps) {
       if (/^(javascript|data):/i.test(trimmedUrl)) {
         return // Silently reject dangerous protocols
       }
-
-      // Check if there's selected text
-      const { from, to } = editor.state.selection
-      if (from === to) {
-        // No selection - insert URL as link text
-        editor
-          .chain()
-          .focus()
-          .insertContent(`<a href="${trimmedUrl}">${trimmedUrl}</a>`)
-          .run()
-      } else {
-        // Has selection - wrap selected text with link
-        editor.chain().focus().setLink({ href: trimmedUrl }).run()
-      }
+      insertLink(trimmedUrl)
     }
     setLinkDialogOpen(false)
   }
@@ -121,8 +88,9 @@ export function Toolbar({ editor }: ToolbarProps) {
     <div className="bg-[#F9F7F4] border-b border-[rgba(184,164,142,0.15)] px-2 py-1.5 flex items-center gap-0.5 flex-wrap">
       {/* Bold / Italic */}
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        active={editor.isActive('bold')}
+        onClick={() => execCommand('bold')}
+        active={isFormatActive('bold')}
+        disabled={disabled}
         title="Bold"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -131,8 +99,9 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        active={editor.isActive('italic')}
+        onClick={() => execCommand('italic')}
+        active={isFormatActive('italic')}
+        disabled={disabled}
         title="Italic"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -146,9 +115,9 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Headings */}
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 1 }).run())}
-        active={editor.isActive('heading', { level: 1 })}
+        onClick={() => execCommand('formatBlock', 'h1')}
+        active={isFormatActive('formatBlock', 'h1')}
+        disabled={disabled}
         title="Heading 1"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -158,9 +127,9 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 2 }).run())}
-        active={editor.isActive('heading', { level: 2 })}
+        onClick={() => execCommand('formatBlock', 'h2')}
+        active={isFormatActive('formatBlock', 'h2')}
+        disabled={disabled}
         title="Heading 2"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -169,9 +138,9 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleHeading({ level: 3 }).run())}
-        active={editor.isActive('heading', { level: 3 })}
+        onClick={() => execCommand('formatBlock', 'h3')}
+        active={isFormatActive('formatBlock', 'h3')}
+        disabled={disabled}
         title="Heading 3"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -184,9 +153,9 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Lists */}
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleBulletList().run())}
-        active={editor.isActive('bulletList')}
+        onClick={() => execCommand('insertUnorderedList')}
+        active={isFormatActive('insertUnorderedList')}
+        disabled={disabled}
         title="Bullet List"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -199,9 +168,9 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleOrderedList().run())}
-        active={editor.isActive('orderedList')}
+        onClick={() => execCommand('insertOrderedList')}
+        active={isFormatActive('insertOrderedList')}
+        disabled={disabled}
         title="Ordered List"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -218,9 +187,9 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Blockquote / Code Block */}
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleBlockquote().run())}
-        active={editor.isActive('blockquote')}
+        onClick={() => execCommand('formatBlock', 'blockquote')}
+        active={isFormatActive('formatBlock', 'blockquote')}
+        disabled={disabled}
         title="Blockquote"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -231,9 +200,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         </svg>
       </ToolbarButton>
       <ToolbarButton
-        onMouseDown={saveSelection}
-        onClick={() => executeBlockCommand(() => editor.chain().focus().toggleCodeBlock().run())}
-        active={editor.isActive('codeBlock')}
+        onClick={insertCodeBlock}
+        disabled={disabled}
         title="Code Block"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -247,8 +215,8 @@ export function Toolbar({ editor }: ToolbarProps) {
 
       {/* Link */}
       <ToolbarButton
-        onClick={handleLink}
-        active={editor.isActive('link')}
+        onClick={handleLinkClick}
+        disabled={disabled}
         title="Link"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

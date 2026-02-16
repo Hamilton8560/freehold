@@ -1,13 +1,13 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/charts.ts', 'src/kanban.ts'],
   format: ['cjs', 'esm'],
   dts: true,
   splitting: false,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom', '@tiptap/react', '@tiptap/pm', '@tiptap/starter-kit', '@tiptap/extension-link', '@tiptap/extension-placeholder'],
+  external: ['react', 'react-dom', 'recharts', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
   treeshake: true,
   esbuildOptions(options) {
     options.loader = { ...options.loader, '.webp': 'dataurl', '.png': 'dataurl' }

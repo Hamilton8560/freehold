@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, use } from 'react'
+import { useState, use, type ChangeEvent } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
@@ -27,9 +27,6 @@ import {
   DialogClose,
   ConfirmDialog,
   CardFlipLoader,
-  PieChart,
-  BarChart,
-  LineChart,
   SearchInput,
   DataTable,
   FeatureRow,
@@ -40,7 +37,6 @@ import {
   SkeletonText,
   StatCardSkeleton,
   DataTableSkeleton,
-  ChartSkeleton,
   Toast,
   ToastViewport,
   ToastProvider,
@@ -51,24 +47,45 @@ import {
   TypingIndicator,
   ToolCallCard,
   EmptyState,
-  PayrollDashboard,
-  PayPeriodSelector,
-  PayrollStatsGrid,
-  PayrollCharts,
-  EmployeeTable,
-  PayrollActions,
-  EmployeeDetailModal,
   Form,
   FormField,
   FormSection,
   FormActions,
   FormGrid,
   Navbar,
+  Sidebar,
+  AppHeader,
+  LoginForm,
+  RegisterForm,
+  TagInput,
   type ChatMessageData,
+  type SidebarNavItem,
+} from '@freehold/ui'
+import {
+  PieChart,
+  BarChart,
+  LineChart,
+  ChartSkeleton,
+  PayrollDashboard,
+  PayPeriodSelector,
+  Dashboard,
   type Employee,
   type PayPeriod,
-  type PayrollStats,
-} from '@freehold/ui'
+} from '@freehold/ui/charts'
+import { Kanban } from '@freehold/ui/kanban'
+import {
+  OrderSummary,
+  PaymentMethodIcon,
+  SecurityBadge,
+  CheckoutDivider,
+  CheckoutHeader,
+  CheckoutFooter,
+  CheckoutCard,
+  CheckoutFullScreen,
+  CheckoutSplitScreen,
+  PricingCard,
+  PricingGrid,
+} from '@freehold/payments'
 import { getComponentBySlug, type ComponentDoc, type VariantDoc } from '../../../../lib/component-docs'
 
 export default function ComponentDetailPage({
@@ -272,20 +289,22 @@ function VariantSelector({
       <label className="block text-xs font-medium text-text-tertiary uppercase tracking-wider mb-2">
         {variant.name}
       </label>
-      <div className="flex gap-1 p-1 bg-background-secondary rounded-lg">
-        {variant.options.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => onChange(option.value)}
-            className={`px-3 py-1.5 rounded-md text-sm transition-all ${
-              selected === option.value
-                ? 'bg-white text-text-primary font-medium shadow-warm-sm'
-                : 'text-text-tertiary hover:text-text-secondary'
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
+      <div className="overflow-x-auto">
+        <div className="flex gap-1.5 p-1 bg-background-secondary rounded-lg">
+          {variant.options.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => onChange(option.value)}
+              className={`px-3 py-2 sm:py-1.5 rounded-md text-sm transition-all ${
+                selected === option.value
+                  ? 'bg-white text-text-primary font-medium shadow-warm-sm'
+                  : 'text-text-tertiary hover:text-text-secondary'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -429,6 +448,52 @@ function CardFlipLoaderPreview() {
   )
 }
 
+const ALL_ICON_NAMES = [
+  'dashboard', 'clients', 'pipeline', 'billing', 'reports',
+  'ai', 'settings', 'search', 'check', 'warning',
+  'arrow', 'shield', 'growth', 'deploy', 'automation',
+  'home', 'plus', 'minus', 'close', 'chevron-down',
+  'chevron-up', 'chevron-left', 'chevron-right', 'send', 'bot',
+] as const
+
+function IconGalleryPreview({
+  size,
+  color,
+}: {
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  color: 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error'
+}) {
+  const [iconSearch, setIconSearch] = useState('')
+  const filtered = iconSearch
+    ? ALL_ICON_NAMES.filter((name) => name.includes(iconSearch.toLowerCase()))
+    : ALL_ICON_NAMES
+
+  return (
+    <div className="w-full">
+      <input
+        type="text"
+        placeholder="Search icons..."
+        value={iconSearch}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setIconSearch(e.target.value)}
+        className="w-full mb-3 px-3 py-2 text-sm rounded-lg border border-[rgba(184,164,142,0.25)] bg-white text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-sand-300"
+      />
+      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3">
+        {filtered.map((name) => (
+          <div key={name} className="flex flex-col items-center p-3 rounded-lg bg-white border border-[rgba(184,164,142,0.1)]">
+            <Icon name={name} size={size} color={color} />
+            <span className="mt-1.5 text-[10px] text-text-tertiary text-center leading-tight truncate w-full">
+              {name}
+            </span>
+          </div>
+        ))}
+      </div>
+      {filtered.length === 0 && (
+        <p className="text-sm text-text-tertiary text-center py-4">No icons match &ldquo;{iconSearch}&rdquo;</p>
+      )}
+    </div>
+  )
+}
+
 function LiveComponent({
   component,
   variants,
@@ -479,52 +544,15 @@ function LiveComponent({
         </div>
       )
 
+    case 'tag-input':
+      return <TagInputPreview />
+
     case 'icon':
       return (
-        <div className="flex items-center gap-6">
-          <Icon
-            name="dashboard"
-            size={variants.size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
-            color={
-              variants.color as
-                | 'default'
-                | 'primary'
-                | 'secondary'
-                | 'muted'
-                | 'success'
-                | 'warning'
-                | 'error'
-            }
-          />
-          <Icon
-            name="check"
-            size={variants.size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
-            color={
-              variants.color as
-                | 'default'
-                | 'primary'
-                | 'secondary'
-                | 'muted'
-                | 'success'
-                | 'warning'
-                | 'error'
-            }
-          />
-          <Icon
-            name="settings"
-            size={variants.size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
-            color={
-              variants.color as
-                | 'default'
-                | 'primary'
-                | 'secondary'
-                | 'muted'
-                | 'success'
-                | 'warning'
-                | 'error'
-            }
-          />
-        </div>
+        <IconGalleryPreview
+          size={variants.size as 'xs' | 'sm' | 'md' | 'lg' | 'xl'}
+          color={variants.color as 'default' | 'primary' | 'secondary' | 'muted' | 'success' | 'warning' | 'error'}
+        />
       )
 
     case 'select':
@@ -788,20 +816,11 @@ function LiveComponent({
     case 'pay-period-selector':
       return <PayPeriodSelectorPreview />
 
-    case 'payroll-stats-grid':
-      return <PayrollStatsGridPreview />
+    case 'dashboard':
+      return <DashboardPreview />
 
-    case 'payroll-charts':
-      return <PayrollChartsPreview />
-
-    case 'employee-table':
-      return <EmployeeTablePreview />
-
-    case 'payroll-actions':
-      return <PayrollActionsPreview />
-
-    case 'employee-detail-modal':
-      return <EmployeeDetailModalPreview />
+    case 'kanban':
+      return <KanbanPreview />
 
     case 'card-flip-loader':
       return <CardFlipLoaderPreview />
@@ -820,6 +839,80 @@ function LiveComponent({
 
     case 'form-actions':
       return <FormActionsPreview />
+
+    case 'sidebar':
+      return <SidebarPreview />
+
+    case 'app-header':
+      return <AppHeaderPreview />
+
+    case 'login-form':
+      return <LoginFormPreview variant={variants.variant || 'simple'} />
+
+    case 'register-form':
+      return <RegisterFormPreview variant={variants.variant || 'simple'} />
+
+    // ── @freehold/payments previews ──────────────────────────────
+    case 'order-summary':
+      return <OrderSummaryPreview variant={variants.variant || 'default'} />
+
+    case 'payment-method-icon':
+      return (
+        <div className="flex gap-3 items-center">
+          <PaymentMethodIcon method="visa" size="lg" />
+          <PaymentMethodIcon method="mastercard" size="lg" />
+          <PaymentMethodIcon method="amex" size="lg" />
+          <PaymentMethodIcon method="apple-pay" size="lg" />
+          <PaymentMethodIcon method="google-pay" size="lg" />
+          <PaymentMethodIcon method="paypal" size="lg" />
+        </div>
+      )
+
+    case 'security-badge':
+      return (
+        <SecurityBadge
+          variant={variants.variant as 'default' | 'subtle'}
+        />
+      )
+
+    case 'checkout-divider':
+      return (
+        <div className="w-full max-w-xs">
+          <CheckoutDivider />
+        </div>
+      )
+
+    case 'checkout-header':
+      return (
+        <div className="w-full max-w-sm">
+          <CheckoutHeader
+            title="Complete your order"
+            description="Review your items and enter payment details."
+          />
+        </div>
+      )
+
+    case 'checkout-footer':
+      return (
+        <div className="w-full max-w-sm">
+          <CheckoutFooter termsUrl="#" privacyUrl="#" showPoweredBy />
+        </div>
+      )
+
+    case 'checkout-card':
+      return <CheckoutCardPreview />
+
+    case 'checkout-full-screen':
+      return <CheckoutFullScreenPreview />
+
+    case 'checkout-split-screen':
+      return <CheckoutSplitScreenPreview />
+
+    case 'pricing-card':
+      return <PricingCardPreview variant={variants.variant || 'default'} />
+
+    case 'pricing-grid':
+      return <PricingGridPreview />
 
     case 'navbar':
       return (
@@ -921,16 +1014,6 @@ const MOCK_EMPLOYEES: Employee[] = [
   { id: '5', name: 'Emma Wilson', department: 'HR', position: 'HR Specialist', grossPay: 5800, deductions: 800, netPay: 5000, status: 'approved', avatar: 'EW' },
 ]
 
-const MOCK_PAYROLL_STATS: PayrollStats = {
-  totalEmployees: 5,
-  pendingCount: 2,
-  approvedCount: 2,
-  paidCount: 1,
-  totalGrossPay: 35800,
-  totalDeductions: 5000,
-  totalNetPay: 30800,
-}
-
 function PayrollDashboardPreview() {
   return (
     <div className="w-full max-h-[500px] overflow-auto">
@@ -951,45 +1034,96 @@ function PayPeriodSelectorPreview() {
   return <PayPeriodSelector value={period} onChange={setPeriod} />
 }
 
-function PayrollStatsGridPreview() {
+function DashboardPreview() {
   return (
-    <div className="w-full">
-      <PayrollStatsGrid stats={MOCK_PAYROLL_STATS} />
-    </div>
-  )
-}
-
-function PayrollChartsPreview() {
-  return (
-    <div className="w-full">
-      <PayrollCharts stats={MOCK_PAYROLL_STATS} employees={MOCK_EMPLOYEES} />
-    </div>
-  )
-}
-
-function EmployeeTablePreview() {
-  return (
-    <div className="w-full">
-      <EmployeeTable employees={MOCK_EMPLOYEES} />
-    </div>
-  )
-}
-
-function PayrollActionsPreview() {
-  return <PayrollActions pendingCount={2} />
-}
-
-function EmployeeDetailModalPreview() {
-  const [open, setOpen] = useState(false)
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>Open Employee Modal</Button>
-      <EmployeeDetailModal
-        employee={MOCK_EMPLOYEES[0]}
-        open={open}
-        onOpenChange={setOpen}
+    <div className="w-full max-h-[400px] overflow-auto">
+      <Dashboard<Employee>
+        data={MOCK_EMPLOYEES}
+        keyExtractor={(e) => e.id}
+        header={{ title: 'Dashboard', description: 'Generic dashboard pattern.' }}
+        columns={[
+          { key: 'name', header: 'Name' },
+          { key: 'department', header: 'Department' },
+          { key: 'status', header: 'Status' },
+        ]}
+        stats={[
+          { key: 'total', label: 'Total', getValue: (data) => data.length },
+          { key: 'pending', label: 'Pending', getValue: (data) => data.filter((e) => e.status === 'pending').length },
+        ]}
+        showCharts={false}
       />
-    </>
+    </div>
+  )
+}
+
+// ── Kanban preview helpers ──────────────────────────────────
+
+interface KanbanTask {
+  id: string
+  title: string
+  priority: 'low' | 'medium' | 'high'
+}
+
+const INITIAL_KANBAN_TASKS: Record<string, KanbanTask[]> = {
+  todo: [
+    { id: 'k1', title: 'Set up CI pipeline', priority: 'high' },
+    { id: 'k2', title: 'Write API docs', priority: 'medium' },
+    { id: 'k3', title: 'Add dark mode', priority: 'low' },
+  ],
+  'in-progress': [
+    { id: 'k4', title: 'Build Kanban component', priority: 'high' },
+    { id: 'k5', title: 'Design onboarding flow', priority: 'medium' },
+  ],
+  done: [
+    { id: 'k6', title: 'Initialize repo', priority: 'low' },
+    { id: 'k7', title: 'Set up linting', priority: 'medium' },
+  ],
+}
+
+function KanbanPreview() {
+  const [tasks, setTasks] = useState<Record<string, KanbanTask[]>>(INITIAL_KANBAN_TASKS)
+
+  const priorityColor: Record<string, string> = {
+    high: 'error',
+    medium: 'pending',
+    low: 'default',
+  }
+
+  return (
+    <div className="w-full overflow-auto">
+      <Kanban<KanbanTask>
+        columns={[
+          { id: 'todo', title: 'To Do', items: tasks.todo },
+          { id: 'in-progress', title: 'In Progress', items: tasks['in-progress'] },
+          { id: 'done', title: 'Done', items: tasks.done },
+        ]}
+        keyExtractor={(t) => t.id}
+        renderCard={(t) => (
+          <div>
+            <p className="text-sm font-medium text-text-primary mb-1.5">{t.title}</p>
+            <Badge variant={priorityColor[t.priority] as 'error' | 'pending' | 'default'}>
+              {t.priority}
+            </Badge>
+          </div>
+        )}
+        onCardMove={(cardId, fromCol, toCol, newIndex) => {
+          setTasks((prev) => {
+            const next = { ...prev }
+            const fromItems = [...(next[fromCol] || [])]
+            const cardIndex = fromItems.findIndex((t) => t.id === cardId)
+            if (cardIndex === -1) return prev
+            const [card] = fromItems.splice(cardIndex, 1)
+            next[fromCol] = fromItems
+
+            const toItems = [...(next[toCol] || [])]
+            toItems.splice(newIndex, 0, card)
+            next[toCol] = toItems
+
+            return next
+          })
+        }}
+      />
+    </div>
   )
 }
 
@@ -1111,6 +1245,286 @@ function FormActionsPreview() {
         <Button variant="secondary">Cancel</Button>
         <Button type="submit">Save Changes</Button>
       </FormActions>
+    </div>
+  )
+}
+
+// ── Starter kit preview helpers ──────────────────────────────────
+
+const MOCK_SIDEBAR_ITEMS: SidebarNavItem[] = [
+  {
+    title: 'Main',
+    items: [
+      { icon: 'home', label: 'Dashboard', href: '/' },
+      { icon: 'clients', label: 'Clients', href: '/clients', badge: 3 },
+      { icon: 'pipeline', label: 'Pipeline', href: '/pipeline' },
+    ],
+  },
+  {
+    title: 'Settings',
+    items: [
+      { icon: 'billing', label: 'Billing', href: '/billing' },
+      { icon: 'settings', label: 'Settings', href: '/settings' },
+    ],
+  },
+]
+
+function TagInputPreview() {
+  const [tags, setTags] = useState<string[]>(['React', 'TypeScript'])
+  return (
+    <div className="w-full max-w-sm">
+      <TagInput
+        label="Skills"
+        value={tags}
+        onChange={setTags}
+        placeholder="Add a skill..."
+        hint="Press Enter or comma to add"
+      />
+    </div>
+  )
+}
+
+function SidebarPreview() {
+  const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [active, setActive] = useState('/')
+  return (
+    <div className="space-y-3">
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="md:hidden inline-flex items-center gap-2 px-3 py-1.5 text-sm rounded-md bg-[#2C2824] text-white"
+      >
+        Open Mobile Sidebar
+      </button>
+      <div className="h-[420px] rounded-lg overflow-hidden border border-[rgba(184,164,142,0.15)]">
+        <Sidebar
+          logo={<span className="text-white font-heading text-lg">Acme</span>}
+          items={MOCK_SIDEBAR_ITEMS}
+          user={{ name: 'Jane Doe', email: 'jane@example.com' }}
+          collapsed={collapsed}
+          onCollapse={setCollapsed}
+          activeItem={active}
+          onNavigate={(href) => { setActive(href) }}
+          mobileOpen={mobileOpen}
+          onMobileClose={() => setMobileOpen(false)}
+        />
+      </div>
+    </div>
+  )
+}
+
+function AppHeaderPreview() {
+  return (
+    <div className="w-full rounded-lg overflow-hidden border border-[rgba(184,164,142,0.15)]">
+      <AppHeader
+        title="Dashboard"
+        breadcrumbs={[
+          { label: 'Home', href: '#' },
+          { label: 'Projects', href: '#' },
+          { label: 'Dashboard' },
+        ]}
+        actions={<Button size="sm">New Project</Button>}
+        user={{ name: 'Jane Doe' }}
+        onMenuClick={() => {}}
+      />
+    </div>
+  )
+}
+
+function LoginFormPreview({ variant }: { variant: string }) {
+  return (
+    <div className="w-full max-w-2xl max-h-[500px] overflow-auto rounded-lg border border-[rgba(184,164,142,0.15)]">
+      <LoginForm
+        variant={variant as 'simple' | 'split' | 'card'}
+        title="Welcome back"
+        description="Sign in to your account"
+        onSubmit={(data) => console.log('Login:', data)}
+        socialProviders={['google', 'github']}
+        onSocialLogin={(p) => console.log('Social:', p)}
+        forgotPasswordHref="#"
+        registerHref="#"
+      />
+    </div>
+  )
+}
+
+function RegisterFormPreview({ variant }: { variant: string }) {
+  return (
+    <div className="w-full max-w-2xl max-h-[500px] overflow-auto rounded-lg border border-[rgba(184,164,142,0.15)]">
+      <RegisterForm
+        variant={variant as 'simple' | 'split' | 'card'}
+        title="Create your account"
+        description="Get started for free"
+        onSubmit={(data) => console.log('Register:', data)}
+        socialProviders={['google']}
+        onSocialLogin={(p) => console.log('Social:', p)}
+        loginHref="#"
+        termsHref="#"
+        privacyHref="#"
+      />
+    </div>
+  )
+}
+
+// ── Payments preview helpers ──────────────────────────────────
+
+const MOCK_ORDER_ITEMS = [
+  { id: '1', name: 'Pro Plan', description: 'Monthly subscription', quantity: 1, unitPrice: 29, currency: 'USD' },
+  { id: '2', name: 'Extra Seats', description: '3 additional seats', quantity: 3, unitPrice: 9, currency: 'USD' },
+]
+
+function OrderSummaryPreview({ variant }: { variant: string }) {
+  return (
+    <div className="w-full max-w-sm">
+      <OrderSummary
+        items={MOCK_ORDER_ITEMS}
+        subtotal={56}
+        tax={4.48}
+        total={60.48}
+        currency="USD"
+        variant={variant as 'default' | 'compact'}
+      />
+    </div>
+  )
+}
+
+function CheckoutCardPreview() {
+  return (
+    <div className="w-full">
+      <CheckoutCard
+        header={{ title: 'Complete your order', description: 'Review your items below.' }}
+        footer={{ termsUrl: '#', privacyUrl: '#', showPoweredBy: true }}
+      >
+        <OrderSummary
+          items={MOCK_ORDER_ITEMS}
+          subtotal={56}
+          tax={4.48}
+          total={60.48}
+          currency="USD"
+          variant="compact"
+        />
+        <SecurityBadge />
+      </CheckoutCard>
+    </div>
+  )
+}
+
+function CheckoutFullScreenPreview() {
+  return (
+    <div className="w-full max-w-lg rounded-lg border border-[rgba(184,164,142,0.15)] overflow-hidden" style={{ height: 320 }}>
+      <div className="scale-[0.6] origin-top-left" style={{ width: '166.67%', height: '166.67%' }}>
+        <CheckoutFullScreen
+          header={{ title: 'Checkout' }}
+          footer={{ showPoweredBy: true }}
+        >
+          <OrderSummary
+            items={[MOCK_ORDER_ITEMS[0]]}
+            subtotal={29}
+            total={29}
+            currency="USD"
+            variant="compact"
+          />
+          <SecurityBadge />
+        </CheckoutFullScreen>
+      </div>
+    </div>
+  )
+}
+
+function CheckoutSplitScreenPreview() {
+  return (
+    <div className="w-full max-w-2xl rounded-lg border border-[rgba(184,164,142,0.15)] overflow-hidden" style={{ height: 320 }}>
+      <div className="scale-[0.5] origin-top-left" style={{ width: '200%', height: '200%' }}>
+        <CheckoutSplitScreen
+          left={
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-3">Upgrade to Pro</h2>
+              <p className="text-white/70 text-sm">Unlock all premium features and priority support.</p>
+            </div>
+          }
+          header={{ title: 'Checkout' }}
+          footer={{ termsUrl: '#', showPoweredBy: true }}
+        >
+          <OrderSummary
+            items={[MOCK_ORDER_ITEMS[0]]}
+            subtotal={29}
+            total={29}
+            currency="USD"
+            variant="compact"
+          />
+          <SecurityBadge />
+        </CheckoutSplitScreen>
+      </div>
+    </div>
+  )
+}
+
+function PricingCardPreview({ variant }: { variant: string }) {
+  return (
+    <div className="w-full max-w-sm">
+      <PricingCard
+        name="Pro"
+        description="For growing teams"
+        price={29}
+        currency="USD"
+        billingPeriod="monthly"
+        variant={variant as 'default' | 'featured'}
+        badge={variant === 'featured' ? 'Most Popular' : undefined}
+        features={[
+          { text: 'Unlimited projects' },
+          { text: '10 team members' },
+          { text: 'Priority support' },
+          { text: 'Custom domain', included: false },
+        ]}
+        ctaLabel="Get Started"
+      />
+    </div>
+  )
+}
+
+function PricingGridPreview() {
+  return (
+    <div className="w-full" style={{ transform: 'scale(0.55)', transformOrigin: 'top center' }}>
+      <PricingGrid columns={3}>
+        <PricingCard
+          name="Starter"
+          price={0}
+          currency="USD"
+          billingPeriod="monthly"
+          features={[
+            { text: '1 project' },
+            { text: '1 user' },
+            { text: 'Community support' },
+          ]}
+          ctaLabel="Start Free"
+        />
+        <PricingCard
+          name="Pro"
+          price={29}
+          currency="USD"
+          billingPeriod="monthly"
+          badge="Popular"
+          featured
+          features={[
+            { text: 'Unlimited projects' },
+            { text: '10 users' },
+            { text: 'Priority support' },
+          ]}
+          ctaLabel="Get Started"
+        />
+        <PricingCard
+          name="Enterprise"
+          price={99}
+          currency="USD"
+          billingPeriod="monthly"
+          features={[
+            { text: 'Everything in Pro' },
+            { text: 'Unlimited users' },
+            { text: 'Dedicated support' },
+          ]}
+          ctaLabel="Contact Sales"
+        />
+      </PricingGrid>
     </div>
   )
 }

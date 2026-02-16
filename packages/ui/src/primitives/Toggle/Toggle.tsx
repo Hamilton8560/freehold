@@ -1,6 +1,7 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../../utils/cn'
+import { FormControl } from '../FormControl'
 
 const toggleVariants = cva(
   [
@@ -52,8 +53,6 @@ export interface ToggleProps
 
 export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
   ({ className, label, error, hint, size, checked = false, onChange, disabled, id, ...props }, ref) => {
-    const toggleId = id || label?.toLowerCase().replace(/\s+/g, '-')
-
     const handleClick = () => {
       if (!disabled) {
         onChange?.(!checked)
@@ -61,8 +60,8 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
     }
 
     return (
-      <div className="w-full">
-        <div className="flex items-center gap-2">
+      <FormControl label={label} error={error} hint={hint} id={id} inline onLabelClick={handleClick}>
+        {({ id: toggleId }) => (
           <button
             ref={ref}
             id={toggleId}
@@ -89,27 +88,8 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
               )}
             />
           </button>
-          {label && (
-            <label
-              htmlFor={toggleId}
-              className="text-sm font-medium text-[#2C2824] cursor-pointer"
-              onClick={handleClick}
-            >
-              {label}
-            </label>
-          )}
-        </div>
-        {(error || hint) && (
-          <p
-            className={cn(
-              'mt-1.5 text-sm',
-              error ? 'text-[#991B1B]' : 'text-[#5C574F]'
-            )}
-          >
-            {error || hint}
-          </p>
         )}
-      </div>
+      </FormControl>
     )
   }
 )

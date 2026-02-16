@@ -1,14 +1,17 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '../../primitives/Card'
+import { useState } from 'react'
+import { Dashboard } from '../Dashboard'
 import { PayPeriodSelector } from './PayPeriodSelector'
-import { PayrollStatsGrid } from './PayrollStatsGrid'
-import { PayrollCharts } from './PayrollCharts'
-import { EmployeeTable } from './EmployeeTable'
-import { PayrollActions } from './PayrollActions'
-import { EmployeeDetailModal } from './EmployeeDetailModal'
-import type { Employee, PayPeriod, PayrollStats } from './types'
+import {
+  getPayrollStats,
+  getPayrollColumns,
+  payrollSearch,
+  payrollFilters,
+  payrollCharts,
+  getPayrollDetail,
+} from './payrollConfig'
+import type { Employee, PayPeriod } from './types'
 
 export interface PayrollDashboardProps {
   employees: Employee[]
@@ -46,87 +49,79 @@ export function PayrollDashboard({
       payDate: '15',
     }
   )
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
-  const [showDetailModal, setShowDetailModal] = useState(false)
 
   const handlePeriodChange = (newPeriod: PayPeriod) => {
     setPeriod(newPeriod)
     onPeriodChange?.(newPeriod)
   }
 
-  const handleViewDetails = (employee: Employee) => {
-    setSelectedEmployee(employee)
-    setShowDetailModal(true)
-    onViewDetails?.(employee)
-  }
-
-  const stats: PayrollStats = useMemo(() => {
-    return {
-      totalEmployees: employees.length,
-      pendingCount: employees.filter((e) => e.status === 'pending').length,
-      approvedCount: employees.filter((e) => e.status === 'approved').length,
-      paidCount: employees.filter((e) => e.status === 'paid').length,
-      totalGrossPay: employees.reduce((sum, e) => sum + e.grossPay, 0),
-      totalDeductions: employees.reduce((sum, e) => sum + e.deductions, 0),
-      totalNetPay: employees.reduce((sum, e) => sum + e.netPay, 0),
-    }
-  }, [employees])
+  const pendingCount = employees.filter((e) => e.status === 'pending').length
 
   return (
-    <div className={className}>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h1 className="font-heading text-2xl sm:text-3xl font-medium text-[#2C2824]">
-              Payroll Dashboard
-            </h1>
-            <p className="mt-1 text-sm sm:text-base text-[#5C574F]">
-              Manage employee payroll, approve payments, and track disbursements.
-            </p>
-          </div>
+    <Dashboard<Employee>
+      data={employees}
+      keyExtractor={(e) => e.id}
+      header={{
+        title: 'Payroll Dashboard',
+        description: 'Manage employee payroll, approve payments, and track disbursements.',
+        headerAction: (
           <PayPeriodSelector value={period} onChange={handlePeriodChange} />
-        </div>
-
-        {/* Stats Grid */}
-        <PayrollStatsGrid stats={stats} isLoading={isLoading} />
-
-        {/* Charts */}
-        {showCharts && <PayrollCharts stats={stats} employees={employees} isLoading={isLoading} />}
-
-        {/* Employee Table Card */}
-        <Card variant="default" padding="none">
-          <CardHeader className="border-b border-[rgba(184,164,142,0.15)] px-4 sm:px-6 py-4">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <CardTitle>Employee Payroll</CardTitle>
-              <PayrollActions
-                onGenerateAll={onGenerateAll}
-                onApproveAll={onApproveAll}
-                onExport={onExport}
-                pendingCount={stats.pendingCount}
-              />
-            </div>
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6">
-            <EmployeeTable
-              employees={employees}
-              onApprove={onApprove}
-              onMarkPaid={onMarkPaid}
-              onViewDetails={handleViewDetails}
-              isLoading={isLoading}
-            />
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Employee Detail Modal */}
-      <EmployeeDetailModal
-        employee={selectedEmployee}
-        open={showDetailModal}
-        onOpenChange={setShowDetailModal}
-        onApprove={onApprove}
-        onMarkPaid={onMarkPaid}
-      />
-    </div>
+        ),
+      }}
+      stats={getPayrollStats()}
+      statsColumns={7}
+      charts={payrollCharts}
+      showCharts={showCharts}
+      columns={getPayrollColumns({ onApprove, onMarkPaid, onViewDetails })}
+      tableTitle="Employee Payroll"
+      search={payrollSearch}
+      filters={payrollFilters}
+      actions={[
+        {
+          key: 'generate',
+          label: 'Generate All Payslips',
+          variant: 'primary',
+          icon: (
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          ),
+          onClick: onGenerateAll,
+        },
+        {
+          key: 'approveAll',
+          label: `Approve All (${pendingCount})`,
+          variant: 'accent',
+          visible: pendingCount > 0,
+          onClick: onApproveAll,
+          confirm: {
+            title: 'Approve All Payslips',
+            description: `Are you sure you want to approve ${pendingCount} pending payslip${pendingCount !== 1 ? 's' : ''}? This action cannot be undone.`,
+            confirmLabel: 'Approve All',
+            icon: (
+              <svg className="h-5 w-5 text-[#8DB580]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ),
+          },
+        },
+        {
+          key: 'export',
+          label: 'Export',
+          variant: 'secondary',
+          icon: (
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          ),
+          onClick: onExport,
+        },
+      ]}
+      detail={getPayrollDetail({ onApprove, onMarkPaid })}
+      onRowClick={onViewDetails}
+      isLoading={isLoading}
+      emptyMessage="No employees found matching your filters."
+      className={className}
+    />
   )
 }

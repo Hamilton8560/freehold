@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button, Card, CardContent, Badge, Icon, StatCard, BarChart, Navbar } from '@freehold/ui'
+import { Button, Card, CardContent, Badge, Icon, StatCard, Navbar } from '@freehold/ui'
+import { BarChart } from '@freehold/ui/charts'
 
 // Fade-in animation hook
 function useFadeIn(threshold = 0.15) {
