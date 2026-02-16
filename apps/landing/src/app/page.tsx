@@ -133,15 +133,15 @@ function Hero() {
         {/* Dashboard preview mock */}
         <FadeIn delay={0.45}>
           <div className="mt-20 w-full max-w-[960px] bg-white border border-[rgba(184,164,142,0.2)] rounded-2xl shadow-warm-lg overflow-hidden">
-            <div className="bg-background-secondary rounded-xl m-2 p-6">
+            <div className="bg-background-secondary rounded-xl m-1.5 p-3 sm:m-2 sm:p-6">
               {/* Window chrome dots */}
-              <div className="flex gap-1.5 mb-5">
+              <div className="flex gap-1.5 mb-3 sm:mb-5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[rgba(184,164,142,0.3)]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[rgba(184,164,142,0.2)]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[rgba(184,164,142,0.15)]" />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-3 sm:gap-5">
                 {/* Sidebar */}
                 <div className="hidden md:flex flex-col gap-1 bg-white rounded-lg p-3 border border-[rgba(184,164,142,0.15)]">
                   {[
@@ -167,9 +167,9 @@ function Hero() {
                 </div>
 
                 {/* Main content area */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3 sm:gap-4">
                   {/* Stat cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3">
                     <StatCard label="Active Clients" value={247} format="number" trend={{ value: 12, direction: 'up' }} />
                     <StatCard label="Monthly Revenue" value={84200} format="currency" trend={{ value: 8, direction: 'up' }} />
                     <StatCard label="Retention Rate" value={94.7} format="percentage" trend={{ value: 2, direction: 'up' }} />
@@ -190,7 +190,7 @@ function Hero() {
                       xAxisKey="month"
                       series={[{ name: 'Revenue', dataKey: 'revenue', color: '#B8A48E' }]}
                       yAxisFormat="currency"
-                      height={160}
+                      height={200}
                       showGrid={false}
                       showLegend={false}
                       showTooltip={false}
@@ -551,35 +551,66 @@ function ShowcaseBanner() {
 const AI_INSTRUCTIONS = `<freehold-ui-instructions>
 You are working with the @freehold/ui component library. Follow these rules:
 
-IMPORTS: Import from '@freehold/ui'. Components: Button, Card, CardContent, Badge, Pill, Icon, Input, Select, StatCard, CopyBlock, DataTable, SearchInput, FilterSelect, FeatureRow, PayrollDashboard.
+IMPORTS: Import from '@freehold/ui'. Components: Button, Card, CardContent, Badge, Pill, Icon, Input, Select, StatCard, CopyBlock, DataTable, SearchInput, FilterSelect, FeatureRow, PayrollDashboard, Navbar, Sidebar, Dashboard, DashboardStatsGrid, DashboardCharts, DashboardTable, FormGrid, FormField, ConfirmDialog. Charts: BarChart, LineChart, PieChart (from '@freehold/ui/charts').
 
-STYLING PATTERN: Use CVA (class-variance-authority) for all component variants. Use cn() from '../../utils/cn' for class merging. Use forwardRef for DOM components.
+STYLING PATTERN: Use CVA (class-variance-authority) for all component variants. Use cn() helper (clsx + tailwind-merge) for class merging — it resolves Tailwind conflicts so later classes win. Use forwardRef for DOM components.
+
+Example CVA pattern:
+  const myVariants = cva('base-classes rounded-[14px] transition-all duration-200', {
+    variants: { variant: { default: '...', accent: '...' }, size: { sm: '...', md: '...' } },
+    defaultVariants: { variant: 'default', size: 'md' },
+  })
+
+CARD VARIANTS:
+- default: bg-white, subtle border — use for content containers
+- elevated: bg-white, warm shadow, hover lift (-translate-y-0.5) — use for featured/interactive cards
+- outlined: transparent bg, 2px border — use for selectable items or grouped lists
+- stat: bg-white, subtle border, hover lift — use for KPI/metric cards
 
 COLORS (use hex values in Tailwind):
-- Backgrounds: #FAF9F6 (primary), #F5F2ED (warm), #F9F7F3 (card)
-- Text: #2C2824 (primary), #5C574F (secondary), #8A847A (muted)
-- Accent: #B8A48E (sand), #A08A6E (hover), #D4C8B8 (light)
-- Border: #E8E2DA, rgba(184,164,142,0.25) for subtle
+- Backgrounds: #FAF9F6 (primary), #F5F2ED (secondary/warm), #F9F7F3 (card), #EDEAE5 (tertiary)
+- Text: #2C2824 (primary), #5C574F (secondary), #8A847A (muted/tertiary)
+- Accent: #B8A48E (sand-500), #A08A6E (sand hover), #D4C8B8 (sand light/sand-300)
+- Border: #E8E2DA (solid), rgba(184,164,142,0.25) (subtle), rgba(184,164,142,0.15) (very subtle)
 
 STATUS COLORS:
 - Pending: bg #FEF3C7, text #92400E
-- Approved: bg #D1FAE5, text #065F46
-- Paid: bg #DBEAFE, text #1E40AF
+- Approved/Success: bg #D1FAE5, text #065F46
+- Paid/Info: bg #DBEAFE, text #1E40AF
 - Error: bg #FEE2E2, text #991B1B
 
-TYPOGRAPHY: DM Serif Display (headings, font-heading), DM Sans (body), JetBrains Mono (code).
+TYPOGRAPHY:
+- Headings: DM Serif Display (font-heading), tight tracking (tracking-tight)
+- Body: DM Sans, text-sm or text-base, leading-relaxed for paragraphs
+- Code: JetBrains Mono (font-mono)
+- Section labels: text-xs, uppercase, tracking-[0.1em], text-sand-500
+- Scale: text-xs (labels) → text-sm (body) → text-base (intro) → text-xl (card titles) → text-3xl/4xl (section headings) → text-5xl/6xl/7xl (hero)
 
-SPACING: 8px grid (4, 8, 12, 16, 24, 32, 40, 48, 64, 80px).
+SPACING: 8px grid (4, 8, 12, 16, 24, 32, 40, 48, 64, 80px). Section padding: py-16 sm:py-28. Horizontal: px-4 sm:px-6. Max-widths: 1080px (content), 1200px (hero).
 
-BORDER RADIUS: sm=8px (buttons), md=10px (inputs), lg=14px (cards), xl=16px (wrappers), full (pills).
+BORDER RADIUS: sm=8px (buttons), md=10px (inputs), lg=14px (cards), xl=16px (wrappers), full (pills/badges).
 
-SHADOWS: Use warm shadows with sand tones, not pure black.
+SHADOWS: Always use warm tones, never pure black.
+- Subtle: shadow-[0_1px_3px_rgba(184,164,142,0.1)]
+- Medium: shadow-[0_4px_20px_rgba(184,164,142,0.12)]
+- Large: shadow-warm-lg
+- Hover: pair shadow increase with -translate-y-0.5 and transition-all duration-300
 
-ICONS: 20x20 viewBox, 1.5px stroke, round caps/joins, #B8A48E default stroke.
+RESPONSIVE (mobile-first):
+- Base classes = mobile. Add sm: (640px), md: (768px), lg: (1024px), xl: (1280px) for larger screens.
+- Padding: p-3 sm:p-6 or px-4 sm:px-6. Gaps: gap-2 sm:gap-3 or gap-3 sm:gap-5.
+- Grids: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 (stacked on mobile, multi-col on desktop).
+- Stat grids: grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 (always 2+ cols, even on mobile).
+- Hide desktop elements on mobile: hidden md:flex. Show mobile-only: md:hidden.
+- Text scaling: text-3xl sm:text-4xl lg:text-5xl.
 
-STRUCTURE: primitives/ (single-purpose), composites/ (multi-component), patterns/ (full features).
+TRANSITIONS: Use transition-all duration-200 for interactive elements, duration-300 for hover effects. Pair hover:shadow with hover:-translate-y-0.5 for lift.
 
-DON'T: Use arbitrary Tailwind colors, skip CVA, forget exports, ignore 8px grid.
+ICONS: 20x20 viewBox, 1.5px stroke, round caps/joins, currentColor stroke. Sizes: xs=12px, sm=16px, md=20px, lg=24px, xl=32px. Default color: #B8A48E.
+
+STRUCTURE: primitives/ (single-purpose), composites/ (multi-component), patterns/ (full features like Dashboard, Auth, Chat).
+
+DON'T: Use arbitrary Tailwind colors outside the palette. Skip CVA for variants. Use pure black shadows. Use grid-cols-1 for stat cards on mobile (use grid-cols-2 minimum). Forget mobile-first responsive classes. Ignore the 8px spacing grid.
 </freehold-ui-instructions>`
 
 function VibeCoderSection() {
