@@ -114,21 +114,4 @@
   margin-bottom: 0;
 }
 
-/* Tiptap Placeholder */
-.freehold-rte-content p.is-editor-empty:first-child::before {
-  content: attr(data-placeholder);
-  float: left;
-  color: #8A847A;
-  pointer-events: none;
-  height: 0;
-}
-
-/* Editor fill: make the Tiptap element expand to fill minHeight */
-.freehold-rte-wrapper {
-  display: flex;
-  flex-direction: column;
-}
-
-.freehold-rte-wrapper > .tiptap {
-  flex: 1 1 auto;
-}
+/* Placeholder is handled via JS overlay for better browser compatibility */

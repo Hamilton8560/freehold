@@ -26,6 +26,13 @@ export type IconName =
   | 'chevron-right'
   | 'send'
   | 'bot'
+  | 'menu'
+  | 'log-out'
+  | 'mail'
+  | 'lock'
+  | 'user'
+  | 'eye'
+  | 'eye-off'
 
 type IconComponent = (props: SVGProps<SVGSVGElement>) => ReactElement
 
@@ -199,6 +206,56 @@ export const iconPaths: Record<IconName, IconComponent> = {
       <path d="M10 3V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       <circle cx="10" cy="3" r="1" fill="currentColor" />
       <path d="M2 12H4M16 12H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+
+  menu: (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+
+  'log-out': (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M7 17H4C3.44772 17 3 16.5523 3 16V4C3 3.44772 3.44772 3 4 3H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13 14L17 10L13 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 10H7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+
+  mail: (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M2 6L10 11L18 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+
+  lock: (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 9V6C7 4.34315 8.34315 3 10 3C11.6569 3 13 4.34315 13 6V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+
+  user: (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <circle cx="10" cy="7" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M4 17C4 13.686 6.686 12 10 12C13.314 12 16 13.686 16 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  ),
+
+  eye: (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M2 10C2 10 5 4 10 4C15 4 18 10 18 10C18 10 15 16 10 16C5 16 2 10 2 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  ),
+
+  'eye-off': (props) => (
+    <svg viewBox="0 0 20 20" fill="none" {...props}>
+      <path d="M3 3L17 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8.5 8.5C7.67 9.33 7.67 10.67 8.5 11.5C9.33 12.33 10.67 12.33 11.5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M5.6 5.6C3.8 7 2 10 2 10C2 10 5 16 10 16C11.7 16 13.2 15.3 14.4 14.4M16.7 12.3C17.6 11.2 18 10 18 10C18 10 15 4 10 4C9.3 4 8.6 4.1 8 4.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
 }

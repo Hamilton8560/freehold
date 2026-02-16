@@ -22,7 +22,6 @@ import {
   Skeleton,
   SkeletonText,
   StatCardSkeleton,
-  ChartSkeleton,
   ChatContainer,
   ChatMessage,
   TypingIndicator,
@@ -31,6 +30,7 @@ import {
   type ChatMessageData,
   type IconName,
 } from '@freehold/ui'
+import { ChartSkeleton } from '@freehold/ui/charts'
 import * as RadixToast from '@radix-ui/react-toast'
 
 const BRAND = {

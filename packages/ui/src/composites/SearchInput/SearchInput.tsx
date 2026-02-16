@@ -26,7 +26,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         </div>
         <input
           ref={ref}
-          type="search"
+          type="text"
           value={value}
           className={cn(
             'flex h-10 w-full rounded-[10px] border bg-white pl-10 pr-10 py-2',

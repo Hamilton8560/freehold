@@ -307,6 +307,57 @@ export const componentDocs: ComponentDoc[] = [
     ],
   },
   {
+    slug: 'tag-input',
+    name: 'TagInput',
+    description: 'Multi-tag input for adding and removing string tags. Enter/comma to add, Backspace to remove, click X to dismiss.',
+    category: 'primitives',
+    importStatement: "import { TagInput } from '@freehold/ui'",
+    props: [
+      { name: 'value', type: 'string[]', description: 'Controlled array of tag strings' },
+      { name: 'onChange', type: '(tags: string[]) => void', description: 'Called when tags are added or removed' },
+      { name: 'placeholder', type: 'string', default: "'Add a tag...'", description: 'Placeholder when empty' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the input' },
+      { name: 'maxTags', type: 'number', description: 'Maximum number of tags allowed' },
+      { name: 'allowDuplicates', type: 'boolean', default: 'false', description: 'Allow duplicate tags' },
+      { name: 'label', type: 'string', description: 'Label text above the input' },
+      { name: 'error', type: 'string', description: 'Error message' },
+      { name: 'hint', type: 'string', description: 'Helper text below the input' },
+    ],
+    examples: [
+      {
+        title: 'Basic TagInput',
+        code: `const [tags, setTags] = useState<string[]>([])
+
+<TagInput
+  label="Skills"
+  value={tags}
+  onChange={setTags}
+  placeholder="Add a skill..."
+  hint="Press Enter or comma to add"
+/>`,
+      },
+      {
+        title: 'With Max Tags',
+        code: `<TagInput
+  label="Categories"
+  value={['Design', 'Engineering']}
+  onChange={setTags}
+  maxTags={5}
+  hint="Maximum 5 categories"
+/>`,
+      },
+      {
+        title: 'Error State',
+        code: `<TagInput
+  label="Required Tags"
+  value={['only-one']}
+  onChange={setTags}
+  error="At least 2 tags are required"
+/>`,
+      },
+    ],
+  },
+  {
     slug: 'icon',
     name: 'Icon',
     description: 'SVG icon component with 23+ icons, multiple sizes, and color variants.',
@@ -524,7 +575,7 @@ export const componentDocs: ComponentDoc[] = [
     name: 'PieChart',
     description: 'Pie or donut chart for distribution visualization. Requires recharts as optional peer dependency.',
     category: 'composites',
-    importStatement: "import { PieChart } from '@freehold/ui'",
+    importStatement: "import { PieChart } from '@freehold/ui/charts'",
     props: [
       {
         name: 'data',
@@ -591,7 +642,7 @@ export const componentDocs: ComponentDoc[] = [
     name: 'BarChart',
     description: 'Bar chart for comparison visualization. Supports multiple series, stacked layout, and currency formatting. Requires recharts.',
     category: 'composites',
-    importStatement: "import { BarChart } from '@freehold/ui'",
+    importStatement: "import { BarChart } from '@freehold/ui/charts'",
     props: [
       {
         name: 'data',
@@ -652,7 +703,7 @@ export const componentDocs: ComponentDoc[] = [
     name: 'LineChart',
     description: 'Line or area chart for trend visualization. Supports multiple series, area fill, and various curve types. Requires recharts.',
     category: 'composites',
-    importStatement: "import { LineChart } from '@freehold/ui'",
+    importStatement: "import { LineChart } from '@freehold/ui/charts'",
     props: [
       {
         name: 'data',
@@ -1737,7 +1788,7 @@ toast({ title: 'Info', variant: 'info' })`,
     name: 'ChartSkeleton',
     description: 'Pre-composed loading skeleton for chart components with pie, bar, and line variants.',
     category: 'composites',
-    importStatement: "import { ChartSkeleton } from '@freehold/ui'",
+    importStatement: "import { ChartSkeleton } from '@freehold/ui/charts'",
     props: [
       {
         name: 'variant',
@@ -2011,7 +2062,7 @@ toast({ title: 'Info', variant: 'info' })`,
     name: 'PayrollDashboard',
     description: 'Complete payroll management dashboard with stats grid, charts, employee table, and action buttons. Composes all payroll subcomponents into a full-featured interface.',
     category: 'patterns',
-    importStatement: "import { PayrollDashboard, type Employee, type PayPeriod, type PayrollStats } from '@freehold/ui'",
+    importStatement: "import { PayrollDashboard, type Employee, type PayPeriod, type PayrollStats } from '@freehold/ui/charts'",
     props: [
       { name: 'employees', type: 'Employee[]', description: 'Array of employee payroll data' },
       { name: 'initialPeriod', type: 'PayPeriod', default: 'undefined', description: 'Initial pay period selection' },
@@ -2054,7 +2105,7 @@ toast({ title: 'Info', variant: 'info' })`,
     name: 'PayPeriodSelector',
     description: 'Month, year, and pay date selector for payroll periods. Uses three Select dropdowns in a horizontal layout.',
     category: 'patterns',
-    importStatement: "import { PayPeriodSelector, type PayPeriod } from '@freehold/ui'",
+    importStatement: "import { PayPeriodSelector, type PayPeriod } from '@freehold/ui/charts'",
     props: [
       { name: 'value', type: 'PayPeriod', description: 'Current period value { month: number, year: number, payDate: string }' },
       { name: 'onChange', type: '(period: PayPeriod) => void', description: 'Called when any period value changes' },
@@ -2073,126 +2124,39 @@ toast({ title: 'Info', variant: 'info' })`,
     ],
   },
   {
-    slug: 'payroll-stats-grid',
-    name: 'PayrollStatsGrid',
-    description: 'Grid of 7 stat cards showing payroll totals: employee count, pending/approved/paid counts, gross pay, deductions, and net pay.',
+    slug: 'dashboard',
+    name: 'Dashboard',
+    description: 'Generic, type-safe dashboard pattern with configurable stats, charts, filterable data table, action buttons, and detail modal. Use it to build any domain-specific dashboard (payroll, CRM, invoices, etc.).',
     category: 'patterns',
-    importStatement: "import { PayrollStatsGrid, type PayrollStats } from '@freehold/ui'",
+    importStatement: "import { Dashboard, type DashboardProps, type DashboardStatConfig, type DashboardChartConfig } from '@freehold/ui/charts'",
     props: [
-      { name: 'stats', type: 'PayrollStats', description: 'Object with totalEmployees, pendingCount, approvedCount, paidCount, totalGrossPay, totalDeductions, totalNetPay' },
-      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows skeleton loaders when true' },
+      { name: 'data', type: 'T[]', description: 'Array of data items to display' },
+      { name: 'keyExtractor', type: '(item: T) => string | number', description: 'Unique key for each data item' },
+      { name: 'header', type: 'DashboardHeaderConfig', description: 'Title, description, and optional header action (ReactNode)' },
+      { name: 'columns', type: 'Column<T>[]', description: 'Table column definitions with optional custom renderers' },
+      { name: 'stats', type: 'DashboardStatConfig<T>[]', default: 'undefined', description: 'Stat card configs with getValue(data) functions' },
+      { name: 'charts', type: 'DashboardChartConfig<T>[]', default: 'undefined', description: 'Chart configs (pie or bar) with getData(data) functions' },
+      { name: 'search', type: 'DashboardSearchConfig<T>', default: 'undefined', description: 'Search config with predicate function' },
+      { name: 'filters', type: 'DashboardFilterConfig<T>[]', default: 'undefined', description: 'Filter configs with options and predicate functions' },
+      { name: 'actions', type: 'DashboardActionConfig[]', default: 'undefined', description: 'Action buttons with optional confirmation dialogs' },
+      { name: 'detail', type: 'DashboardDetailConfig<T>', default: 'undefined', description: 'Detail modal with render props for header, content, and footer' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows loading skeletons' },
     ],
     examples: [
       {
-        title: 'Basic Usage',
-        code: `<PayrollStatsGrid
-  stats={{
-    totalEmployees: 25,
-    pendingCount: 5,
-    approvedCount: 12,
-    paidCount: 8,
-    totalGrossPay: 185000,
-    totalDeductions: 28000,
-    totalNetPay: 157000,
-  }}
-/>`,
-      },
-    ],
-  },
-  {
-    slug: 'payroll-charts',
-    name: 'PayrollCharts',
-    description: 'Two-chart grid showing payroll status distribution (donut) and department breakdown (bar chart). Includes loading skeleton support.',
-    category: 'patterns',
-    importStatement: "import { PayrollCharts, type PayrollStats, type Employee } from '@freehold/ui'",
-    props: [
-      { name: 'stats', type: 'PayrollStats', description: 'Payroll statistics for the donut chart' },
-      { name: 'employees', type: 'Employee[]', description: 'Employee data for department aggregation' },
-      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows chart skeletons when true' },
-    ],
-    examples: [
-      {
-        title: 'Basic Usage',
-        code: `<PayrollCharts
-  stats={payrollStats}
-  employees={employees}
-/>`,
-      },
-    ],
-  },
-  {
-    slug: 'employee-table',
-    name: 'EmployeeTable',
-    description: 'Filterable employee payroll table with search, status filter, department filter, and action buttons. Shows name, department, gross/net pay, status, and approve/paid actions.',
-    category: 'patterns',
-    importStatement: "import { EmployeeTable, type Employee } from '@freehold/ui'",
-    props: [
-      { name: 'employees', type: 'Employee[]', description: 'Array of employee payroll data' },
-      { name: 'onApprove', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when approving pending employee' },
-      { name: 'onMarkPaid', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when marking approved employee as paid' },
-      { name: 'onViewDetails', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when clicking view details or row' },
-      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Shows loading state' },
-    ],
-    examples: [
-      {
-        title: 'Basic Usage',
-        code: `<EmployeeTable
-  employees={employees}
-  onApprove={(emp) => approvePayroll(emp.id)}
-  onMarkPaid={(emp) => markPaid(emp.id)}
-  onViewDetails={(emp) => openModal(emp)}
-/>`,
-      },
-    ],
-  },
-  {
-    slug: 'payroll-actions',
-    name: 'PayrollActions',
-    description: 'Action button group with Generate All Payslips, Approve All (with count), and Export buttons. Includes confirmation dialog for bulk approve.',
-    category: 'patterns',
-    importStatement: "import { PayrollActions } from '@freehold/ui'",
-    props: [
-      { name: 'onGenerateAll', type: '() => void', default: 'undefined', description: 'Called when clicking Generate All' },
-      { name: 'onApproveAll', type: '() => void', default: 'undefined', description: 'Called after confirming Approve All' },
-      { name: 'onExport', type: '() => void', default: 'undefined', description: 'Called when clicking Export' },
-      { name: 'pendingCount', type: 'number', default: '0', description: 'Number of pending payslips (shown in button)' },
-      { name: 'isGenerating', type: 'boolean', default: 'false', description: 'Shows loading on Generate button' },
-      { name: 'isApproving', type: 'boolean', default: 'false', description: 'Shows loading on Approve button' },
-    ],
-    examples: [
-      {
-        title: 'Basic Usage',
-        code: `<PayrollActions
-  onGenerateAll={handleGenerateAll}
-  onApproveAll={handleApproveAll}
-  onExport={handleExport}
-  pendingCount={5}
-/>`,
-      },
-    ],
-  },
-  {
-    slug: 'employee-detail-modal',
-    name: 'EmployeeDetailModal',
-    description: 'Modal dialog showing employee payroll details with avatar, name, position, department, status badge, and payment breakdown (gross, deductions, net). Includes approve/mark paid actions.',
-    category: 'patterns',
-    importStatement: "import { EmployeeDetailModal, type Employee } from '@freehold/ui'",
-    props: [
-      { name: 'employee', type: 'Employee | null', description: 'Employee to display, null hides modal content' },
-      { name: 'open', type: 'boolean', description: 'Controlled open state' },
-      { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Called when open state changes' },
-      { name: 'onApprove', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when approving (shown if pending)' },
-      { name: 'onMarkPaid', type: '(employee: Employee) => void', default: 'undefined', description: 'Called when marking paid (shown if approved)' },
-    ],
-    examples: [
-      {
-        title: 'Basic Usage',
-        code: `<EmployeeDetailModal
-  employee={selectedEmployee}
-  open={showModal}
-  onOpenChange={setShowModal}
-  onApprove={handleApprove}
-  onMarkPaid={handleMarkPaid}
+        title: 'Basic Usage (Payroll Example)',
+        code: `<Dashboard<Employee>
+  data={employees}
+  keyExtractor={(e) => e.id}
+  header={{ title: 'Payroll Dashboard', description: 'Manage payroll.' }}
+  columns={[
+    { key: 'name', header: 'Name' },
+    { key: 'department', header: 'Department' },
+    { key: 'status', header: 'Status' },
+  ]}
+  stats={[
+    { key: 'total', label: 'Total', getValue: (data) => data.length },
+  ]}
 />`,
       },
     ],
@@ -2519,6 +2483,604 @@ toast({ title: 'Info', variant: 'info' })`,
     { label: 'Blog', href: '/blog' },
   ]}
 />`,
+      },
+    ],
+  },
+
+  // ── Kanban ──────────────────────────────────────────────
+  {
+    slug: 'kanban',
+    name: 'Kanban',
+    description: 'Generic, type-safe Kanban board with drag-and-drop. Pass your data + column config, render custom cards, and handle moves. Built on @dnd-kit for accessible, performant drag-and-drop.',
+    category: 'patterns',
+    importStatement: "import { Kanban, type KanbanProps, type KanbanColumnConfig } from '@freehold/ui/kanban'",
+    props: [
+      { name: 'columns', type: 'KanbanColumnConfig<T>[]', description: 'Array of column definitions: { id, title, items, limit? }' },
+      { name: 'keyExtractor', type: '(item: T) => string', description: 'Unique string key per card item' },
+      { name: 'renderCard', type: '(item: T) => ReactNode', description: 'Custom card content renderer' },
+      { name: 'onCardMove', type: '(cardId, fromCol, toCol, newIndex) => void', description: 'Called after a card is dragged to a new position' },
+      { name: 'columnHeader', type: '(col, count) => ReactNode', default: 'undefined', description: 'Custom column header renderer' },
+      { name: 'emptyColumn', type: 'ReactNode', default: '"No items"', description: 'Content shown when a column is empty' },
+      { name: 'className', type: 'string', default: 'undefined', description: 'Additional CSS classes on the board container' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Kanban<Task>
+  columns={[
+    { id: 'todo', title: 'To Do', items: todoTasks },
+    { id: 'in-progress', title: 'In Progress', items: inProgressTasks },
+    { id: 'done', title: 'Done', items: doneTasks },
+  ]}
+  keyExtractor={(task) => task.id}
+  renderCard={(task) => (
+    <div>
+      <p className="font-medium">{task.title}</p>
+      <Badge variant="pending">{task.priority}</Badge>
+    </div>
+  )}
+  onCardMove={(cardId, fromCol, toCol, newIndex) => {
+    // update your state
+  }}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: Sidebar ──────────────────────────────────
+  {
+    slug: 'sidebar',
+    name: 'Sidebar',
+    description: 'Collapsible sidebar navigation with icon + label nav items, grouped sections, and user info at bottom. Dark background with cream text.',
+    category: 'patterns',
+    importStatement: "import { Sidebar, type SidebarProps, type SidebarNavItem } from '@freehold/ui'",
+    props: [
+      { name: 'logo', type: 'ReactNode', description: 'Logo element displayed at top' },
+      { name: 'items', type: 'SidebarNavItem[]', description: 'Navigation items — flat SidebarItem or grouped SidebarSection' },
+      { name: 'user', type: '{ name, email, avatar? }', description: 'User info displayed at bottom' },
+      { name: 'collapsed', type: 'boolean', description: 'Whether sidebar is collapsed (icon-only mode)' },
+      { name: 'onCollapse', type: '(collapsed: boolean) => void', description: 'Toggle collapsed state' },
+      { name: 'activeItem', type: 'string', description: 'Currently active item href' },
+      { name: 'onNavigate', type: '(href: string) => void', description: 'Called when a nav item is clicked' },
+      { name: 'className', type: 'string', description: 'Additional CSS classes' },
+      { name: 'mobileOpen', type: 'boolean', default: 'false', description: 'Whether the sidebar is open as a mobile overlay drawer (screens < md)' },
+      { name: 'onMobileClose', type: '() => void', description: 'Called when the mobile drawer should close (backdrop click, nav item click, or close button)' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<Sidebar
+  logo={<span className="text-white font-bold text-lg">Acme</span>}
+  items={[
+    { icon: 'home', label: 'Dashboard', href: '/' },
+    { icon: 'clients', label: 'Clients', href: '/clients', badge: 3 },
+    { icon: 'billing', label: 'Billing', href: '/billing' },
+    { icon: 'settings', label: 'Settings', href: '/settings' },
+  ]}
+  user={{ name: 'Jane Doe', email: 'jane@example.com' }}
+  collapsed={false}
+  onCollapse={setCollapsed}
+  activeItem="/"
+  onNavigate={(href) => router.push(href)}
+/>`,
+      },
+      {
+        title: 'With Sections',
+        code: `<Sidebar
+  logo={<Logo />}
+  items={[
+    { title: 'Main', items: [
+      { icon: 'home', label: 'Dashboard', href: '/' },
+      { icon: 'clients', label: 'Clients', href: '/clients' },
+    ]},
+    { title: 'Settings', items: [
+      { icon: 'settings', label: 'General', href: '/settings' },
+      { icon: 'billing', label: 'Billing', href: '/billing' },
+    ]},
+  ]}
+  collapsed={collapsed}
+  onCollapse={setCollapsed}
+/>`,
+      },
+      {
+        title: 'With Mobile Drawer',
+        code: `const [mobileOpen, setMobileOpen] = useState(false)
+
+<Sidebar
+  logo={<Logo />}
+  items={navItems}
+  collapsed={collapsed}
+  onCollapse={setCollapsed}
+  mobileOpen={mobileOpen}
+  onMobileClose={() => setMobileOpen(false)}
+/>
+
+{/* In your AppHeader: */}
+<AppHeader
+  title="Dashboard"
+  onMenuClick={() => setMobileOpen(true)}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: AppHeader ──────────────────────────────────
+  {
+    slug: 'app-header',
+    name: 'AppHeader',
+    description: 'Top bar for authenticated pages with page title, breadcrumb trail, action area, and user avatar. Sits to the right of the sidebar.',
+    category: 'patterns',
+    importStatement: "import { AppHeader, type AppHeaderProps } from '@freehold/ui'",
+    props: [
+      { name: 'title', type: 'string', description: 'Page title' },
+      { name: 'breadcrumbs', type: '{ label, href? }[]', description: 'Breadcrumb trail with chevron separators' },
+      { name: 'actions', type: 'ReactNode', description: 'Right-side action area (buttons, etc.)' },
+      { name: 'user', type: '{ name, avatar? }', description: 'User avatar + name at far right' },
+      { name: 'onMenuClick', type: '() => void', description: 'Mobile hamburger click handler' },
+      { name: 'className', type: 'string', description: 'Additional CSS classes' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<AppHeader
+  title="Dashboard"
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: 'Dashboard' },
+  ]}
+  actions={<Button size="sm">New Project</Button>}
+  user={{ name: 'Jane Doe' }}
+  onMenuClick={() => setSidebarOpen(true)}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: LoginForm ──────────────────────────────────
+  {
+    slug: 'login-form',
+    name: 'LoginForm',
+    description: 'Complete login form with email/password fields, remember me checkbox, social login buttons, and three layout variants (simple, split, card).',
+    category: 'patterns',
+    importStatement: "import { LoginForm, type LoginFormProps } from '@freehold/ui'",
+    props: [
+      { name: 'variant', type: "'simple' | 'split' | 'card'", default: "'simple'", description: 'Layout variant' },
+      { name: 'logo', type: 'ReactNode', description: 'Logo above form' },
+      { name: 'title', type: 'string', default: "'Sign in'", description: 'Heading text' },
+      { name: 'description', type: 'string', description: 'Subheading text' },
+      { name: 'onSubmit', type: '(data: { email, password, remember }) => void', description: 'Form submission handler' },
+      { name: 'socialProviders', type: "('google' | 'github' | 'apple')[]", description: 'Social login buttons to show' },
+      { name: 'onSocialLogin', type: '(provider) => void', description: 'Social login click handler' },
+      { name: 'forgotPasswordHref', type: 'string', description: '"Forgot password?" link URL' },
+      { name: 'registerHref', type: 'string', description: '"Create account" link URL' },
+      { name: 'splitContent', type: 'ReactNode', description: 'Left panel content for split variant' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Disables form and shows spinner' },
+      { name: 'error', type: 'string', description: 'Top-level error message' },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'simple', label: 'Simple' },
+          { value: 'split', label: 'Split' },
+          { value: 'card', label: 'Card' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Login',
+        code: `<LoginForm
+  onSubmit={(data) => console.log(data)}
+  forgotPasswordHref="/forgot-password"
+  registerHref="/register"
+/>`,
+      },
+      {
+        title: 'With Social Login',
+        code: `<LoginForm
+  variant="card"
+  title="Welcome back"
+  description="Sign in to your account"
+  onSubmit={handleLogin}
+  socialProviders={['google', 'github']}
+  onSocialLogin={handleSocialLogin}
+/>`,
+      },
+    ],
+  },
+
+  // ── Patterns: RegisterForm ──────────────────────────────────
+  {
+    slug: 'register-form',
+    name: 'RegisterForm',
+    description: 'Complete registration form with name, email, password, confirm password, social signup, and three layout variants (simple, split, card).',
+    category: 'patterns',
+    importStatement: "import { RegisterForm, type RegisterFormProps } from '@freehold/ui'",
+    props: [
+      { name: 'variant', type: "'simple' | 'split' | 'card'", default: "'simple'", description: 'Layout variant' },
+      { name: 'logo', type: 'ReactNode', description: 'Logo above form' },
+      { name: 'title', type: 'string', default: "'Create account'", description: 'Heading text' },
+      { name: 'description', type: 'string', description: 'Subheading text' },
+      { name: 'onSubmit', type: '(data: { name, email, password }) => void', description: 'Form submission handler' },
+      { name: 'socialProviders', type: "('google' | 'github' | 'apple')[]", description: 'Social login buttons to show' },
+      { name: 'onSocialLogin', type: '(provider) => void', description: 'Social login click handler' },
+      { name: 'loginHref', type: 'string', description: '"Already have an account?" link URL' },
+      { name: 'termsHref', type: 'string', description: 'Terms of Service link URL' },
+      { name: 'privacyHref', type: 'string', description: 'Privacy Policy link URL' },
+      { name: 'splitContent', type: 'ReactNode', description: 'Left panel content for split variant' },
+      { name: 'isLoading', type: 'boolean', default: 'false', description: 'Disables form and shows spinner' },
+      { name: 'error', type: 'string', description: 'Top-level error message' },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'simple', label: 'Simple' },
+          { value: 'split', label: 'Split' },
+          { value: 'card', label: 'Card' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Register',
+        code: `<RegisterForm
+  onSubmit={(data) => console.log(data)}
+  loginHref="/login"
+  termsHref="/terms"
+/>`,
+      },
+      {
+        title: 'With Social Signup',
+        code: `<RegisterForm
+  variant="card"
+  title="Create your account"
+  onSubmit={handleRegister}
+  socialProviders={['google']}
+  onSocialLogin={handleSocialLogin}
+  termsHref="/terms"
+  privacyHref="/privacy"
+/>`,
+      },
+    ],
+  },
+
+  // ── @freehold/payments: Primitives ──────────────────────────────
+  {
+    slug: 'order-summary',
+    name: 'OrderSummary',
+    description: 'Displays line items with subtotal, tax, discount, and total. Part of @freehold/payments.',
+    category: 'primitives',
+    importStatement: "import { OrderSummary } from '@freehold/payments'",
+    props: [
+      { name: 'items', type: 'OrderLineItem[]', description: 'Array of { id, name, description?, quantity, unitPrice, currency }' },
+      { name: 'subtotal', type: 'number', description: 'Subtotal amount' },
+      { name: 'tax', type: 'number', description: 'Tax amount (optional)' },
+      { name: 'discount', type: 'number', description: 'Discount amount (optional)' },
+      { name: 'total', type: 'number', description: 'Total amount' },
+      { name: 'currency', type: 'string', description: 'Currency code (e.g., "USD")' },
+      { name: 'variant', type: "'default' | 'compact'", default: "'default'", description: 'Layout variant' },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'compact', label: 'Compact' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<OrderSummary
+  items={[
+    { id: '1', name: 'Pro Plan', quantity: 1, unitPrice: 29, currency: 'USD' },
+    { id: '2', name: 'Extra Seats', description: '3 additional seats', quantity: 3, unitPrice: 9, currency: 'USD' },
+  ]}
+  subtotal={56}
+  tax={4.48}
+  total={60.48}
+  currency="USD"
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'payment-method-icon',
+    name: 'PaymentMethodIcon',
+    description: 'SVG icons for common payment methods: Visa, Mastercard, Amex, Apple Pay, Google Pay, PayPal. Part of @freehold/payments.',
+    category: 'primitives',
+    importStatement: "import { PaymentMethodIcon } from '@freehold/payments'",
+    props: [
+      { name: 'method', type: "'visa' | 'mastercard' | 'amex' | 'apple-pay' | 'google-pay' | 'paypal'", description: 'Payment method to display' },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Icon size' },
+    ],
+    examples: [
+      {
+        title: 'All Methods',
+        code: `<div className="flex gap-3">
+  <PaymentMethodIcon method="visa" />
+  <PaymentMethodIcon method="mastercard" />
+  <PaymentMethodIcon method="amex" />
+  <PaymentMethodIcon method="apple-pay" />
+  <PaymentMethodIcon method="google-pay" />
+  <PaymentMethodIcon method="paypal" />
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'security-badge',
+    name: 'SecurityBadge',
+    description: 'Lock icon with "Secure checkout" trust indicator. Part of @freehold/payments.',
+    category: 'primitives',
+    importStatement: "import { SecurityBadge } from '@freehold/payments'",
+    props: [
+      { name: 'variant', type: "'default' | 'subtle'", default: "'default'", description: 'Visual variant' },
+      { name: 'label', type: 'string', default: "'Secure checkout'", description: 'Badge text' },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'subtle', label: 'Subtle' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Both Variants',
+        code: `<div className="space-y-3">
+  <SecurityBadge variant="default" />
+  <SecurityBadge variant="subtle" />
+</div>`,
+      },
+    ],
+  },
+  {
+    slug: 'checkout-divider',
+    name: 'CheckoutDivider',
+    description: 'Horizontal "or" separator between payment method sections. Part of @freehold/payments.',
+    category: 'primitives',
+    importStatement: "import { CheckoutDivider } from '@freehold/payments'",
+    props: [
+      { name: 'label', type: 'string', default: "'or'", description: 'Divider label text' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<CheckoutDivider />`,
+      },
+      {
+        title: 'Custom Label',
+        code: `<CheckoutDivider label="or pay with" />`,
+      },
+    ],
+  },
+
+  // ── @freehold/payments: Composites ──────────────────────────────
+  {
+    slug: 'checkout-header',
+    name: 'CheckoutHeader',
+    description: 'Checkout page header with DM Serif Display title, description, and optional logo. Part of @freehold/payments.',
+    category: 'composites',
+    importStatement: "import { CheckoutHeader } from '@freehold/payments'",
+    props: [
+      { name: 'title', type: 'string', description: 'Header title' },
+      { name: 'description', type: 'string', description: 'Subtitle text' },
+      { name: 'logo', type: 'ReactNode', description: 'Optional logo element' },
+    ],
+    examples: [
+      {
+        title: 'Basic Usage',
+        code: `<CheckoutHeader
+  title="Complete your order"
+  description="Review your items and enter payment details."
+/>`,
+      },
+    ],
+  },
+  {
+    slug: 'checkout-footer',
+    name: 'CheckoutFooter',
+    description: 'Checkout footer with terms/privacy links and optional "Powered by" badge. Part of @freehold/payments.',
+    category: 'composites',
+    importStatement: "import { CheckoutFooter } from '@freehold/payments'",
+    props: [
+      { name: 'termsUrl', type: 'string', description: 'URL to terms page' },
+      { name: 'privacyUrl', type: 'string', description: 'URL to privacy page' },
+      { name: 'showPoweredBy', type: 'boolean', default: 'false', description: 'Show "Powered by Freehold" badge' },
+    ],
+    examples: [
+      {
+        title: 'With Links',
+        code: `<CheckoutFooter termsUrl="/terms" privacyUrl="/privacy" showPoweredBy />`,
+      },
+    ],
+  },
+  {
+    slug: 'pricing-card',
+    name: 'PricingCard',
+    description: 'Data-driven pricing tier card with plan name, price display, feature list, and CTA button. Supports featured variant for recommended plans. Part of @freehold/payments.',
+    category: 'composites',
+    importStatement: "import { PricingCard } from '@freehold/payments'",
+    props: [
+      { name: 'name', type: 'string', description: 'Plan name (e.g., "Pro", "Business")' },
+      { name: 'description', type: 'string', description: 'Short plan description' },
+      { name: 'price', type: 'number', description: 'Price amount' },
+      { name: 'currency', type: 'string', description: 'Currency code (e.g., "USD")' },
+      { name: 'billingPeriod', type: "'monthly' | 'yearly' | 'one-time'", description: 'Billing frequency' },
+      { name: 'billingLabel', type: 'string', description: 'Custom billing label (e.g., "per seat/mo")' },
+      { name: 'features', type: 'PricingFeature[]', description: 'Array of { text, included?, hint? }' },
+      { name: 'badge', type: 'string', description: 'Badge text (e.g., "Popular")' },
+      { name: 'ctaLabel', type: 'string', description: 'CTA button text' },
+      { name: 'featured', type: 'boolean', default: 'false', description: 'Whether this is the highlighted tier' },
+      { name: 'originalPrice', type: 'number', description: 'Strikethrough original price for discounts' },
+      { name: 'variant', type: "'default' | 'featured'", default: "'default'", description: 'Visual variant (auto-set by featured prop)' },
+      { name: 'ctaSlot', type: 'ReactNode', description: 'Custom CTA render slot' },
+      { name: 'onCtaClick', type: '() => void', description: 'Click handler for default CTA button' },
+    ],
+    variants: [
+      {
+        name: 'variant',
+        options: [
+          { value: 'default', label: 'Default' },
+          { value: 'featured', label: 'Featured' },
+        ],
+      },
+    ],
+    examples: [
+      {
+        title: 'Basic Pricing Card',
+        code: `<PricingCard
+  name="Pro"
+  description="For growing teams"
+  price={29}
+  currency="USD"
+  billingPeriod="monthly"
+  features={[
+    { text: 'Unlimited projects' },
+    { text: '10 team members' },
+    { text: 'Priority support' },
+    { text: 'Custom domain', included: false },
+  ]}
+  ctaLabel="Get Started"
+/>`,
+      },
+      {
+        title: 'Featured Card with Badge',
+        code: `<PricingCard
+  name="Business"
+  description="For scaling companies"
+  price={79}
+  currency="USD"
+  billingPeriod="monthly"
+  badge="Most Popular"
+  featured
+  features={[
+    { text: 'Everything in Pro' },
+    { text: 'Unlimited team members' },
+    { text: 'Priority support' },
+    { text: 'Custom domain' },
+    { text: 'SSO integration' },
+  ]}
+  ctaLabel="Start Free Trial"
+/>`,
+      },
+    ],
+  },
+
+  // ── @freehold/payments: Patterns ──────────────────────────────
+  {
+    slug: 'checkout-card',
+    name: 'CheckoutCard',
+    description: 'Compact checkout card layout (max-w-md) with header, children slot for payment form, and footer. Part of @freehold/payments.',
+    category: 'patterns',
+    importStatement: "import { CheckoutCard } from '@freehold/payments'",
+    props: [
+      { name: 'header', type: 'CheckoutHeaderConfig', description: 'Header config: { title, description?, logo? }' },
+      { name: 'footer', type: 'CheckoutFooterConfig', description: 'Footer config: { termsUrl?, privacyUrl?, showPoweredBy? }' },
+      { name: 'children', type: 'ReactNode', description: 'Payment form content' },
+    ],
+    examples: [
+      {
+        title: 'With Stripe',
+        code: `<FreeholdStripeProvider publishableKey="pk_..." clientSecret={clientSecret}>
+  <CheckoutCard
+    header={{ title: 'Complete your order' }}
+    footer={{ termsUrl: '/terms' }}
+  >
+    <OrderSummary items={items} subtotal={29} total={29} currency="USD" />
+    <StripeCheckoutForm onSuccess={handleSuccess} submitLabel="Pay $29.00" />
+    <SecurityBadge />
+  </CheckoutCard>
+</FreeholdStripeProvider>`,
+      },
+    ],
+  },
+  {
+    slug: 'checkout-full-screen',
+    name: 'CheckoutFullScreen',
+    description: 'Full-screen checkout page layout with centered card on warm background. Part of @freehold/payments.',
+    category: 'patterns',
+    importStatement: "import { CheckoutFullScreen } from '@freehold/payments'",
+    props: [
+      { name: 'header', type: 'CheckoutHeaderConfig', description: 'Header config: { title, description?, logo? }' },
+      { name: 'footer', type: 'CheckoutFooterConfig', description: 'Footer config: { termsUrl?, privacyUrl?, showPoweredBy? }' },
+      { name: 'children', type: 'ReactNode', description: 'Payment form content' },
+    ],
+    examples: [
+      {
+        title: 'Full Screen Checkout',
+        code: `<FreeholdStripeProvider publishableKey="pk_..." clientSecret={clientSecret}>
+  <CheckoutFullScreen
+    header={{ title: 'Checkout' }}
+    footer={{ termsUrl: '/terms', showPoweredBy: true }}
+  >
+    <OrderSummary items={items} subtotal={99} total={99} currency="USD" />
+    <StripeCheckoutForm onSuccess={handleSuccess} />
+  </CheckoutFullScreen>
+</FreeholdStripeProvider>`,
+      },
+    ],
+  },
+  {
+    slug: 'checkout-split-screen',
+    name: 'CheckoutSplitScreen',
+    description: 'Two-panel checkout layout: dark left panel for branding/info, white right panel for payment form. Stacks on mobile. Part of @freehold/payments.',
+    category: 'patterns',
+    importStatement: "import { CheckoutSplitScreen } from '@freehold/payments'",
+    props: [
+      { name: 'left', type: 'ReactNode', description: 'Content for the dark left panel' },
+      { name: 'header', type: 'CheckoutHeaderConfig', description: 'Header config for right panel' },
+      { name: 'footer', type: 'CheckoutFooterConfig', description: 'Footer config for right panel' },
+      { name: 'children', type: 'ReactNode', description: 'Payment form content (right panel)' },
+    ],
+    examples: [
+      {
+        title: 'Split Screen Checkout',
+        code: `<FreeholdStripeProvider publishableKey="pk_..." clientSecret={clientSecret}>
+  <CheckoutSplitScreen
+    left={
+      <div className="text-white">
+        <h1 className="text-3xl font-bold mb-4">Upgrade to Pro</h1>
+        <p className="text-white/70">Unlock all premium features.</p>
+      </div>
+    }
+    header={{ title: 'Checkout' }}
+  >
+    <OrderSummary items={items} subtotal={99} total={99} currency="USD" />
+    <StripeCheckoutForm onSuccess={handleSuccess} submitLabel="Subscribe — $99/mo" />
+  </CheckoutSplitScreen>
+</FreeholdStripeProvider>`,
+      },
+    ],
+  },
+  {
+    slug: 'pricing-grid',
+    name: 'PricingGrid',
+    description: 'Responsive grid layout for arranging PricingCard components. Supports 2, 3, or 4 column layouts. Part of @freehold/payments.',
+    category: 'patterns',
+    importStatement: "import { PricingGrid, PricingCard } from '@freehold/payments'",
+    props: [
+      { name: 'columns', type: '2 | 3 | 4', default: '3', description: 'Maximum number of grid columns' },
+      { name: 'children', type: 'ReactNode', description: 'PricingCard components' },
+    ],
+    examples: [
+      {
+        title: 'Three-Tier Pricing',
+        code: `<PricingGrid columns={3}>
+  <PricingCard name="Starter" price={0} currency="USD" billingPeriod="monthly"
+    features={[{ text: '1 project' }, { text: '1 user' }]} ctaLabel="Start Free" />
+  <PricingCard name="Pro" price={29} currency="USD" billingPeriod="monthly"
+    badge="Popular" featured
+    features={[{ text: 'Unlimited projects' }, { text: '10 users' }]} ctaLabel="Get Started" />
+  <PricingCard name="Enterprise" price={99} currency="USD" billingPeriod="monthly"
+    features={[{ text: 'Everything in Pro' }, { text: 'Unlimited users' }]} ctaLabel="Contact Sales" />
+</PricingGrid>`,
       },
     ],
   },

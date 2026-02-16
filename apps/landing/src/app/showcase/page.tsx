@@ -2,12 +2,12 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { Button } from '@freehold/ui'
 import {
   PayrollDashboard,
-  Button,
   type Employee,
   type PayrollStatus,
-} from '@freehold/ui'
+} from '@freehold/ui/charts'
 
 // Sample employee data
 const INITIAL_EMPLOYEES: Employee[] = [

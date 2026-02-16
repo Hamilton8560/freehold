@@ -42,7 +42,7 @@ export function PayPeriodSelector({ value, onChange }: PayPeriodSelectorProps) {
           label="Month"
           options={MONTHS}
           value={String(value.month)}
-          onChange={(e) => onChange({ ...value, month: Number(e.target.value) })}
+          onValueChange={(v) => onChange({ ...value, month: Number(v) })}
         />
       </div>
       <div className="min-w-[100px]">
@@ -50,7 +50,7 @@ export function PayPeriodSelector({ value, onChange }: PayPeriodSelectorProps) {
           label="Year"
           options={YEARS}
           value={String(value.year)}
-          onChange={(e) => onChange({ ...value, year: Number(e.target.value) })}
+          onValueChange={(v) => onChange({ ...value, year: Number(v) })}
         />
       </div>
       <div className="min-w-[120px]">
@@ -58,7 +58,7 @@ export function PayPeriodSelector({ value, onChange }: PayPeriodSelectorProps) {
           label="Pay Date"
           options={PAY_DATES}
           value={value.payDate}
-          onChange={(e) => onChange({ ...value, payDate: e.target.value })}
+          onValueChange={(v) => onChange({ ...value, payDate: v })}
         />
       </div>
     </div>
