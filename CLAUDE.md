@@ -79,9 +79,23 @@ Individual packages use `tsup` for builds (`tsup` / `tsup --watch`).
 - Includes TipTap rich text editor, recharts, Radix Toast
 - Multi-provider AI (Anthropic, OpenAI, Google, DeepSeek, Ollama)
 
-## Starter Kit / External Consumers
+## Starter Kit Integration
 
-The freehold starter kit installs `@freehold/ui` **from npm** (not a workspace link). It is a separate repo, not part of this monorepo.
+The **freehold-starter** (`../freehold-starter`) is a separate repo that consumes `@freehold/ui` from npm (not a workspace link).
+
+### Cross-Project Workflow
+
+When working on the monorepo and the starter needs are relevant:
+1. Check `../freehold-starter/CLAUDE.md` for any **Pending Monorepo Changes** section
+2. After adding/modifying components, update `packages/ui/AGENTS.md` component inventory
+3. After publishing (`pnpm publish-packages`), the starter can `pnpm update @freehold/ui` to pick up changes
+
+For local development, the starter has a `scripts/link-local.sh` that builds the monorepo and links `@freehold/ui` locally — no npm publish needed.
+
+### What the Starter Uses
+- `@freehold/ui` — Button, Card, CardHeader, CardTitle, CardContent, Input, Select, Badge, DataTable, Icon, Skeleton, StatCard, FormField, FormActions, Toggle, Toast, ToastProvider, useToast, CardFlipLoader, SearchInput, ConfirmDialog
+- Tailwind content path includes `node_modules/@freehold/ui/dist/**/*.{js,mjs}`
+- Design tokens: warm sand palette (#FAF9F6, #2C2824, #B8A48E)
 
 ## Conventions
 

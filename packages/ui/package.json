@@ -1,6 +1,6 @@
 {
   "name": "@freehold/ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Freehold UI component library",
   "license": "MIT",
   "repository": {
@@ -45,7 +45,7 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "tsup && node scripts/add-use-client.js",
+    "build": "tsup && node scripts/add-use-client.mjs",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "lint": "eslint src/",

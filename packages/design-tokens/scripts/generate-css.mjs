@@ -5,14 +5,14 @@
 
 import { writeFileSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const distDir = resolve(__dirname, '..', 'dist')
 
-// Import built token modules
+// Import built token modules (use file:// URL for Windows compatibility)
 const { colors, typography, spacing, radii, shadows, animations } = await import(
-  resolve(distDir, 'index.mjs')
+  pathToFileURL(resolve(distDir, 'index.mjs')).href
 )
 
 // Flatten a nested object into CSS custom properties

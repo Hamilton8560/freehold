@@ -73,8 +73,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         {...props}
       >
-        {isLoading && <Spinner size="sm" className="text-current" />}
-        {children}
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {isLoading && <Spinner size="sm" className="text-current" />}
+            {children}
+          </>
+        )}
       </Comp>
     )
   }
